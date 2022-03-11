@@ -1,3 +1,11 @@
+:root{
+  --HunterGreen-color:#386641;
+  --MayGreen-color:#6A994E;
+  --AndroidGreen-color:#A7C957;
+  --Eggshell-color:#F2E8CF;
+  --BittersweetShimmer-color:#BC4749;
+}
+
 body {
   margin: 100;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -19,3 +27,31 @@ a:hover {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.349);
 }
+
+.kitchenStock{
+  margin: 0;
+}
+.kitchen-stock-headers{
+  
+  margin:0;
+  display: grid;
+  grid-template: auto auto / repeat(2,1fr);
+  background-color: var(--MayGreen-color);
+}
+
+.kitchenStock ul{
+  
+  margin:0;
+  background-color: var(--Eggshell-color);
+}
+.kitchenStock .food-item{
+  text-align: center;
+  margin:0;
+  background-color: var(--Eggshell-color);
+  display:grid;
+  grid-template: auto auto / repeat(3,1fr);
+}
+.kitchenStock h1{
+  margin:0;
+}
+
