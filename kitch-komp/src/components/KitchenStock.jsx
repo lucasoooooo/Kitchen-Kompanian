@@ -1,4 +1,6 @@
 import React from "react";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 function KitchenStock() {
   // These food items will later come from useState's
@@ -12,7 +14,7 @@ function KitchenStock() {
           <nav className="food-item">
               <h3>{p.name}</h3>
               <h3>{p.qty}</h3>
-              <h3>Edit Button</h3>
+              <MoreHorizIcon className="edit"/>
           </nav>)
   })
   const freezer_element = freezer_things.map(function(p){
@@ -20,7 +22,7 @@ function KitchenStock() {
           <nav className="food-item">
               <h3>{p.name}</h3>
               <h3>{p.qty}</h3>
-              <h3>Edit Button</h3>
+              <MoreHorizIcon className="edit"/>
           </nav>)
   })
   const pantry_element = pantry_things.map(function(p){
@@ -28,7 +30,7 @@ function KitchenStock() {
       <nav className="food-item">
           <h3>{p.name}</h3>
           <h3>{p.qty}</h3>
-          <h3>Edit Button</h3>
+          <MoreHorizIcon className="edit"/>
       </nav>)
   })
   return (
@@ -37,7 +39,7 @@ function KitchenStock() {
           <h1 className="font-weight-light">Kitchen Stock List</h1>
         <nav className="kitchen-stock-headers">
             <h2>Refrigerator</h2>
-            <h2>(Add sign)</h2> 
+            <AddCircleOutlineIcon className="AddSign"/>
         </nav>
         <ul>
             {/* <li>Name     QTY</li> */}
@@ -45,12 +47,12 @@ function KitchenStock() {
         </ul>
         <nav className="kitchen-stock-headers">
             <h2>Freezer</h2>
-            <h2>(Add sign)</h2> 
+            <AddCircleOutlineIcon className="AddSign"/>
         </nav>
         <ul>{freezer_element}</ul>
         <nav className="kitchen-stock-headers">
             <h2>Pantry</h2>
-            <h2>(Add sign)</h2> 
+            <AddCircleOutlineIcon className="AddSign"/>
         </nav>
         <ul>{pantry_element}</ul>
       </div>

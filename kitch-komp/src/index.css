@@ -54,4 +54,16 @@ a:hover {
 .kitchenStock h1{
   margin:0;
 }
-
+.kitchenStock .AddSign{
+  padding: 10px;
+  font-size: 50px;
+  cursor: pointer;
+  justify-self: end;
+}
+.kitchenStock .edit{
+  padding: 10px;
+  font-size: 40px;
+  transform: rotate(90deg);
+  cursor: pointer;
+  justify-self: end;
+}
