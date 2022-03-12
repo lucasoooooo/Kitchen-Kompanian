@@ -93,7 +93,7 @@ function Recipies () {
               </StyledTableCell>
               <StyledTableCell align="right">{row.prepTime}</StyledTableCell>
               <StyledTableCell align="right">{row.cookTime}</StyledTableCell>
-              <StyledTableCell align="right">{row.tags}</StyledTableCell>
+              <StyledTableCell align="right">{row.tags.map(arr => {return arr + " "})}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+
+// MUI Component Imports
 import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import { DataGrid } from '@mui/x-data-grid'
+import { styled } from '@mui/material/styles';
+
+// MUI Icon Imports
 import ClearIcon from '@mui/icons-material/Clear'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search'
-import MenuIcon from "@mui/icons-material/Menu"
 
 function escapeRegExp (value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
@@ -65,6 +70,7 @@ QuickSearchToolbar.propTypes = {
 }
 
 export default function QuickFilteringGrid () {
+
   const [searchText, setSearchText] = React.useState('')
 
   const recipes = [
@@ -73,6 +79,8 @@ export default function QuickFilteringGrid () {
       name: 'Banana Pudding',
       prepTime: '30 Minutes',
       cookTime: '10 Minutes',
+      totalTime: '40 Minutes',
+      servingSize: "4",
       tags: ['Dessert']
     },
 
@@ -81,6 +89,8 @@ export default function QuickFilteringGrid () {
       name: 'Beef Wellington',
       prepTime: '1 Hour',
       cookTime: '45 Miniutes',
+      totalTime: '1 Hour, 45 Minutes',
+      servingSize: "1",
       tags: ['Dinner']
     },
 
@@ -89,6 +99,8 @@ export default function QuickFilteringGrid () {
       name: 'Baked Salmon',
       prepTime: '5 Minutes',
       cookTime: '10 Minutes',
+      totalTime: '15 Minutes',
+      servingSize: "2",
       tags: ['Dinner']
     }
   ]
@@ -99,8 +111,10 @@ export default function QuickFilteringGrid () {
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'prepTime', headerName: 'Prep Time', width: 150 },
     { field: 'cookTime', headerName: 'Cook Time', width: 150 },
+    { field: 'totalTime', headerName: 'Total Time', width: 150 },
+    { field: 'servingSize', headerName: 'Serving Size', width: 150 },
     { field: 'tags', headerName: 'Recipe Tags', width: 150 },
-    { field: 'iconButton', width: 150, renderCell: () => <MenuIcon /> }
+    { field: 'iconButton', headerName: "Actions", width: 150, renderCell: () => <MenuIcon /> }
   ]
 
   const requestSearch = searchValue => {
@@ -121,15 +135,12 @@ export default function QuickFilteringGrid () {
 
   return (
     <Box
-      sx={{ height: 400, width: 1000 }}
+      sx={{ height: 400, width: 1055}}
       alignItems='center'
       justifyContent='center'
       alignContent='center'
     >
       <DataGrid
-        alignContent='center'
-        alignItems='center'
-        justifycontent='center'
         components={{ Toolbar: QuickSearchToolbar }}
         rows={rows}
         columns={columns}
