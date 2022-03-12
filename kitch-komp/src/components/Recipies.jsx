@@ -72,37 +72,6 @@ function Recipies () {
         </Typography>
       </Grid>
 
-      {/* Search and Filter Options */}
-      <Grid
-        container
-        item
-        alignContent='center'
-        justifyContent='center'
-        alignItems='center'
-        spacing={3}
-      >
-        <Grid item>
-          <Search />
-        </Grid>
-
-        <Grid item>
-          <TextField label='Recipe Name' />
-        </Grid>
-
-        <Grid item>
-          <Filter />
-        </Grid>
-
-        <Grid item>
-          <Autocomplete
-            disablePortal
-            options={tagOptions}
-            renderInput={params => <TextField {...params} label='Recipe Tag' />}
-            sx={{ width: 200 }}
-          />
-        </Grid>
-      </Grid>
-
       <Grid item>
         <TableComponent />
 
