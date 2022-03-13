@@ -1,6 +1,7 @@
 import React from "react";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Input } from "@mui/material";
 
 function KitchenStock() {
   // These food items will later come from useState's
@@ -8,13 +9,14 @@ function KitchenStock() {
   const refrig_things = [{name:"Bread", qty:"1 Loaf"}, {name:"Mayo", qty:"-"}, {name:"Ham",qty:"-"}]
   const freezer_things = [{name:"Icecream", qty:"-"}, {name:"Peas", qty:"1 bag"}]
   const pantry_things = [{name:"Captain Crunch", qty:"-"}, {name:"Peanut Butter", qty:"-"}]
-
+  const [edit, setEdit] = React.useState(false)
+  const [add, setAdd] = React.useState(false)
   const refrig_element = refrig_things.map(function(p){
       return (
           <nav className="food-item">
               <h3>{p.name}</h3>
               <h3>{p.qty}</h3>
-              <MoreHorizIcon className="edit"/>
+              <MoreHorizIcon className="edit" onClick={flipEdit}/>
           </nav>)
   })
   const freezer_element = freezer_things.map(function(p){
@@ -22,7 +24,7 @@ function KitchenStock() {
           <nav className="food-item">
               <h3>{p.name}</h3>
               <h3>{p.qty}</h3>
-              <MoreHorizIcon className="edit"/>
+              <MoreHorizIcon className="edit" onClick={flipEdit}/>
           </nav>)
   })
   const pantry_element = pantry_things.map(function(p){
@@ -30,16 +32,22 @@ function KitchenStock() {
       <nav className="food-item">
           <h3>{p.name}</h3>
           <h3>{p.qty}</h3>
-          <MoreHorizIcon className="edit"/>
+          <MoreHorizIcon className="edit" onClick={flipEdit}/>
       </nav>)
   })
+  function flipEdit(){
+    setEdit(prev => !prev)
+  }
+  function flipAdd(){
+    setAdd(prev => !prev)
+  }
   return (
     <div className="kitchenStock">
-      <div className="container">
+      {!edit && !add && <div className="list">
           <h1 className="font-weight-light">Kitchen Stock List</h1>
         <nav className="kitchen-stock-headers">
             <h2>Refrigerator</h2>
-            <AddCircleOutlineIcon className="AddSign"/>
+            <AddCircleOutlineIcon className="add-sign" onClick={flipAdd}/>
         </nav>
         <ul>
             {/* <li>Name     QTY</li> */}
@@ -47,15 +55,38 @@ function KitchenStock() {
         </ul>
         <nav className="kitchen-stock-headers">
             <h2>Freezer</h2>
-            <AddCircleOutlineIcon className="AddSign"/>
+            <AddCircleOutlineIcon className="add-sign" onClick={flipAdd}/>
         </nav>
         <ul>{freezer_element}</ul>
         <nav className="kitchen-stock-headers">
             <h2>Pantry</h2>
-            <AddCircleOutlineIcon className="AddSign"/>
+            <AddCircleOutlineIcon className="add-sign" onClick={flipAdd}/>
         </nav>
         <ul>{pantry_element}</ul>
-      </div>
+      </div>}
+      {edit && !add && <form className="editing">
+        <label for="name">Change Name: </label>
+        <input type="text" id="name" name="name"></input><br/>
+        <label for="qty">Change Quantity: </label>
+        <input type="text" id="qty" name="qty"></input><br/>
+        <nav className="delete-apply">
+          <button onClick={flipEdit}>Delete</button>
+          <input type="submit" value="Apply"></input>
+        </nav>
+        <br/><br/>
+      </form>}
+      {add && !edit && <form className="editing">
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name"></input><br/>
+        <label for="qty">Quantity: </label>
+        <input type="text" id="qty" name="qty"></input><br/>
+        <nav className="delete-apply">
+          <button onClick={flipAdd}>Delete</button>
+          <input type="submit" value="Add"></input>
+        </nav>
+        <br/><br/>
+      </form>}
+
     </div>
   );
 }
