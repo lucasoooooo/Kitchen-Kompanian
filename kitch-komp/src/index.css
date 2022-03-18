@@ -33,25 +33,12 @@ a:hover {
   padding: 30px;
 }
 .kitchen-stock-headers{
-  
   margin:0;
   display: grid;
   grid-template: auto auto / repeat(2,1fr);
-  background-color: var(--MayGreen-color);
+  background-color: var(--HunterGreen-color);
 }
 
-.kitchenStock ul{
-  
-  margin:0;
-  background-color: var(--Eggshell-color);
-}
-.kitchenStock .food-item{
-  text-align: center;
-  margin:0;
-  background-color: var(--Eggshell-color);
-  display:grid;
-  grid-template: auto auto / repeat(3,1fr);
-}
 .kitchenStock h1{
   margin:0;
 }
@@ -61,22 +48,4 @@ a:hover {
   cursor: pointer;
   justify-self: end;
 }
-.kitchenStock .edit{
-  padding: 10px;
-  font-size: 40px;
-  transform: rotate(90deg);
-  cursor: pointer;
-  justify-self: end;
-}
-.kitchenStock .editing{
-  
-  position: absolute;
-  right: 40%;
-  top:20%;
-  width: 370px;
-  border: 3px solid #73AD21;
-  padding: 10px;
-}
-.kitchenStock input{
- float:right;
-}
+
