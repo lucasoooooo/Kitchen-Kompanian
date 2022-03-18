@@ -132,44 +132,7 @@ export default function RecipeSubmenu (props) {
 
           <Grid item sm></Grid>
 
-          <Grid
-            container
-            item
-            sm
-            alignContent='flex-end'
-            justifyContent='flex-end'
-            alignItems='center'
-            spacing={2}
-          >
-            {props.recipeName !== '' ? (
-              <>
-                <Grid item>
-                  <Button
-                    variant='text'
-                    color='primary'
-                    style={{ border: 'none', outline: 'none' }}
-                    startIcon={<EditIcon>Edit Recipe</EditIcon>}
-                    onClick={props.handleReturnToRecipeMenuButtonClicked}
-                  >
-                    Edit Recipe
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant='text'
-                    color='primary'
-                    style={{ border: 'none', outline: 'none' }}
-                    startIcon={<DeleteIcon>Delete Recipe</DeleteIcon>}
-                    onClick={props.handleReturnToRecipeMenuButtonClicked}
-                  >
-                    Delete Recipe
-                  </Button>
-                </Grid>{' '}
-              </>
-            ) : (
-              <Grid item sm></Grid>
-            )}
-          </Grid>
+         
         </Grid>
 
         {/* Ingredients */}

@@ -14,16 +14,17 @@ import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/MoreVert'
 import SearchIcon from '@mui/icons-material/Search'
+import { Paper } from '@mui/material'
 
 function escapeRegExp (value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
 }
 
 // Creates the search bar for the DataGrid
-function QuickSearchToolbar(props) {
+function QuickSearchToolbar (props) {
   return (
-    <Grid container sx={{p: 0.5}} alignItems="center" alignContent="center" >
-      <Grid item>
+    <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
+      <Grid item sm>
         <TextField
           variant='standard'
           value={props.value}
@@ -61,7 +62,7 @@ function QuickSearchToolbar(props) {
         />
       </Grid>
 
-      <Grid item >
+      <Grid item>
         <Button
           variant='text'
           color='primary'
@@ -80,58 +81,17 @@ QuickSearchToolbar.propTypes = {
   clearSearch: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  handleAddButtonClicked: PropTypes.func.isRequired,
+  handleAddButtonClicked: PropTypes.func.isRequired
 }
-
-// The recipes that the user will interact with
-const recipes = [
-  {
-    id: 1,
-    name: 'Banana Pudding',
-    prepTime: '30 Minutes',
-    cookTime: '10 Minutes',
-    totalTime: '40 Minutes',
-    servingSize: '4',
-    tags: 'Dessert'
-  },
-
-  {
-    id: 2,
-    name: 'Beef Wellington',
-    prepTime: '1 Hour',
-    cookTime: '45 Miniutes',
-    totalTime: '1 Hour, 45 Minutes',
-    servingSize: '1',
-    tags: 'Dinner'
-  },
-
-  {
-    id: 3,
-    name: 'Baked Salmon',
-    prepTime: '5 Minutes',
-    cookTime: '10 Minutes',
-    totalTime: '15 Minutes',
-    servingSize: '2',
-    tags: 'Dinner, Pescetarian'
-  },
-
-  {
-    id: 4,
-    name: 'Corn Bread',
-    prepTime: '3 Minutes',
-    cookTime: '15 Minutes',
-    totalTime: '18 Minutes',
-    servingSize: '5',
-    tags: 'Side Dish'
-  }
-]
 
 export default function QuickFilteringGrid (props) {
   // Search Bar's text state variable
   const [searchText, setSearchText] = useState('')
 
   // DataGrid rows state variable
-  const [rows, setRows] = useState(recipes)
+  const [rows, setRows] = useState(props.recipes)
+
+  const [currentRow, setCurrentRow] = useState({})
 
   // The column headers
   const columns = [
@@ -169,15 +129,16 @@ export default function QuickFilteringGrid (props) {
       field: 'tags',
       headerName: 'Recipe Tags',
       width: 153,
-      headerClassName: 'super-app-theme--header'
-    },
-    {
-      field: 'iconButton',
-      headerName: 'Actions',
-      width: 150,
       headerClassName: 'super-app-theme--header',
-      renderCell: () => <MenuIcon />
-    }
+      flex: 1
+    },
+    // {
+    //   field: 'iconButton',
+    //   headerName: 'Actions',
+    //   width: 150,
+    //   headerClassName: 'super-app-theme--header',
+    //   renderCell: () => <MenuIcon />
+    // }
   ]
 
   // Filter the recipes based on the requested search
@@ -185,7 +146,7 @@ export default function QuickFilteringGrid (props) {
     setSearchText(searchValue)
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
 
-    const filteredRows = recipes.filter(row => {
+    const filteredRows = props.recipes.filter(row => {
       return Object.keys(row).some(field => {
         return searchRegex.test(row[field].toString())
       })
@@ -199,10 +160,11 @@ export default function QuickFilteringGrid (props) {
 
   return (
     <>
-      <Box
+      <Paper
         sx={{
-          height: 400,
+          height: 700,
           width: 1055,
+
           '& .super-app-theme--header': {
             backgroundColor: '#6A994E'
           }
@@ -222,8 +184,16 @@ export default function QuickFilteringGrid (props) {
               handleAddButtonClicked: () => props.handleAddButtonClicked()
             }
           }}
+          onSelectionModelChange={ids => {
+            const selectedRowData = rows.filter(row => {
+              if (row.id == ids) {
+                return row
+              }
+            })
+            props.handleRecipeSelected(selectedRowData[0])
+          }}
         />
-      </Box>
+      </Paper>
     </>
   )
 }

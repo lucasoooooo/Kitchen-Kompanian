@@ -5,9 +5,11 @@ import TableComponent from './Table'
 // MUI Component Imports
 import { Grid, Button, Typography } from '@mui/material'
 import RecipeSubmenu from './RecipeSubmenu'
+import ViewRecipe from './ViewRecipe'
 
 function Recipies (props) {
-  const [addRecipe, setAddRecipe] = useState(false)
+  const [viewSubmenu, setViewSubmenu] = useState(false)
+  const [currRecipe, setCurrRecipe] = useState({})
 
   const [recipes, setRecipes] = useState([
     {
@@ -51,12 +53,22 @@ function Recipies (props) {
     }
   ])
 
+  // User has clicked the add recipe button
   const handleAddButtonClicked = () => {
-    setAddRecipe(true)
+    setViewSubmenu(true)
   }
 
+  // User has clicked the back to list button
   const handleReturnToRecipeMenuButtonClicked = () => {
-    setAddRecipe(false)
+    setViewSubmenu(false)
+    setCurrRecipe({})
+  }
+
+  // User has selected a recipe from the table
+  const handleRecipeSelected = (recipe) => {
+    setCurrRecipe(recipe)
+    setViewSubmenu(true)
+    console.log(recipe)
   }
 
   return (
@@ -81,10 +93,10 @@ function Recipies (props) {
       </Grid>
 
       <Grid item>
-        {addRecipe ? (
-          <RecipeSubmenu recipe={recipes[0]} handleReturnToRecipeMenuButtonClicked={handleReturnToRecipeMenuButtonClicked} />
+        {viewSubmenu ? (
+          <RecipeSubmenu recipe={currRecipe}  handleReturnToRecipeMenuButtonClicked={handleReturnToRecipeMenuButtonClicked} />
         ) : (
-          <TableComponent handleAddButtonClicked={handleAddButtonClicked} />
+          <TableComponent recipes={recipes} handleRecipeSelected={handleRecipeSelected} handleAddButtonClicked={handleAddButtonClicked} />
         )}
       </Grid>
     </Grid>

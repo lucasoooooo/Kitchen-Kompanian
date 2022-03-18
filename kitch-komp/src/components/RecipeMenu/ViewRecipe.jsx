@@ -1,6 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import { Box, Grid, Paper, Typography, Button, TextField } from '@mui/material'
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -16,64 +22,8 @@ function FirstRecipeInfo (props) {
       alignItems='center'
       spacing={5}
     >
-      <Grid
-        item
-        container
-        alignContent='center'
-        justifyContent='center'
-        alignItems='center'
-        spacing={5}
-      >
-        <Grid item>
-          {props.recipe !== undefined ? (
-            <Typography>
-              <b>Name:</b> {props.recipe.name}
-            </Typography>
-          ) : (
-            <TextField label='Recipe Name'>
-              {props.edit === true ? props.recipe.name : ''}
-            </TextField>
-          )}
-        </Grid>
 
-        <Grid item>
-          {props.recipe !== undefined ? (
-            <Typography>
-              <b>Prep Time:</b> {props.recipe.prepTime}
-            </Typography>
-          ) : (
-            <TextField label='Prep Time'>
-              {props.edit === true ? props.recipe.prepTime : ''}
-            </TextField>
-          )}
-        </Grid>
-
-        <Grid item>
-          {props.recipe !== undefined ? (
-            <Typography>
-              <b>Cook Time:</b> {props.recipe.cookTime}
-            </Typography>
-          ) : (
-            <TextField label='Cook Time'>
-              {props.edit === true ? props.recipe.cookTime : ''}
-            </TextField>
-          )}
-        </Grid>
-
-        <Grid item>
-          {props.recipe !== undefined ? (
-            <Typography>
-              <b>Total Time:</b> {props.recipe.totalTime}
-            </Typography>
-          ) : (
-            <TextField label='Total Time'>
-              {props.edit === true ? props.recipe.totalTime : ''}
-            </TextField>
-          )}
-        </Grid>
-      </Grid>
-
-      {/* <Grid item>
+      <Grid item>
         <Typography>
           <b>Prep Time:</b> {props.recipe.prepTime}
         </Typography>
@@ -93,12 +43,20 @@ function FirstRecipeInfo (props) {
 
       <Grid item>
         <Typography><b>Recipe Tags:</b> {props.recipe.tags}</Typography>
-      </Grid> */}
+      </Grid>
     </Grid>
   )
 }
 
-export default function RecipeSubmenu (props) {
+export default function ViewRecipe (props) {
+
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+
+    const handleDeleteRecipe = () => {
+
+    }
+
+
   return (
     <Paper>
       <Grid
@@ -183,6 +141,30 @@ export default function RecipeSubmenu (props) {
           <FirstRecipeInfo recipe={props.recipe} />
         </Grid>
       </Grid>
+
+      <Dialog
+        open={openDeleteDialog}
+        onClose={setOpenDeleteDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Use Google's location service?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure that you want to delete {props.recipe.name}? You cannot reverse this action.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={setOpenDeleteDialog(false)} autoFocus>Cancel</Button>
+          <Button onClick={handleDeleteRecipe}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
+
+
   )
 }
