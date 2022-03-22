@@ -29,7 +29,7 @@ export default function AlertDialog() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+          {"Delete Recipe"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -37,7 +37,7 @@ export default function AlertDialog() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus>Cancel</Button>
+          <Button onClick={setOpen(false)} autoFocus>Cancel</Button>
           <Button onClick={handleClose}>
             Delete
           </Button>
