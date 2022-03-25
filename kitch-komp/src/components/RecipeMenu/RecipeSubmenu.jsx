@@ -185,7 +185,11 @@ function ManipulateRecipe (props) {
   }
 
   const handleRecipeChange = (event, keyName) => {
-    props.setCurrRecipe({...props.recipe, [keyName]: event.target.value})
+    props.setCurrRecipe({ ...props.recipe, [keyName]: event.target.value })
+  }
+
+  const handleIngredientChange = (event) => {
+
   }
 
   return (
@@ -433,11 +437,10 @@ export default function RecipeSubmenu (props) {
                     >
                       Delete Recipe
                     </Button>
-                  </Grid>{' '}
+                  </Grid>
                 </>
               ) : (
                 <Grid item>
-                  {' '}
                   <Button
                     variant='text'
                     color='primary'
@@ -462,7 +465,10 @@ export default function RecipeSubmenu (props) {
             {Object.keys(props.recipe).length !== 0 && editRecipe !== true ? (
               <ViewRecipe recipe={currRecipe} />
             ) : (
-              <ManipulateRecipe recipe={currRecipe} setCurrRecipe={setCurrRecipe}/>
+              <ManipulateRecipe
+                recipe={currRecipe}
+                setCurrRecipe={setCurrRecipe}
+              />
             )}
 
             {/* <FirstRecipeInfo

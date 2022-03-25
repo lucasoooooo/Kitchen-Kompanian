@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react'
 // Local imports
 import TableComponent from './Table'
 import RecipeSubmenu from './RecipeSubmenu'
+import {useCustomSnackbar} from "./useCustomSnackbar"
 
 // MUI Component Imports
-import { Grid, Typography } from '@mui/material'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 
@@ -17,15 +19,9 @@ function Recipies (props) {
   const [viewSubmenu, setViewSubmenu] = useState(false)
   const [currRecipe, setCurrRecipe] = useState({})
   const [lastRecipe, setLastRecipe] = useState({})
-  const [open, setOpen] = React.useState(false)
   const [idCounter, setIdCounter] = useState(4)
+  const { isActive, message, openCustomSnackBar } = useCustomSnackbar();
   
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setOpen(false)
-  }
 
   const [recipes, setRecipes] = useState([
     {
@@ -36,8 +32,8 @@ function Recipies (props) {
       totalTime: '40 Minutes',
       servingSize: '4',
       ingredients: [
-        { name: 'Banana', quantity: '1' },
-        { name: 'Pudding', quantity: '1 packet' }
+        { id: 1, name: 'Banana', quantity: '1' },
+        { id: 2, name: 'Pudding', quantity: '1 packet' }
       ],
       directions:
         'Combine the banana and the pudding together. Eat with a large spoon',
@@ -52,8 +48,8 @@ function Recipies (props) {
       totalTime: '1 Hour, 45 Minutes',
       servingSize: '1',
       ingredients: [
-        { name: 'Beef', quantity: '1' },
-        { name: 'Wellington', quantity: '1' }
+        { id: 1, name: 'Beef', quantity: '1' },
+        { id: 2, name: 'Wellington', quantity: '1' }
       ],
       directions:
         'Turn on oven to 350F\n\nCombine the Beef and the Wellington together\n\nBake for 45 minutes.',
@@ -67,7 +63,7 @@ function Recipies (props) {
       cookTime: '10 Minutes',
       totalTime: '15 Minutes',
       servingSize: '2',
-      ingredients: [{ name: 'Salmon', quantity: '2' }],
+      ingredients: [{ id: 1, name: 'Salmon', quantity: '2' }],
       directions:
         'Turn on oven to 350F\n\nPut salmon on baking sheet and cover with aluminum foil\n\nBake for 10 minutes.',
       tags: 'Dinner, Pescetarian'
@@ -81,8 +77,8 @@ function Recipies (props) {
       totalTime: '18 Minutes',
       servingSize: '5',
       ingredients: [
-        { name: 'Corn', quantity: 'A lot' },
-        { name: 'Bread', quantity: '1 Loaf' }
+        { id: 1, name: 'Corn', quantity: 'A lot' },
+        { id: 2, name: 'Bread', quantity: '1 Loaf' }
       ],
       directions: 'Stuff the loaf of bread full of corn',
       tags: 'Side Dish'
@@ -117,6 +113,8 @@ function Recipies (props) {
         }
       }
 
+      openCustomSnackBar(`${recipe.name} has been edited`)
+
       // Create a brand new recipe and increment the ID counter
     } else {
       recipe.id = idCounter + 1
@@ -124,6 +122,7 @@ function Recipies (props) {
       tempArray.push(recipe)
 
       setIdCounter(idCounter + 1)
+      openCustomSnackBar(`${recipe.name} has been added`)
     }
 
     setRecipes(tempArray)
@@ -147,6 +146,7 @@ function Recipies (props) {
     setViewSubmenu(false)
     setLastRecipe({ ...currRecipe })
     setCurrRecipe({})
+    openCustomSnackBar(`${name} has been deleted`)
   }
 
   return (
@@ -185,11 +185,18 @@ function Recipies (props) {
           )}
         </Grid>
       </Grid>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+
+      <Snackbar open={isActive} message={message}>
+      <Alert sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
+
+      {/* <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
           {lastRecipe.name} has been deleted.
         </Alert>
-      </Snackbar>
+          </Snackbar> */}
     </>
   )
 }
