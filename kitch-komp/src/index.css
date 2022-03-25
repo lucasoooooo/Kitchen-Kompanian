@@ -19,3 +19,52 @@ a:hover {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.349);
 }
+
+
+.MyKitchens{
+  margin: 0;
+  padding: 30px;
+}
+
+.adding {
+  position: relative;
+  left: 50px;
+  top:250px;
+  width: 300px;
+  border: 3px solid #73AD21;
+  padding: 10px;
+
+}
+
+.member-table {
+  margin:0;
+  display: grid;
+  grid-template: auto auto / repeat(2,1fr);
+}
+
+.MuiDataGrid-row:nth-child(even){
+  background-color: #F2E8CF;
+}
+
+.MuiDataGrid-row:nth-child(odd){
+  background-color: #ddd3bb;
+}
+
+.kitchen-member-header{
+  margin:0;
+  display: grid;
+  grid-template: auto auto / repeat(2,1fr);
+  background-color: #355E3B;
+}
+
+.add-sign{
+  cursor: pointer;
+  justify-self: end;
+}
+
+
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
+}
+
