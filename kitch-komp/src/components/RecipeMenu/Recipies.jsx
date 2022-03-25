@@ -141,7 +141,6 @@ function Recipies (props) {
       }
     })
 
-    setOpen(true)
     setRecipes(temp)
     setViewSubmenu(false)
     setLastRecipe({ ...currRecipe })
