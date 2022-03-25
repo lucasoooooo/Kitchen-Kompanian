@@ -101,18 +101,18 @@ export default function QuickFilteringGrid (props) {
       width: 150,
       headerClassName: 'super-app-theme--header'
     },
-    {
-      field: 'prepTime',
-      headerName: 'Prep Time',
-      width: 150,
-      headerClassName: 'super-app-theme--header'
-    },
-    {
-      field: 'cookTime',
-      headerName: 'Cook Time',
-      width: 150,
-      headerClassName: 'super-app-theme--header'
-    },
+    // {
+    //   field: 'prepTime',
+    //   headerName: 'Prep Time',
+    //   width: 150,
+    //   headerClassName: 'super-app-theme--header'
+    // },
+    // {
+    //   field: 'cookTime',
+    //   headerName: 'Cook Time',
+    //   width: 150,
+    //   headerClassName: 'super-app-theme--header'
+    // },
     {
       field: 'totalTime',
       headerName: 'Total Time',
@@ -163,7 +163,7 @@ export default function QuickFilteringGrid (props) {
       <Paper
         sx={{
           height: 700,
-          width: 1055,
+          width: 768,
 
           '& .super-app-theme--header': {
             backgroundColor: '#6A994E'

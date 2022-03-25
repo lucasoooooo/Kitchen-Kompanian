@@ -9,26 +9,23 @@ import { Grid, Typography } from '@mui/material'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+const Alert = React.forwardRef(function Alert (props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+})
 
 function Recipies (props) {
   const [viewSubmenu, setViewSubmenu] = useState(false)
   const [currRecipe, setCurrRecipe] = useState({})
   const [lastRecipe, setLastRecipe] = useState({})
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
   const [idCounter, setIdCounter] = useState(4)
-  let recipeName = ""
-
+  
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
-      return;
+      return
     }
-
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const [recipes, setRecipes] = useState([
     {
@@ -38,6 +35,12 @@ function Recipies (props) {
       cookTime: '10 Minutes',
       totalTime: '40 Minutes',
       servingSize: '4',
+      ingredients: [
+        { name: 'Banana', quantity: '1' },
+        { name: 'Pudding', quantity: '1 packet' }
+      ],
+      directions:
+        'Combine the banana and the pudding together. Eat with a large spoon',
       tags: 'Dessert'
     },
 
@@ -48,8 +51,12 @@ function Recipies (props) {
       cookTime: '45 Minutes',
       totalTime: '1 Hour, 45 Minutes',
       servingSize: '1',
-      ingredients: [{name: "Beef", quantity: "1"}, {name: "Wellington", quantity: "1"}],
-      directions: "Turn on oven to 350F\n\nCombine the Beef and the Wellington together\n\nBake for 45 minutes.",
+      ingredients: [
+        { name: 'Beef', quantity: '1' },
+        { name: 'Wellington', quantity: '1' }
+      ],
+      directions:
+        'Turn on oven to 350F\n\nCombine the Beef and the Wellington together\n\nBake for 45 minutes.',
       tags: 'Dinner'
     },
 
@@ -60,8 +67,9 @@ function Recipies (props) {
       cookTime: '10 Minutes',
       totalTime: '15 Minutes',
       servingSize: '2',
-      ingredients: [{name: "Salmon", quantity: "2"}],
-      directions: "Turn on oven to 350F\n\nPut salmon on baking sheet and cover with aluminum foil\n\nBake for 10 minutes.",
+      ingredients: [{ name: 'Salmon', quantity: '2' }],
+      directions:
+        'Turn on oven to 350F\n\nPut salmon on baking sheet and cover with aluminum foil\n\nBake for 10 minutes.',
       tags: 'Dinner, Pescetarian'
     },
 
@@ -72,6 +80,11 @@ function Recipies (props) {
       cookTime: '15 Minutes',
       totalTime: '18 Minutes',
       servingSize: '5',
+      ingredients: [
+        { name: 'Corn', quantity: 'A lot' },
+        { name: 'Bread', quantity: '1 Loaf' }
+      ],
+      directions: 'Stuff the loaf of bread full of corn',
       tags: 'Side Dish'
     }
   ])
@@ -91,25 +104,38 @@ function Recipies (props) {
   const handleRecipeSelected = recipe => {
     setCurrRecipe(recipe)
     setViewSubmenu(true)
-    console.log(recipe)
   }
 
   const handleAddRecipe = recipe => {
-    recipe.id = idCounter + 1
-    
-    let temp = [...recipes]
-    temp.push(recipe)
+    let tempArray = [...recipes]
 
-    setRecipes(temp)
-    setIdCounter(idCounter + 1)
+    // Check to see if this is an existing recipe
+    if (recipe.id) {
+      for (let i = 0; i < tempArray.length; i++) {
+        if (tempArray[i].id === recipe.id) {
+          tempArray[i] = recipe
+        }
+      }
+
+      // Create a brand new recipe and increment the ID counter
+    } else {
+      recipe.id = idCounter + 1
+
+      tempArray.push(recipe)
+
+      setIdCounter(idCounter + 1)
+    }
+
+    setRecipes(tempArray)
+    setViewSubmenu(false)
+    setCurrRecipe({})
   }
 
   /**
    * Delete the currently selected recipe. Filters it from the recipe list
    * and returns the user back to the main table screen.
    */
-  const handleDeleteRecipe = (name) => {
-    recipeName = name
+  const handleDeleteRecipe = name => {
     const temp = recipes.filter(curr => {
       if (curr.id !== currRecipe.id) {
         return curr
@@ -119,7 +145,7 @@ function Recipies (props) {
     setOpen(true)
     setRecipes(temp)
     setViewSubmenu(false)
-    setLastRecipe({...currRecipe})
+    setLastRecipe({ ...currRecipe })
     setCurrRecipe({})
   }
 
@@ -138,12 +164,6 @@ function Recipies (props) {
             Recipe List
           </Typography>
         </Grid>
-
-        {/* <Grid item>
-          <Typography compontent='center' variant='body1'>
-            Select a recipe below to view, edit, or delete it.
-          </Typography>
-        </Grid> */}
 
         <Grid item>
           {viewSubmenu ? (

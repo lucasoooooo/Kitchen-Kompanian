@@ -23,195 +23,17 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
+import Tab from '@mui/material/Tab'
+import TabContext from '@mui/lab/TabContext'
+import TabList from '@mui/lab/TabList'
+import TabPanel from '@mui/lab/TabPanel'
+
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-
-function FirstRecipeInfo (props) {
-  const handleChange = (event, key) => {
-    console.log(event.target.value, key)
-  }
-
-  const saveNewRecipe = () => {
-    props.handleAddRecipe()
-  }
-
-  return (
-    <Grid
-      container
-      alignContent='center'
-      direction='column'
-      justifyContent='center'
-      alignItems='center'
-      spacing={5}
-    >
-      <Grid
-        item
-        container
-        direction='column'
-        alignContent='center'
-        justifyContent='center'
-        alignItems='center'
-        spacing={5}
-      >
-        <Grid
-          item
-          container
-          direction='column'
-          alignContent='center'
-          justifyContent='center'
-          alignItems='center'
-          spacing={5}
-          xs={4}
-        >
-          <Grid item>
-            <Typography>
-              <b>Recipe Information</b>
-            </Typography>
-          </Grid>
-          <Grid item>
-            {props.recipe.name !== undefined ? (
-              <Typography>
-                <b>Name:</b> {props.recipe.name}
-              </Typography>
-            ) : (
-              <TextField
-                label='Recipe Name'
-                onChange={v => handleChange(v, 'name')}
-              >
-                {props.edit === true ? props.recipe.name : ''}
-              </TextField>
-            )}
-          </Grid>
-
-          <Grid item>
-            {props.recipe.prepTime !== undefined ? (
-              <Typography>
-                <b>Prep Time:</b> {props.recipe.prepTime}
-              </Typography>
-            ) : (
-              <TextField label='Prep Time'>
-                {props.edit === true ? props.recipe.prepTime : ''}
-              </TextField>
-            )}
-          </Grid>
-
-          <Grid item>
-            {props.recipe.cookTime !== undefined ? (
-              <Typography>
-                <b>Cook Time:</b> {props.recipe.cookTime}
-              </Typography>
-            ) : (
-              <TextField label='Cook Time'>
-                {props.edit === true ? props.recipe.cookTime : ''}
-              </TextField>
-            )}
-          </Grid>
-
-          <Grid item>
-            {props.recipe.totalTime !== undefined ? (
-              <Typography>
-                <b>Total Time:</b> {props.recipe.totalTime}
-              </Typography>
-            ) : (
-              <TextField label='Total Time'>
-                {props.edit === true ? props.recipe.totalTime : ''}
-              </TextField>
-            )}
-          </Grid>
-
-          <Grid item>
-            {props.recipe.servingSize !== undefined ? (
-              <Typography>
-                <b>Serving Size:</b> {props.recipe.servingSize}
-              </Typography>
-            ) : (
-              <TextField label='Serving Size'>
-                {props.edit === true ? props.recipe.servingSize : ''}
-              </TextField>
-            )}
-          </Grid>
-
-          <Grid item>
-            {props.recipe.tags !== undefined ? (
-              <Typography>
-                <b>Recipe Tags:</b> {props.recipe.tags}
-              </Typography>
-            ) : (
-              <TextField label='Recipe Tags'>
-                {props.edit === true ? props.recipe.tags : ''}
-              </TextField>
-            )}
-          </Grid>
-        </Grid>
-
-        <Grid
-          item
-          container
-          direction='column'
-          alignContent='center'
-          justifyContent='center'
-          alignItems='center'
-          spacing={5}
-          xs={4}
-        >
-          <Grid item>
-            <Typography>
-              <b>Ingredients</b>
-            </Typography>
-          </Grid>
-
-          {props.recipe.name === undefined ? (
-            <Grid item>
-              <Button startIcon={<AddIcon />}>Add Ingredient</Button>
-            </Grid>
-          ) : null}
-
-          <Grid item>
-            {props.recipe.name !== undefined ? (
-              <Typography>
-                {props.recipe.ingredients[0].name} -{' '}
-                {props.recipe.ingredients[0].quantity}
-              </Typography>
-            ) : (
-              <TextField label='Ingredient 1'></TextField>
-            )}
-          </Grid>
-        </Grid>
-
-        <Grid
-          container
-          item
-          direction='column'
-          alignContent='center'
-          justifyContent='center'
-          alignItems='center'
-          spacing={5}
-          xs={4}
-        >
-          <Grid item>
-            <Typography>
-              <b>Directions</b>
-            </Typography>
-          </Grid>
-
-          <Grid item>
-            <TextareaAutosize style={{ width: 300, height: 500 }}>
-              {props.recipe.directions}
-            </TextareaAutosize>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid item>
-        <Button variant='contained' onClick={saveNewRecipe}>
-          Save
-        </Button>
-      </Grid>
-    </Grid>
-  )
-}
+import SaveIcon from '@mui/icons-material/Save'
+import { useEffect } from 'react'
 
 // Used to display recipes
 function ViewRecipe (props) {
@@ -223,7 +45,7 @@ function ViewRecipe (props) {
         alignContent='center'
         justifyContent='center'
         alignItems='center'
-        width={1055}
+        width={768}
         spacing={2}
       >
         <Grid item>
@@ -235,7 +57,7 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Divider style={{ width: 1055 }} />
+          <Divider style={{ width: 760 }} />
         </Grid>
 
         <Grid item>
@@ -269,7 +91,7 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Divider style={{ width: 1055 }} />
+          <Divider style={{ width: 760 }} />
         </Grid>
 
         <Grid item>
@@ -286,7 +108,7 @@ function ViewRecipe (props) {
         })}
 
         <Grid item>
-          <Divider style={{ width: 1055 }} />
+          <Divider style={{ width: 760 }} />
         </Grid>
 
         <Grid item>
@@ -315,125 +137,223 @@ function CreateIngredientQuantity (props) {
       <Grid item>
         <Button startIcon={<AddIcon />}>Add Ingredient</Button>
       </Grid>
-      {props.recipe.ingredients ? props.recipe.ingredients.map(curr => {
-        return (
-          <Grid container item>
-            <Grid item>
-              <TextField label="Ingredient Name">{curr.name}</TextField>
+      {props.recipe.ingredients ? (
+        props.recipe.ingredients.map(curr => {
+          return (
+            <Grid
+              container
+              item
+              alignContent='center'
+              justifyContent='center'
+              alignItems='center'
+              spacing={5}
+            >
+              <Grid item>
+                <TextField label='Ingredient Name' defaultValue={curr.name} />
+              </Grid>
+
+              <Grid item>
+                <TextField
+                  label='Ingredient Quantity'
+                  defaultValue={curr.quantity}
+                />
+              </Grid>
             </Grid>
-
-            <Grid item>
-              <TextField label="Ingredient Quantity">{curr.quantity}</TextField>
-            </Grid>
-          </Grid>
-        )
-      }) : <Grid container item>
+          )
+        })
+      ) : (
+        <Grid container item>
           <Grid item>
-            <TextField label="Ingredient Name"></TextField>
+            <TextField label='Ingredient Name'></TextField>
           </Grid>
 
           <Grid item>
-
-            <TextField label="Ingredient Quantity"></TextField>
+            <TextField label='Ingredient Quantity'></TextField>
           </Grid>
-        
-        </Grid>}
+        </Grid>
+      )}
     </>
   )
 }
 
 // Used to add or edit recipes
 function ManipulateRecipe (props) {
-  console.log(props.recipe)
+  const [value, setValue] = React.useState('1')
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
+  const handleRecipeChange = (event, keyName) => {
+    props.setCurrRecipe({...props.recipe, [keyName]: event.target.value})
+  }
+
   return (
     <>
-      <Grid
-        container
-        alignContent='center'
-        direction='column'
-        justifyContent='center'
-        alignItems='center'
-        spacing={5}
-      >
-        <Grid item>
-          <Typography>Recipe Information</Typography>
-        </Grid>
-        <Grid
-          item
-          container
-          alignContent='center'
-          justifyContent='center'
-          alignItems='center'
-          spacing={5}
-        >
-          <Grid item>
-            <TextField label='Recipe Name'>
-              {props.recipe.name ? props.recipe.name : ''}
-            </TextField>
-          </Grid>
+      <Box sx={{ width: '100%', typography: 'body1' }}>
+        <TabContext value={value}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList
+              onChange={handleChange}
+              aria-label='add-edit-recipes'
+              variant='fullWidth'
+              centered
+            >
+              <Tab
+                label='Recipe Information'
+                value='1'
+                style={{ border: 'none', outline: 'none' }}
+              />
+              <Tab
+                label='Ingredients'
+                value='2'
+                style={{ border: 'none', outline: 'none' }}
+              />
+              <Tab
+                label='Directions'
+                value='3'
+                style={{ border: 'none', outline: 'none' }}
+              />
+            </TabList>
+          </Box>
+          <TabPanel value='1'>
+            <Grid
+              container
+              alignContent='center'
+              justifyContent='center'
+              alignItems='center'
+              spacing={5}
+            >
+              <Grid
+                item
+                container
+                alignContent='center'
+                justifyContent='center'
+                alignItems='center'
+                spacing={5}
+              >
+                <Grid item>
+                  <TextField
+                    label='Recipe Name'
+                    defaultValue={props.recipe.name ? props.recipe.name : ''}
+                    onChange={e => handleRecipeChange(e, 'name')}
+                  />
+                </Grid>
 
-          <Grid item>
-            <TextField label='Prep Time'>
-              {props.recipe.prepTime ? props.recipe.prepTime : ''}
-            </TextField>
-          </Grid>
+                <Grid item>
+                  <TextField
+                    label='Prep Time'
+                    defaultValue={
+                      props.recipe.prepTime ? props.recipe.prepTime : ''
+                    }
+                    onChange={e => handleRecipeChange(e, 'prepTime')}
+                  />
+                </Grid>
+              </Grid>
 
-          <Grid item>
-            <TextField label='Cook Time'>
-              {props.recipe.cookTime ? props.recipe.cookTime : ''}
-            </TextField>
-          </Grid>
-        </Grid>
+              <Grid
+                item
+                container
+                alignContent='center'
+                justifyContent='center'
+                alignItems='center'
+                spacing={5}
+              >
+                <Grid item>
+                  <TextField
+                    label='Cook Time'
+                    defaultValue={
+                      props.recipe.cookTime ? props.recipe.cookTime : ''
+                    }
+                    onChange={e => handleRecipeChange(e, 'cookTime')}
+                  />
+                </Grid>
 
-        <Grid
-          item
-          container
-          alignContent='center'
-          justifyContent='center'
-          alignItems='center'
-          spacing={5}
-        >
-          <Grid item>
-            <TextField label='Total Time'>
-              {props.recipe.totalTime ? props.recipe.totalTime : ''}
-            </TextField>
-          </Grid>
+                <Grid item>
+                  <TextField
+                    label='Total Time'
+                    defaultValue={
+                      props.recipe.totalTime ? props.recipe.totalTime : ''
+                    }
+                    onChange={e => handleRecipeChange(e, 'totalTime')}
+                  />
+                </Grid>
+              </Grid>
 
-          <Grid item>
-            <TextField label='Serving Size'>
-              {props.recipe.servingSize ? props.recipe.servingSize : ''}
-            </TextField>
-          </Grid>
+              <Grid
+                item
+                container
+                alignContent='center'
+                justifyContent='center'
+                alignItems='center'
+                spacing={5}
+              >
+                <Grid item>
+                  <TextField
+                    label='Serving Size'
+                    defaultValue={
+                      props.recipe.servingSize ? props.recipe.servingSize : ''
+                    }
+                    onChange={e => handleRecipeChange(e, 'servingSize')}
+                  />
+                </Grid>
 
-          <Grid item>
-            <TextField label='Recipe Tags'>
-              {props.recipe.recipeTags ? props.recipe.recipeTags : ''}
-            </TextField>
-          </Grid>
-        </Grid>
-
-        <Grid item>
-          <Divider style={{ width: 1055 }} />
-        </Grid>
-
-        <Grid item>
-          <Typography>Ingredients</Typography>
-        </Grid>
-
-        <Grid item container>
-          <CreateIngredientQuantity recipe={props.recipe} />
-        </Grid>
-
-        <Grid item>
-          <Button variant='contained'>Save</Button>
-        </Grid>
-      </Grid>
+                <Grid item>
+                  <TextField
+                    label='Recipe Tags'
+                    defaultValue={props.recipe.tags ? props.recipe.tags : ''}
+                    onChange={e => handleRecipeChange(e, 'tags')}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value='2'>
+            <Grid
+              item
+              container
+              alignContent='center'
+              justifyContent='center'
+              alignItems='center'
+              spacing={5}
+            >
+              <CreateIngredientQuantity recipe={props.recipe} />
+            </Grid>
+          </TabPanel>
+          <TabPanel value='3'>
+            <Grid
+              container
+              alignContent='center'
+              direction='column'
+              justifyContent='center'
+              alignItems='center'
+              spacing={5}
+            >
+              <Grid item>
+                <TextareaAutosize
+                  defaultValue={
+                    props.recipe.directions ? props.recipe.directions : ''
+                  }
+                  style={{ width: 700, height: 500 }}
+                  onChange={e => handleRecipeChange(e, 'directions')}
+                />
+              </Grid>
+            </Grid>
+          </TabPanel>
+        </TabContext>
+      </Box>
     </>
   )
 }
 
 export default function RecipeSubmenu (props) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const [currRecipe, setCurrRecipe] = useState(props.recipe)
+  const [editRecipe, setEditRecipe] = useState(false)
+
+  const handleEditRecipeClicked = () => {
+    setEditRecipe(true)
+  }
 
   const handleDeleteButtonClicked = () => {
     setOpenDeleteDialog(true)
@@ -443,17 +363,20 @@ export default function RecipeSubmenu (props) {
     setOpenDeleteDialog(false)
   }
 
-  console.log(Object.keys(props.recipe).length)
+  const handleSaveRecipe = () => {
+    props.handleAddRecipe(currRecipe)
+  }
+
   return (
     <>
-      <Paper>
+      <Paper sx={{ pb: 10 }}>
         <Grid
           container
           direction='column'
           alignContent='center'
           justifyContent='center'
           alignItems='center'
-          width={1055}
+          width={768}
           spacing={2}
         >
           {/* Header for Submenu */}
@@ -476,18 +399,18 @@ export default function RecipeSubmenu (props) {
               </Button>
             </Grid>
 
-            <Grid item sm></Grid>
+            {/* <Grid item sm></Grid> */}
 
             <Grid
               container
               item
-              sm
+              xs
               alignContent='flex-end'
               justifyContent='flex-end'
               alignItems='center'
               spacing={2}
             >
-              {Object.keys(props.recipe).length !== 0 ? (
+              {Object.keys(props.recipe).length !== 0 && editRecipe !== true ? (
                 <>
                   <Grid item>
                     <Button
@@ -495,7 +418,7 @@ export default function RecipeSubmenu (props) {
                       color='primary'
                       style={{ border: 'none', outline: 'none' }}
                       startIcon={<EditIcon>Edit Recipe</EditIcon>}
-                      onClick={props.handleReturnToRecipeMenuButtonClicked}
+                      onClick={handleEditRecipeClicked}
                     >
                       Edit Recipe
                     </Button>
@@ -513,7 +436,18 @@ export default function RecipeSubmenu (props) {
                   </Grid>{' '}
                 </>
               ) : (
-                <Grid item sm></Grid>
+                <Grid item>
+                  {' '}
+                  <Button
+                    variant='text'
+                    color='primary'
+                    style={{ border: 'none', outline: 'none' }}
+                    startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
+                    onClick={handleSaveRecipe}
+                  >
+                    Save Recipe
+                  </Button>
+                </Grid>
               )}
             </Grid>
           </Grid>
@@ -525,10 +459,10 @@ export default function RecipeSubmenu (props) {
             justifyContent='center'
             alignItems='center'
           >
-            {Object.keys(props.recipe).length !== 0 ? (
-              <ViewRecipe recipe={props.recipe} />
+            {Object.keys(props.recipe).length !== 0 && editRecipe !== true ? (
+              <ViewRecipe recipe={currRecipe} />
             ) : (
-              <ManipulateRecipe recipe={props.recipe} />
+              <ManipulateRecipe recipe={currRecipe} setCurrRecipe={setCurrRecipe}/>
             )}
 
             {/* <FirstRecipeInfo
@@ -555,10 +489,19 @@ export default function RecipeSubmenu (props) {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClosed} autoFocus>
+            <Button
+              onClick={handleClosed}
+              autoFocus
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+            >
               Cancel
             </Button>
-            <Button onClick={props.handleDeleteRecipe(props.recipe.name)}>
+            <Button
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+              onClick={() => props.handleDeleteRecipe(props.recipe.name)}
+            >
               Delete
             </Button>
           </DialogActions>
