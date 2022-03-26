@@ -23,6 +23,8 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
+import { DataGrid } from '@mui/x-data-grid'
+
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
@@ -131,54 +133,65 @@ function ViewRecipe (props) {
   )
 }
 
-function CreateIngredientQuantity (props) {
-  return (
-    <>
-      <Grid item>
-        <Button startIcon={<AddIcon />}>Add Ingredient</Button>
-      </Grid>
-      {props.recipe.ingredients ? (
-        props.recipe.ingredients.map(curr => {
-          return (
-            <Grid
-              container
-              item
-              alignContent='center'
-              justifyContent='center'
-              alignItems='center'
-              spacing={5}
-            >
-              <Grid item>
-                <TextField label='Ingredient Name' defaultValue={curr.name} />
-              </Grid>
-
-              <Grid item>
-                <TextField
-                  label='Ingredient Quantity'
-                  defaultValue={curr.quantity}
-                />
-              </Grid>
-            </Grid>
-          )
-        })
-      ) : (
-        <Grid container item>
-          <Grid item>
-            <TextField label='Ingredient Name'></TextField>
-          </Grid>
-
-          <Grid item>
-            <TextField label='Ingredient Quantity'></TextField>
-          </Grid>
-        </Grid>
-      )}
-    </>
-  )
-}
-
 // Used to add or edit recipes
 function ManipulateRecipe (props) {
   const [value, setValue] = React.useState('1')
+  const [rows, setRows] = useState(props.recipe.ingredients)
+  const [currIngredient, setCurrIngredient] = useState({})
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+
+  const columns = [
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 150,
+      headerClassName: 'super-app-theme--header',
+      flex: 1,
+      editable: true
+    },
+    {
+      field: 'quantity',
+      headerName: 'Quantity',
+      width: 150,
+      headerClassName: 'super-app-theme--header',
+      flex: 1,
+      editable: true
+    }
+  ]
+
+  const handleIngredientSelected = ingredient => {
+    if (ingredient) {
+      setCurrIngredient(ingredient)
+    }
+  }
+
+  const handleIngredientChange = (value, event) => {
+    let temp = rows.map(curr => {
+      if (curr.id === value.id) {
+        return { ...curr, [value.field]: value.value }
+      } else {
+        return { ...curr }
+      }
+    })
+
+    setRows(temp)
+  }
+
+  const handleDeleteIngredient = () => {
+    const tempArray = rows.filter(curr => {
+      if (curr.id !== currIngredient.id) {
+        return curr
+      }
+    })
+
+    setRows(tempArray)
+    setOpenDeleteDialog(false)
+    setCurrIngredient({})
+  }
+
+  const handleClosed = () => {
+    setOpenDeleteDialog(false)
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -188,9 +201,9 @@ function ManipulateRecipe (props) {
     props.setCurrRecipe({ ...props.recipe, [keyName]: event.target.value })
   }
 
-  const handleIngredientChange = (event) => {
-
-  }
+  useEffect(() => {
+    props.setCurrRecipe({ ...props.recipe, ingredients: rows })
+  }, [rows])
 
   return (
     <>
@@ -220,6 +233,8 @@ function ManipulateRecipe (props) {
               />
             </TabList>
           </Box>
+
+          {/* Recipe Information */}
           <TabPanel value='1'>
             <Grid
               container
@@ -312,6 +327,8 @@ function ManipulateRecipe (props) {
               </Grid>
             </Grid>
           </TabPanel>
+
+          {/* Ingredients */}
           <TabPanel value='2'>
             <Grid
               item
@@ -321,9 +338,107 @@ function ManipulateRecipe (props) {
               alignItems='center'
               spacing={5}
             >
-              <CreateIngredientQuantity recipe={props.recipe} />
+              <Grid item>
+                <Typography>
+                  Double tap on a cell below to change its value
+                </Typography>
+              </Grid>
+
+              <Grid item container justifyContent='flex-end'>
+                <Grid item>
+                  <Button
+                    variant='text'
+                    color='primary'
+                    style={{ border: 'none', outline: 'none' }}
+                    startIcon={<AddIcon>Add Ingredient</AddIcon>}
+                    onClick={() => setOpenDeleteDialog(true)}
+                  >
+                    Add Ingredient
+                  </Button>
+                </Grid>
+
+                <Grid item>
+                  <Button
+                    variant='text'
+                    color='primary'
+                    style={{ border: 'none', outline: 'none' }}
+                    startIcon={<DeleteIcon>Delete Ingredient</DeleteIcon>}
+                    onClick={() => setOpenDeleteDialog(true)}
+                  >
+                    Delete Ingredient
+                  </Button>
+                </Grid>
+
+                <Grid item>
+                  <Paper
+                    sx={{
+                      height: 500,
+                      width: 700,
+
+                      '& .super-app-theme--header': {
+                        backgroundColor: '#6A994E'
+                      }
+                    }}
+                  >
+                    <DataGrid
+                      experimentalFeatures={{ newEditingApi: true }}
+                      rows={rows} // Display the rows
+                      columns={columns} // Display the columns
+                      rowsPerPageOptions={[]} // Get rid of rows per page option
+                      onSelectionModelChange={ids => {
+                        const selectedRowData = rows.filter(row => {
+                          if (row.id == ids) {
+                            return row
+                          }
+                        })
+                        handleIngredientSelected(selectedRowData[0])
+                      }}
+                      onCellEditCommit={(v, e) => handleIngredientChange(v, e)}
+                      selectionModel={[currIngredient]}
+                    />
+                  </Paper>
+                </Grid>
+              </Grid>
+
+              {openDeleteDialog ? (
+                <Dialog
+                  open={openDeleteDialog}
+                  onClose={handleClosed}
+                  aria-labelledby='alert-dialog-title'
+                  aria-describedby='alert-dialog-description'
+                >
+                  <DialogTitle id='alert-dialog-title'>
+                    {'Delete Ingredient'}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id='alert-dialog-description'>
+                      Are you sure that you want to delete {currIngredient.name}
+                      ? You cannot reverse this action.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleClosed}
+                      autoFocus
+                      color='primary'
+                      style={{ border: 'none', outline: 'none' }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      color='primary'
+                      style={{ border: 'none', outline: 'none' }}
+                      onClick={handleDeleteIngredient}
+                    >
+                      Delete
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              ) : null}
             </Grid>
           </TabPanel>
+
+          {/* Directions */}
           <TabPanel value='3'>
             <Grid
               container
@@ -352,7 +467,7 @@ function ManipulateRecipe (props) {
 
 export default function RecipeSubmenu (props) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
-  const [currRecipe, setCurrRecipe] = useState(props.recipe)
+  const [currRecipe, setCurrRecipe] = useState({ ...props.recipe })
   const [editRecipe, setEditRecipe] = useState(false)
 
   const handleEditRecipeClicked = () => {
@@ -470,12 +585,6 @@ export default function RecipeSubmenu (props) {
                 setCurrRecipe={setCurrRecipe}
               />
             )}
-
-            {/* <FirstRecipeInfo
-            recipe={props.recipe}
-            setRecipe={props.setRecipe}
-            handleAddRecipe={props.handleAddRecipe}
-          /> */}
           </Grid>
         </Grid>
       </Paper>
