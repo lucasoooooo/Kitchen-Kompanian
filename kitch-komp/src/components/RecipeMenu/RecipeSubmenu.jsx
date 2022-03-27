@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {useCustomSnackbar} from "./useCustomSnackbar"
+import { useCustomSnackbar } from './useCustomSnackbar'
 
 import {
   Box,
@@ -143,10 +143,14 @@ function ViewRecipe (props) {
 // Used to add or edit recipes
 function ManipulateRecipe (props) {
   const [value, setValue] = React.useState('1')
-  const [rows, setRows] = useState(props.recipe.ingredients)
+  const [rows, setRows] = useState(
+    props.recipe.ingredients ? props.recipe.ingredients : []
+  )
   const [currIngredient, setCurrIngredient] = useState({})
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
-  const { isActive, message, openCustomSnackBar } = useCustomSnackbar();
+  const [ingredientName, setIngredientName] = useState('')
+  const [ingredientQuantity, setIngredientQuantity] = useState('')
+  const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
   const columns = [
     {
@@ -166,6 +170,23 @@ function ManipulateRecipe (props) {
       editable: true
     }
   ]
+
+  const handleAddIngredient = () => {
+    const id = new Date().getTime()
+
+    const newIngredient = {
+      id: id,
+      name: ingredientName,
+      quantity: ingredientQuantity
+    }
+
+    let tempArray = [...rows]
+    tempArray.push(newIngredient)
+
+    setRows(tempArray)
+    setIngredientName('')
+    setIngredientQuantity('')
+  }
 
   const handleIngredientSelected = ingredient => {
     if (ingredient) {
@@ -193,7 +214,6 @@ function ManipulateRecipe (props) {
         return curr
       }
     })
-
 
     openCustomSnackBar(`${ingredientName} has been deleted`)
     setRows(tempArray)
@@ -255,6 +275,9 @@ function ManipulateRecipe (props) {
               alignItems='center'
               spacing={5}
             >
+              <Grid item>
+                <Typography>Enter recipe information below</Typography>
+              </Grid>
               <Grid
                 item
                 container
@@ -348,27 +371,58 @@ function ManipulateRecipe (props) {
               alignContent='center'
               justifyContent='center'
               alignItems='center'
-              spacing={5}
+              spacing={3}
             >
               <Grid item>
                 <Typography>
-                  Double tap on a cell below to change its value
+                  Enter ingredient name and quantity, and then press add
                 </Typography>
               </Grid>
 
-              <Grid item container justifyContent='flex-end'>
+              <Grid
+                item
+                container
+                alignContent='center'
+                justifyContent='center'
+                alignItems='center'
+                spacing={5}
+              >
+                <Grid item>
+                  <TextField
+                    label='Ingredient Name'
+                    onChange={e => setIngredientName(e.target.value)}
+                    value={ingredientName ? ingredientName : ''}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label='Ingredient Quantity'
+                    onChange={e => setIngredientQuantity(e.target.value)}
+                    value={ingredientQuantity ? ingredientQuantity : ''}
+                  />
+                </Grid>
+
                 <Grid item>
                   <Button
                     variant='text'
                     color='primary'
                     style={{ border: 'none', outline: 'none' }}
                     startIcon={<AddIcon>Add Ingredient</AddIcon>}
-                    onClick={() => setOpenDeleteDialog(true)}
+                    onClick={handleAddIngredient}
                   >
                     Add Ingredient
                   </Button>
                 </Grid>
+              </Grid>
 
+              <Grid item>
+                <Divider sx={{ width: 500 }} />
+              </Grid>
+
+              <Grid item>
+                <Typography>Select a row to delete, or double tap on a cell to edit it</Typography>
+              </Grid>
+              <Grid item container justifyContent='flex-end'>
                 <Grid item>
                   <Button
                     variant='text'
@@ -398,12 +452,14 @@ function ManipulateRecipe (props) {
                       columns={columns} // Display the columns
                       rowsPerPageOptions={[]} // Get rid of rows per page option
                       onSelectionModelChange={ids => {
-                        const selectedRowData = rows.filter(row => {
-                          if (row.id == ids) {
-                            return row
-                          }
-                        })
-                        handleIngredientSelected(selectedRowData[0])
+                        if (rows) {
+                          const selectedRowData = rows.filter(row => {
+                            if (row.id == ids) {
+                              return row
+                            }
+                          })
+                          handleIngredientSelected(selectedRowData[0])
+                        }
                       }}
                       onCellEditCommit={(v, e) => handleIngredientChange(v, e)}
                       selectionModel={[currIngredient]}
@@ -461,6 +517,9 @@ function ManipulateRecipe (props) {
               spacing={5}
             >
               <Grid item>
+                <Typography>Enter recipe directions below</Typography>
+              </Grid>
+              <Grid item>
                 <TextareaAutosize
                   defaultValue={
                     props.recipe.directions ? props.recipe.directions : ''
@@ -474,11 +533,8 @@ function ManipulateRecipe (props) {
         </TabContext>
       </Box>
       <Snackbar open={isActive} message={message}>
-      <Alert sx={{ width: '100%' }}>
-          {message}
-        </Alert>
+        <Alert sx={{ width: '100%' }}>{message}</Alert>
       </Snackbar>
-
     </>
   )
 }
@@ -535,8 +591,6 @@ export default function RecipeSubmenu (props) {
                 Back To List
               </Button>
             </Grid>
-
-            {/* <Grid item sm></Grid> */}
 
             <Grid
               container

@@ -13,7 +13,6 @@ export function useCustomSnackbar() {
     }, [isActive]);
 
     const openCustomSnackBar = (msg = 'Something went wrong...') => {
-        console.log(msg)
         setMessage(msg)
         setIsActive(true);
     }

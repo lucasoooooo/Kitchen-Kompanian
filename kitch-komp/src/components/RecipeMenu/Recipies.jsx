@@ -190,12 +190,6 @@ function Recipies (props) {
           {message}
         </Alert>
       </Snackbar>
-
-      {/* <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity='success' sx={{ width: '100%' }}>
-          {lastRecipe.name} has been deleted.
-        </Alert>
-          </Snackbar> */}
     </>
   )
 }
