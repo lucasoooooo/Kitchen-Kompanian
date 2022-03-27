@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {useCustomSnackbar} from "./useCustomSnackbar"
 
 import {
   Box,
@@ -22,6 +23,8 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import Snackbar from '@mui/material/Snackbar'
+import MuiAlert from '@mui/material/Alert'
 
 import { DataGrid } from '@mui/x-data-grid'
 
@@ -36,6 +39,10 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
 import { useEffect } from 'react'
+
+const Alert = React.forwardRef(function Alert (props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+})
 
 // Used to display recipes
 function ViewRecipe (props) {
@@ -139,6 +146,7 @@ function ManipulateRecipe (props) {
   const [rows, setRows] = useState(props.recipe.ingredients)
   const [currIngredient, setCurrIngredient] = useState({})
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const { isActive, message, openCustomSnackBar } = useCustomSnackbar();
 
   const columns = [
     {
@@ -178,12 +186,16 @@ function ManipulateRecipe (props) {
   }
 
   const handleDeleteIngredient = () => {
+    let ingredientName = currIngredient.name
+
     const tempArray = rows.filter(curr => {
       if (curr.id !== currIngredient.id) {
         return curr
       }
     })
 
+
+    openCustomSnackBar(`${ingredientName} has been deleted`)
     setRows(tempArray)
     setOpenDeleteDialog(false)
     setCurrIngredient({})
@@ -461,6 +473,12 @@ function ManipulateRecipe (props) {
           </TabPanel>
         </TabContext>
       </Box>
+      <Snackbar open={isActive} message={message}>
+      <Alert sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
+
     </>
   )
 }
