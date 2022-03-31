@@ -40,6 +40,9 @@ a:hover {
   margin:0;
   display: grid;
   grid-template: auto auto / repeat(2,1fr);
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
 }
 
 .MuiDataGrid-row:nth-child(even){
@@ -67,4 +70,5 @@ a:hover {
 .MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: none !important;
 }
+
 
