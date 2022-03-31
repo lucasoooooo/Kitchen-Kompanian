@@ -72,14 +72,14 @@ function MyKitchens() {
       <div>
         <h2>Kitchen Members</h2>
         <br></br>
-        <div style={{ height: 300, width: '100%' }}>
+        <div style={{ height: 500, width: '100%' }}>
           <nav className="kitchen-member-header">
             <h3>Home</h3>
             <AddCircleOutlineIcon className="add-sign" onClick={handleAdd}/>
           </nav>
 
           <Box sx={{
-          height:300,
+          height:700,
           width: 1, 
           '& .MuiDataGrid-columnHeaders':{
           backgroundColor: '#6A994E'},
