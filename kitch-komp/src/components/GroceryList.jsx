@@ -1,17 +1,12 @@
 import React, { Component, useState } from "react";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, GridCellParams } from '@mui/x-data-grid';
 import Button from "@material-ui/core/Button";
-
-const columns = [
-  { field: 'item', headerName: 'Grocery Item', width: 130 },
-  { field: 'quantity', headerName: 'Quantity', width: 130 },
-  { field: 'isle', headerName: 'Isle Number', width: 130 },
-];
+import DeleteIcon from '@mui/icons-material/Delete'
 
 var data = [
-  { id: 1, item: 'Eggs', quantity: '12', isle: '12' },
-  { id: 2, item: 'Milk', quantity: '1 Gallon', isle: '12' },
-  { id: 3, item: 'Chicken Breasts', quantity: '4', isle: '6' },
+  { id: 1, item: 'Eggs', quantity: '12'},
+  { id: 2, item: 'Milk', quantity: '1 Gallon'},
+  { id: 3, item: 'Chicken Breasts', quantity: '4'},
 ];
 
 class GroceryList extends Component {
@@ -23,22 +18,30 @@ class GroceryList extends Component {
       data: [],
       numItems: 0,
       item: '',
-      quantity: '',
-      isle: ''
+      quantity: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
   componentDidMount() {
     this.setState({
       data: [...data],
       numItems: 4,
       item: '',
-      quantity: '',
-      isle: ''
+      quantity: ''
     });
+  }
+
+  handleDelete(id){
+
+    let temp = this.state.data.filter(item => item.id !== id);
+    this.setState({
+      data: temp
+    });
+    console.log(this.state.data)
   }
   
 
@@ -56,13 +59,12 @@ class GroceryList extends Component {
     let temp = [
       ...this.state.data
     ];
-    temp.push({ id: this.state.numItems, item: this.state.item, quantity: this.state.quantity, isle: this.state.isle });
+    temp.push({ id: this.state.numItems, item: this.state.item, quantity: this.state.quantity});
     this.setState({
       data: temp,
       numItems: this.state.numItems+1,
       item: '',
-      quantity: '',
-      isle: ''
+      quantity: ''
     });
   }
 
@@ -71,10 +73,31 @@ class GroceryList extends Component {
       <div style={{ textAlign: "center" }}>
         <h1 textalign='center'>Grocery List</h1>
         <span className="horizontal-line" />
-        <div className="centerDiv" style={{ height: 500, width: '100%' }}>
+        <div className="centerDiv" style={{ height: 760, width: '100%' }}>
           <DataGrid
             rows={this.state.data}
-            columns={columns}
+            columns={[
+              { field: 'item', headerName: 'Grocery Item', width: 420},
+              { field: 'quantity', headerName: 'Quantity', width: 200},
+              {
+                field: 'delete',
+                headerName: '',
+                width: 80,
+                sortable: false,
+                headerClassName: 'delete-item-column',
+                hideSortIcons: true,
+                renderCell: (params: GridCellParams) => {
+                  return (
+                    <Button
+                      className="delete-btn"            
+                      onClick={() => this.handleDelete(params.id)}>
+                      <DeleteIcon className="delete" color="inherit" />
+                    </Button>
+                  );
+                },
+              }
+            
+            ]}
             pageSize={25}
             checkboxSelection
             onRowSelected={this.handleRowSelection}
@@ -82,7 +105,7 @@ class GroceryList extends Component {
         </div>
         <br/>
         <form onSubmit={this.handleSubmit}>
-          <label style={{ paddingRight: '5px' }} >
+          <label style={{ paddingRight: '20px' }} >
             Enter Item Name:
             <input
               type="text" 
@@ -99,17 +122,10 @@ class GroceryList extends Component {
               value={this.state.quantity} 
               onChange={this.handleChange}
             />
-            </label>
-            <label style={{ paddingRight: '5px' }}>
-              Enter Isle #:
-              <input 
-                type="text" 
-                name="isle" 
-                value={this.state.isle} 
-                onChange={this.handleChange}
-              />
-            </label>
-            <button onClick={this.handleSubmit} type="submit">Submit</button>
+          </label>
+          <br/>
+          <br/>
+          <button onClick={this.handleSubmit} type="submit">Add item</button>
         </form>
       </div>
 
