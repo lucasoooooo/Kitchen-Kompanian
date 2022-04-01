@@ -13,7 +13,7 @@ function KitchenStock() {
   const pantry_things = 
     [{name:"Captain Crunch", qty:"-", id:1}, {name:"Peanut Butter", qty:"-",id:2}]
   
-  const columns = [{field:"name", headerName: "Name", width:300},{field:"qty", headerName:"Quantity", width:300}];
+  const columns = [{field:"name", headerName: "Name", width:250},{field:"qty", headerName:"Quantity", width:100}];
   return (
     <div className="kitchenStock">
       

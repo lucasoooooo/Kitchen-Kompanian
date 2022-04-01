@@ -34,6 +34,7 @@ a:hover {
 }
 .kitchen-stock-headers{
   margin:0;
+  padding: 7px;
   display: grid;
   grid-template: auto auto / repeat(2,1fr);
   background-color: var(--HunterGreen-color);
