@@ -7,7 +7,7 @@ function Footer() {
       <footer className="fixed-bottom">
 				<nav className="navbar navbar-expand navbar-dark bg-dark">
 					<div className="container">
-						<ul className="navbar-nav ml-auto">
+						<ul className="navbar-nav m-auto">
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/">
 									Grocery List
