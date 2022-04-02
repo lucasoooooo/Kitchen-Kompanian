@@ -2,6 +2,8 @@ import React, { Component, useState } from "react";
 import { DataGrid, GridToolbar, GridCellParams } from '@mui/x-data-grid';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@mui/icons-material/Delete'
+import TextField from '@mui/material/TextField';
+
 
 var data = [
   { id: 1, item: 'Eggs', quantity: '12'},
@@ -71,9 +73,10 @@ class GroceryList extends Component {
   render() {
     return (
       <div style={{ textAlign: "center" }}>
-        <h1 textalign='center'>Grocery List</h1>
+        <h1 textalign='center' style={{color: "white", background: "#343a40",
+        paddingTop: '20px', paddingBottom: '20px'}}>Grocery List</h1>
         <span className="horizontal-line" />
-        <div className="centerDiv" style={{ height: 760, width: '100%' }}>
+        <div className="centerDiv" style={{ height: 700, width: '100%' }}>
           <DataGrid
             rows={this.state.data}
             columns={[
@@ -105,27 +108,27 @@ class GroceryList extends Component {
         </div>
         <br/>
         <form onSubmit={this.handleSubmit}>
-          <label style={{ paddingRight: '20px' }} >
-            Enter Item Name:
-            <input
+          <span className='textField'>
+            <TextField
               type="text" 
+              label="Grocery Item"
               name="item" 
               value={this.state.item} 
               onChange={this.handleChange}
             />
-          </label>
-          <label style={{ paddingRight: '5px' }}>
-            Enter Quantity:
-            <input 
+          </span>
+          <span className ='textField'>
+            <TextField 
               type="text" 
+              label="Quantity"
               name="quantity" 
               value={this.state.quantity} 
               onChange={this.handleChange}
             />
-          </label>
+          </span>
           <br/>
           <br/>
-          <button onClick={this.handleSubmit} type="submit">Add item</button>
+          <Button onClick={this.handleSubmit} type="submit" variant="outlined">Add item</Button>
         </form>
       </div>
 

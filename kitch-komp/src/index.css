@@ -26,9 +26,15 @@ a:hover {
 }
 
 .MuiDataGrid-row:nth-child(even){
-  background-color: #F2E8CF;
+  background-color: #90caf9;
 }
 
-.MuiDataGrid-row:nth-child(odd){
-  background-color: #ddd3bb;
+/* .MuiDataGrid-row:nth-child(odd){
+  background-color: #D3D3D3;
+} */
+
+.textField {
+  padding-left: 10px;
+  padding-right: 10px;
+
 }
