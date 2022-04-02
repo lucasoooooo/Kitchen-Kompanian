@@ -82,3 +82,7 @@ h1 {
 .nav-item{
   font-size: x-large;
 }
+
+.navbar {
+  height: 80px;
+}

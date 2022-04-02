@@ -1,5 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+import LocalDiningIcon from '@mui/icons-material/LocalDining';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 function Footer() {
   return (
@@ -10,23 +14,23 @@ function Footer() {
 						<ul className="navbar-nav m-auto">
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/">
-									Grocery List
+									<LocalGroceryStoreIcon/> Grocery List
 									<span className="sr-only">(current)</span>
 								</NavLink>
 							</li>
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/kitchenStock">
-									Kitchen Stock
+								 <KitchenIcon/> Kitchen Stock
 								</NavLink>
 							</li>
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/recipies">
-									Recipes
+								<LocalDiningIcon/> Recipes
 								</NavLink>
 							</li>
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/myKitchens">
-									My Kitchens
+									<PeopleAltIcon/> My Kitchens
 								</NavLink>
 							</li>
 						</ul>
