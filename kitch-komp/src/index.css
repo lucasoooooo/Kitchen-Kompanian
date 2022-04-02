@@ -48,14 +48,6 @@ a:hover {
 }
 
 
-.MuiDataGrid-row:nth-child(even){
-  background-color: #F2E8CF;
-}
-
-.MuiDataGrid-row:nth-child(odd){
-  background-color: #ddd3bb;
-}
-
 .kitchen-member-header{
   margin:0;
   display: grid;
@@ -69,9 +61,28 @@ a:hover {
 }
 
 
-.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
-.MuiDataGrid-root .MuiDataGrid-cell:focus {
-  outline: none !important;
+
+.MuiDataGrid-row:nth-child(even){
+  background-color: #90caf9;
 }
 
+.textField {
+  padding-left: 10px;
+  padding-right: 10px;
 
+}
+
+h1 {
+  color: white;
+  background-color: #343a40;
+  padding-top: '20px';
+  padding-bottom: '20px';
+}
+
+.nav-item{
+  font-size: x-large;
+}
+
+.navbar {
+  height: 80px;
+}
