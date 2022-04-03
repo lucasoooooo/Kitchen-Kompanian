@@ -16,6 +16,9 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/MoreVert'
 import SearchIcon from '@mui/icons-material/Search'
 import { Paper } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import EditIcon from '@mui/icons-material/Edit'
+import SaveIcon from '@mui/icons-material/Save'
 
 var data = [
   { id: 1, item: 'Eggs', quantity: '12', location: 'Refrigerator', expiration:"", allergies: ["Eggs"], owner:[]},
@@ -42,13 +45,14 @@ class KitchenStock extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleBack = this.handleBack.bind(this);
   }
   
   componentDidMount() {
     this.setState({
       data: [...data],
       addView: false,
-      numItems: 4,
+      numItems: data.length+1,
       item: '',
       quantity: '',
       location:'',
@@ -72,6 +76,22 @@ class KitchenStock extends Component {
     });
   }
 
+  handleBack(){
+    this.setState({
+      addView: false
+    });
+    this.setState({
+      data: this.state.data,
+      numItems: this.state.numItems,
+      item: '',
+      quantity: '',
+      location:'',
+      expiration:'',
+      allergies:'',
+      owner:''
+    });
+  }
+
   handleChange(event) {
     const name = event.target.name;
     this.setState({[name]: event.target.value});
@@ -79,7 +99,6 @@ class KitchenStock extends Component {
   }
 
   handleSubmit(event) {
-
     console.log(this.state)
     this.setState({
       addView: false
@@ -88,7 +107,13 @@ class KitchenStock extends Component {
     let temp = [
       ...this.state.data
     ];
-    temp.push({ id: this.state.numItems, item: this.state.item, quantity: this.state.quantity});
+    temp.push({ id: this.state.numItems, 
+                item: this.state.item, 
+                quantity: this.state.quantity,
+                location:this.state.location,
+                expiration:this.state.expiration,
+                allergies:this.state.allergies,
+                owner: this.state.owner});
     this.setState({
       data: temp,
       numItems: this.state.numItems+1,
@@ -112,6 +137,24 @@ class KitchenStock extends Component {
 
         {this.state.addView && 
         (<div>
+          <Grid
+            item
+            container
+            alignContent='center'
+            justifyContent='center'
+            alignItems='center'
+          >
+            <Grid item sm>
+              <Button
+                variant='text'
+                color='primary'
+                style={{ border: 'none', outline: 'none' }}
+                startIcon={<ArrowBackIcon>Back To List</ArrowBackIcon>}
+                onClick={this.handleBack}>
+                  Back To List
+                </Button>
+            </Grid>
+          </Grid>
           <h2>Add New Food Item</h2>
           <form onSubmit={this.handleSubmit}>
           <span className='textField'>
@@ -136,26 +179,26 @@ class KitchenStock extends Component {
             <TextField
               type="text" 
               label="Storage Location"
-              name="item" 
+              name="location" 
               value={this.state.location} 
               onChange={this.handleChange}
             />
           </span>
+          <span style={{paddingTop: '20px'}}>
           <span className='textField'>
             <TextField
               type="text" 
               label="Expiration Date"
-              name="item" 
+              name="expiration" 
               value={this.state.expiration} 
               onChange={this.handleChange}
-              selection
             />
           </span>
           <span className='textField'>
             <TextField
               type="text" 
               label="Allergies"
-              name="item" 
+              name="allergies" 
               value={this.state.allergies} 
               onChange={this.handleChange}
             />
@@ -164,10 +207,11 @@ class KitchenStock extends Component {
             <TextField
               type="text" 
               label="Owner"
-              name="item" 
+              name="owner" 
               value={this.state.owner} 
               onChange={this.handleChange}
             />
+          </span>
           </span>
           <br/>
           <br/>
@@ -209,7 +253,7 @@ class KitchenStock extends Component {
             ]}
             pageSize={25}
             // checkboxSelection
-            onRowSelected={this.handleRowSelection}
+            // onRowSelected={this.handleRowSelection}
           />)}
         </div>
         <br/>
