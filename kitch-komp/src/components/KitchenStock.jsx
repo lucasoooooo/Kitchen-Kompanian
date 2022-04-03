@@ -138,22 +138,52 @@ class KitchenStock extends Component {
         {this.state.addView && 
         (<div>
           <Grid
-            item
             container
+            direction='column'
             alignContent='center'
             justifyContent='center'
             alignItems='center'
-          >
+            width={768}
+            spacing={2}
+            >
+            <Grid
+              item
+              container
+              alignContent="center"
+              justifyContent='center'
+              alignItems='center'
+            >
             <Grid item sm>
               <Button
                 variant='text'
                 color='primary'
-                style={{ border: 'none', outline: 'none' }}
+                style={{ border: 'none', outline: 'none'}}
                 startIcon={<ArrowBackIcon>Back To List</ArrowBackIcon>}
                 onClick={this.handleBack}>
                   Back To List
                 </Button>
-            </Grid>
+              </Grid>
+              <Grid 
+                container
+                item 
+                xs
+                alignContent='flex-end'
+                justifyContent='flex-end'
+                alignItems='center'
+                spacing={2}
+              >
+                <Button
+                  variant='text'
+                  color='primary'
+                  style={{ border: 'none', outline: 'none' , marginRight:"100px"}}
+                  startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
+                  type="submit"
+                  onClick={this.handleSubmit}
+                >
+                  Save Food Item
+                </Button>
+              </Grid>
+              </Grid>
           </Grid>
           <h2>Add New Food Item</h2>
           <form onSubmit={this.handleSubmit}>
@@ -184,7 +214,7 @@ class KitchenStock extends Component {
               onChange={this.handleChange}
             />
           </span>
-          <span style={{paddingTop: '20px'}}>
+          <span style={{paddingTop: '200px'}}>
           <span className='textField'>
             <TextField
               type="text" 
@@ -213,10 +243,6 @@ class KitchenStock extends Component {
             />
           </span>
           </span>
-          <br/>
-          <br/>
-          <Button onClick={this.handleSubmit} type="submit" variant="outlined">Add item</Button>
-          
         </form>
         </div>)
         }
@@ -266,7 +292,6 @@ class KitchenStock extends Component {
 }
 
 export default KitchenStock;
-
 
 // Creates the search bar for the DataGrid
 function QuickSearchToolbar (props) {
