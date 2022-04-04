@@ -1,21 +1,21 @@
-import React, { Component, useState } from "react";
-import { DataGrid, GridToolbar, GridCellParams } from '@mui/x-data-grid';
+import React, { Component } from "react";
+import { DataGrid} from '@mui/x-data-grid';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@mui/icons-material/Delete'
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types'
 
 // MUI Component Imports
-import Box from '@mui/material/Box'
+// import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 
 // MUI Icon Imports
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-import ClearIcon from '@mui/icons-material/Clear'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/MoreVert'
-import SearchIcon from '@mui/icons-material/Search'
-import { Paper } from '@mui/material'
+// import ClearIcon from '@mui/icons-material/Clear'
+// import IconButton from '@mui/material/IconButton'
+// import MenuIcon from '@mui/icons-material/MoreVert'
+// import SearchIcon from '@mui/icons-material/Search'
+// import { Paper } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
@@ -30,6 +30,7 @@ var data = [
   { id: 7, item: 'Jasmine Rice', quantity: '4',location: "Pantry", expiration:"",allergies:[], owner:[]},
   { id: 8, item: 'Cookie', quantity: '4' ,location: "Pantry", expiration:"Apr 10 2022",allergies:["Dairy","Nut"], owner:[]},
 ];
+
 class KitchenStock extends Component {
 
   constructor(props) {
@@ -38,6 +39,8 @@ class KitchenStock extends Component {
     this.state = {
       data: [],
       addView: false,
+      editView: false,
+      currentEditId: data.length,
       numItems: 0,
       item: '',
       quantity: ''
@@ -46,12 +49,15 @@ class KitchenStock extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleBack = this.handleBack.bind(this);
+    // this.handleEditView = this.handleEditView(this);
   }
   
   componentDidMount() {
     this.setState({
       data: [...data],
       addView: false,
+      editView: false,
+      currentEditId: data.length-1,
       numItems: data.length+1,
       item: '',
       quantity: '',
@@ -66,19 +72,30 @@ class KitchenStock extends Component {
 
     let temp = this.state.data.filter(item => item.id !== id);
     this.setState({
-      data: temp
+      data: temp,
+      currentEditId: data[0].id
     });
     console.log(this.state.data)
   }
   handleAddView(){
     this.setState({
-      addView: true
+      addView: true,
+      editView:false
+    });
+  }
+ 
+  handleEditView(id){
+    this.setState({
+      addView: false,
+      editView: true,
+      currentEditId: id
     });
   }
 
   handleBack(){
     this.setState({
-      addView: false
+      addView: false,
+      editView:   false
     });
     this.setState({
       data: this.state.data,
@@ -135,7 +152,7 @@ class KitchenStock extends Component {
         <span className="horizontal-line" />
         <div className="centerDiv" style={{ height: 675, width: '100%' }}>
 
-        {this.state.addView && 
+        {this.state.addView && !this.state.editView &&
         (<div>
           <Grid
             container
@@ -214,6 +231,8 @@ class KitchenStock extends Component {
               onChange={this.handleChange}
             />
           </span>
+          {/* Add padding to the top of the bottom 3 insert cells
+           */}
           <span style={{paddingTop: '200px'}}>
           <span className='textField'>
             <TextField
@@ -246,7 +265,75 @@ class KitchenStock extends Component {
         </form>
         </div>)
         }
-        { !this.state.addView && (<DataGrid
+        {!this.state.addView && this.state.editView &&
+        <div>
+           <Grid
+            container
+            direction='column'
+            alignContent='center'
+            justifyContent='center'
+            alignItems='center'
+            width={768}
+            spacing={2}
+            >
+            <Grid
+              item
+              container
+              alignContent="center"
+              justifyContent='center'
+              alignItems='center'
+            >
+            <Grid item sm>
+              <Button
+                variant='text'
+                color='primary'
+                style={{ border: 'none', outline: 'none'}}
+                startIcon={<ArrowBackIcon>Back To List</ArrowBackIcon>}
+                onClick={this.handleBack}>
+                  Back To List
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant='text'
+                  color='primary'
+                  style={{ border: 'none', outline: 'none' }}
+                  startIcon={<EditIcon>Edit Recipe</EditIcon>}
+                  onClick={this.handleBack}
+                >
+                  Edit Recipe
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant='text'
+                  color='primary'
+                  style={{ border: 'none', outline: 'none' }}
+                  startIcon={<DeleteIcon>Delete Recipe</DeleteIcon>}
+                  onClick={this.handleBack}
+                >
+                  Delete Recipe
+                </Button>
+              </Grid>
+              </Grid>
+          </Grid>
+          <h2>View Food Item</h2>
+          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
+            {`Food Item: ${String(this.state.data[this.state.currentEditId-1].item)}`}</h3>
+          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
+            {`Quantity: ${String(this.state.data[this.state.currentEditId-1].quantity)}`}</h3>
+          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
+            {`Kitchen Location: ${String(this.state.data[this.state.currentEditId-1].location)}`}</h3>
+          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
+            {`Expiration Date: ${String(this.state.data[this.state.currentEditId-1].expiration)}`}</h3>
+          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
+            {`Allergies: ${String(this.state.data[this.state.currentEditId-1].allergies)}`}</h3>
+          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
+            {`Owners: ${String(this.state.data[this.state.currentEditId-1].owner)}`}</h3>
+        </div>
+        }
+        { !this.state.addView && !this.state.editView && 
+        (<DataGrid
             components={{ Toolbar: QuickSearchToolbar }}
             componentsProps={{
               // Interaction between Search Bar and Table
@@ -254,6 +341,11 @@ class KitchenStock extends Component {
                 handleAddView: () => this.handleAddView()
               }
             }}
+            onCellClick={(params, event) => {
+              console.log(params.id)
+              this.handleEditView(params.id)
+            }}
+            // {...data}
             rows={this.state.data}
             columns={[
               { field: 'item', headerName: 'Food Item', width: 200},
