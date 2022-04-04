@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 // Local imports
 import TableComponent from './Table'
 import RecipeSubmenu from './RecipeSubmenu'
-import {useCustomSnackbar} from "./useCustomSnackbar"
+import { useCustomSnackbar } from './useCustomSnackbar'
 
 // MUI Component Imports
 import Grid from '@mui/material/Grid'
@@ -20,8 +20,7 @@ function Recipies (props) {
   const [currRecipe, setCurrRecipe] = useState({})
   const [lastRecipe, setLastRecipe] = useState({})
   const [idCounter, setIdCounter] = useState(4)
-  const { isActive, message, openCustomSnackBar } = useCustomSnackbar();
-  
+  const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
   const [recipes, setRecipes] = useState([
     {
@@ -150,6 +149,21 @@ function Recipies (props) {
 
   return (
     <>
+      <div style={{ textAlign: 'center' }}>
+        <h1
+          textalign='center'
+          style={{
+            color: 'white',
+            background: '#343a40',
+            paddingTop: '20px',
+            paddingBottom: '20px'
+          }}
+        >
+          Recipe List
+        </h1>
+        <span className='horizontal-line' />
+      </div>
+
       <Grid
         container
         direction='column'
@@ -158,13 +172,7 @@ function Recipies (props) {
         alignItems='center'
         spacing={5}
       >
-        <Grid item>
-          <Typography compontent='center' variant='h3'>
-            Recipe List
-          </Typography>
-        </Grid>
-
-        <Grid item>
+        <Grid item width="100%">
           {viewSubmenu ? (
             <RecipeSubmenu
               recipe={currRecipe}
@@ -186,9 +194,7 @@ function Recipies (props) {
       </Grid>
 
       <Snackbar open={isActive} message={message}>
-      <Alert sx={{ width: '100%' }}>
-          {message}
-        </Alert>
+        <Alert sx={{ width: '100%' }}>{message}</Alert>
       </Snackbar>
     </>
   )

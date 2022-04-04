@@ -2,19 +2,17 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 // MUI Component Imports
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
 import { DataGrid } from '@mui/x-data-grid'
+import Grid from '@mui/material/Grid'
+import { Paper } from '@mui/material'
+import TextField from '@mui/material/TextField'
 
 // MUI Icon Imports
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/MoreVert'
 import SearchIcon from '@mui/icons-material/Search'
-import { Paper } from '@mui/material'
 
 function escapeRegExp (value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
@@ -91,8 +89,6 @@ export default function QuickFilteringGrid (props) {
   // DataGrid rows state variable
   const [rows, setRows] = useState(props.recipes)
 
-  const [currentRow, setCurrentRow] = useState({})
-
   // The column headers
   const columns = [
     {
@@ -101,18 +97,6 @@ export default function QuickFilteringGrid (props) {
       width: 150,
       headerClassName: 'super-app-theme--header'
     },
-    // {
-    //   field: 'prepTime',
-    //   headerName: 'Prep Time',
-    //   width: 150,
-    //   headerClassName: 'super-app-theme--header'
-    // },
-    // {
-    //   field: 'cookTime',
-    //   headerName: 'Cook Time',
-    //   width: 150,
-    //   headerClassName: 'super-app-theme--header'
-    // },
     {
       field: 'totalTime',
       headerName: 'Total Time',
@@ -131,14 +115,7 @@ export default function QuickFilteringGrid (props) {
       width: 153,
       headerClassName: 'super-app-theme--header',
       flex: 1
-    },
-    // {
-    //   field: 'iconButton',
-    //   headerName: 'Actions',
-    //   width: 150,
-    //   headerClassName: 'super-app-theme--header',
-    //   renderCell: () => <MenuIcon />
-    // }
+    }
   ]
 
   // Filter the recipes based on the requested search
@@ -160,16 +137,7 @@ export default function QuickFilteringGrid (props) {
 
   return (
     <>
-      <Paper
-        sx={{
-          height: 700,
-          width: 768,
-
-          '& .super-app-theme--header': {
-            backgroundColor: '#6A994E'
-          }
-        }}
-      >
+      <div className='recipeTableDiv' style={{ height: 650, width: '100%' }}>
         <DataGrid
           components={{ Toolbar: QuickSearchToolbar }} // Add the Search Bar
           rows={rows} // Display the rows
@@ -193,7 +161,7 @@ export default function QuickFilteringGrid (props) {
             props.handleRecipeSelected(selectedRowData[0])
           }}
         />
-      </Paper>
+      </div>
     </>
   )
 }

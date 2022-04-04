@@ -420,7 +420,9 @@ function ManipulateRecipe (props) {
               </Grid>
 
               <Grid item>
-                <Typography>Select a row to delete, or double tap on a cell to edit it</Typography>
+                <Typography>
+                  Select a row to delete, or double tap on a cell to edit it
+                </Typography>
               </Grid>
               <Grid item container justifyContent='flex-end'>
                 <Grid item>
@@ -562,14 +564,13 @@ export default function RecipeSubmenu (props) {
 
   return (
     <>
-      <Paper sx={{ pb: 10 }}>
+      <Paper>
         <Grid
           container
           direction='column'
           alignContent='center'
           justifyContent='center'
           alignItems='center'
-          width={768}
           spacing={2}
         >
           {/* Header for Submenu */}
