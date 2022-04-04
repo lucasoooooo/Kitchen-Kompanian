@@ -17,8 +17,13 @@ import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 // import SearchIcon from '@mui/icons-material/Search'
 // import { Paper } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import EditIcon from '@mui/icons-material/Edit'
+// import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 var data = [
   { id: 1, item: 'Eggs', quantity: '12', location: 'Refrigerator', expiration:"", allergies: ["Eggs"], owner:[]},
@@ -40,18 +45,22 @@ class KitchenStock extends Component {
       data: [],
       addView: false,
       editView: false,
+      openDeleteDialog: false,
       currentEditId: 0,
       numItems: 0,
       item: '',
       quantity: ''
     };
-
+    
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     // this.handleEditView = this.handleEditView(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
+    this.handleClosed = this.handleClosed.bind(this);
+    this.handleOpened = this.handleOpened.bind(this);
+    this.checkExpiration = this.checkExpiration.bind(this);
   }
   
   componentDidMount() {
@@ -59,6 +68,7 @@ class KitchenStock extends Component {
       data: [...data],
       addView: false,
       editView: false,
+      openDeleteDialog: false,
       currentEditId: 0,
       numItems: data.length+1,
       item: '',
@@ -70,15 +80,16 @@ class KitchenStock extends Component {
     });
   }
 
-  handleDelete(id){
-    console.log(`Deleting item of id: ${id}`)
+  handleDelete(){
+    console.log(`Deleting item of id: ${this.state.currentEditId}`)
     let temp = this.state.data.filter(
-      item => item.id !== parseInt(id));
+      item => item.id !== parseInt(this.state.currentEditId));
     this.setState({
       data: temp,
       currentEditId: data[0].id,
       addView: false,
       editView: false,
+      openDeleteDialog: false,
       item: '',
       quantity: '',
       location:'',
@@ -113,7 +124,6 @@ class KitchenStock extends Component {
       currentEditId: id
     });
   }
-
   handleBack(){
     this.setState({
       addView: false,
@@ -132,43 +142,63 @@ class KitchenStock extends Component {
     this.setState({[name]: event.target.value});
     // console.log(this.state)
   }
+  handleClosed(){
+    this.setState({
+      openDeleteDialog: false
+    })
+  }
+  handleOpened(){
+    this.setState({
+      openDeleteDialog: true
+    })
+  }
   handleSubmitEdit(event){
+    
     let temp = this.state.data.filter(
       item => item.id !== parseInt(this.state.currentEditId));
-      temp.push({ id: this.state.numItems, 
-        item: this.state.item, 
-        quantity: this.state.quantity,
-        location: this.state.location,
-        expiration: this.state.expiration,
-        allergies: this.state.allergies,
-        owner: this.state.owner});
-      this.setState({
-        data: temp,
-        numItems: this.state.numItems+1,
-        addView: false,
-        editView: false,
-        item: '',
-        quantity: '',
-        location:'',
-        expiration:'',
-        allergies:'',
-        owner:''
-      });
-    
-    
-    // this.handleSubmit(event)
+    temp.push({ id: this.state.numItems, 
+      item: this.state.item, 
+      quantity: this.state.quantity,
+      location: this.state.location,
+      expiration: this.state.expiration,
+      allergies: this.state.allergies,
+      owner: this.state.owner});
 
-    // console.log(this.state.data)
-   
-    // this.handleDelete(this.state.currentEditId)
-    // console.log(this.state.data)
+      //Expiration Checker
+    var currentDate = new Date().getTime()
+    const tempE = temp.map(function(x){
+    //str.replace('one', '')
+      if (x.expiration == ""){
+        return {...x,  item: x.item.replace("(Expired) ", "")}
+      }
+      var d = Date.parse(x.expiration)
+      if (d <= 1046702800000){ //Dont ask why I chose this number
+        d = Date.parse(x.expiration + " 2022")
+      }
+      if (d <= currentDate && !x.item.includes("Expired") ){
+        return {...x,  item:("(Expired) " + x.item)}
+      }
+      else{
+        return {...x,  item: x.item.replace("(Expired) ", "")}
+      }
+    })
+
+    this.setState({
+      data: tempE,
+      numItems: this.state.numItems+1,
+      addView: false,
+      editView: false,
+      item: '',
+      quantity: '',
+      location:'',
+      expiration:'',
+      allergies:'',
+      owner:''
+    });
+    
   }
 
-  handleSubmit(event) {
-    this.setState({
-      addView: false,
-      editView: false
-    });
+  handleSubmit(event) { 
     event.preventDefault();
     let temp = [
       ...this.state.data
@@ -180,8 +210,30 @@ class KitchenStock extends Component {
                 expiration: this.state.expiration,
                 allergies: this.state.allergies,
                 owner: this.state.owner});
+      //Expiration Checker
+    var currentDate = new Date().getTime()
+    const tempE = temp.map(function(x){
+    
+      if (x.expiration == ""){
+        return {...x,  item: x.item.replace("(Expired) ", "")}
+      }
+      var d = Date.parse(x.expiration)
+      if (d <= 1046702800000){ //Dont ask why I chose this number
+        d = Date.parse(x.expiration + " 2022")
+      }
+      if (d <= currentDate && !x.item.includes("Expired") ){
+        return {...x,  item:("(Expired) " + x.item)}
+      }
+      else{
+        return {...x,  item: x.item.replace("(Expired) ", "")}
+      }
+    })
+
+    
     this.setState({
-      data: temp,
+      addView: false,
+      editView: false,
+      data: tempE,
       numItems: this.state.numItems+1,
       item: '',
       quantity: '',
@@ -191,11 +243,50 @@ class KitchenStock extends Component {
       owner:''
     });
     console.log(this.state)
+    // this.checkExpiration()
+  }
+
+  checkExpiration(){
+    var currentDate = new Date().getTime()
+    // var otherDate = Date.parse("Apr 02 2022")
+    const temp = this.state.data.map(function(x){
+      if (x.expiration == ""){
+        return x
+      }
+      if (Date.parse(x.expiration) <= currentDate && !x.item.includes("Expired") ){
+        return {...x,  item:("(Expired) " + x.item)}
+      }
+      else{
+        return x
+      }
+    })
+    console.log(temp)
+    this.setState({
+      data: temp
+    });
   }
 
   render() {
     return (
       <div>
+
+
+
+
+         <Grid item sm>
+              <Button
+                variant='text'
+                color='primary'
+                style={{ border: 'none', outline: 'none'}}
+                startIcon={<ArrowBackIcon>Back To List</ArrowBackIcon>}
+                onClick={this.checkExpiration}>
+                  TEST
+                </Button>
+              </Grid>
+
+
+
+
       <div style={{ textAlign: "center" }}>
         <h1 textalign='center' style={{color: "white", background: "#343a40",
         paddingTop: '20px', paddingBottom: '20px'}}>Kitchen Stock</h1>
@@ -360,10 +451,10 @@ class KitchenStock extends Component {
                   variant='text'
                   color='primary'
                   style={{ border: 'none', outline: 'none' }}
-                  startIcon={<DeleteIcon>Delete Recipe</DeleteIcon>}
-                  onClick={() => this.handleDelete(this.state.currentEditId)}
+                  startIcon={<DeleteIcon>Delete Food Item</DeleteIcon>}
+                  onClick={() => this.handleOpened()}
                 >
-                  Delete Recipe
+                  Delete Food Item
                 </Button>
               </Grid>
               </Grid>
@@ -429,21 +520,43 @@ class KitchenStock extends Component {
           </span>
           </span>
         </form>
-
-          {/* <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
-            {`Food Item: ${String(this.state.data[this.state.currentEditId-1].item)}`}</h3>
-          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
-            {`Quantity: ${String(this.state.data[this.state.currentEditId-1].quantity)}`}</h3>
-          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
-            {`Kitchen Location: ${String(this.state.data[this.state.currentEditId-1].location)}`}</h3>
-          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
-            {`Expiration Date: ${String(this.state.data[this.state.currentEditId-1].expiration)}`}</h3>
-          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
-            {`Allergies: ${String(this.state.data[this.state.currentEditId-1].allergies)}`}</h3>
-          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
-            {`Owners: ${String(this.state.data[this.state.currentEditId-1].owner)}`}</h3> */}
         </div>
         }
+        {this.state.openDeleteDialog && (
+                <Dialog
+                  open={this.state.openDeleteDialog}
+                  onClose={this.state.handleClosed}
+                  aria-labelledby='alert-dialog-title'
+                  aria-describedby='alert-dialog-description'
+                >
+                  <DialogTitle id='alert-dialog-title'>
+                    {'Delete Ingredient'}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id='alert-dialog-description'>
+                      Are you sure that you want to delete {this.state.item}
+                      ? You cannot reverse this action.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={this.handleClosed}
+                      autoFocus
+                      color='primary'
+                      style={{ border: 'none', outline: 'none' }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      color='primary'
+                      style={{ border: 'none', outline: 'none' }}
+                      onClick={this.handleDelete}
+                    >
+                      Delete
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              )}
         { !this.state.addView && !this.state.editView && 
         (<DataGrid
             components={{ Toolbar: QuickSearchToolbar }}
@@ -458,7 +571,7 @@ class KitchenStock extends Component {
               this.handleEditView(params.id)
             }}
             // {...data}
-            rows={this.state.data}
+            rows={this.props.items}
             columns={[
               { field: 'item', headerName: 'Food Item', width: 200},
               { field: 'quantity', headerName: 'Quantity', width: 100},
@@ -506,10 +619,10 @@ function QuickSearchToolbar (props) {
           variant='text'
           color='primary'
           style={{ border: 'none', outline: 'none' }}
-          startIcon={<AddIcon>Add Recipe</AddIcon>}
+          startIcon={<AddIcon>Add Food Item</AddIcon>}
           onClick={props.handleAddView}
         >
-          Add Recipe
+          Add Food Item
         </Button>
       </Grid>
     </Grid>

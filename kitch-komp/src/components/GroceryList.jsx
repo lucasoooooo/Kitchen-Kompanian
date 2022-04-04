@@ -25,6 +25,7 @@ class GroceryList extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSelectionModelChange = this.handleSelectionModelChange.bind(this);
   }
 
 
@@ -70,13 +71,26 @@ class GroceryList extends Component {
     });
   }
 
+  handleSelectionModelChange(newSelectionModel) {
+    // console.log(newSelectionModel)
+    let temp = this.state.data
+    for (const id in newSelectionModel){
+      // console.log(id)
+      // console.log(this.state.data)
+      temp = temp.filter(item => item.id === newSelectionModel[id])
+    }
+    for (const element in temp){
+      this.props.onItemSelected(temp[element])
+    }
+  }
+
   render() {
     return (
       <div style={{ textAlign: "center" }}>
         <h1 textalign='center' style={{color: "white", background: "#343a40",
         paddingTop: '20px', paddingBottom: '20px'}}>Grocery List</h1>
         <span className="horizontal-line" />
-        <div className="centerDiv" style={{ height: 675, width: '100%' }}>
+        <div className="centerDiv" style={{ height: 650, width: '100%' }}>
           <DataGrid
             rows={this.state.data}
             columns={[
@@ -103,7 +117,10 @@ class GroceryList extends Component {
             ]}
             pageSize={25}
             checkboxSelection
-            onRowSelected={this.handleRowSelection}
+            onRowSelected={this.handleRowSelected}
+            onSelectionModelChange={(newSelectionModel) =>  {
+              this.handleSelectionModelChange(newSelectionModel);
+            }}
           />
         </div>
         <br/>
@@ -130,6 +147,7 @@ class GroceryList extends Component {
           <br/>
           <Button onClick={this.handleSubmit} type="submit" variant="outlined">Add item</Button>
         </form>
+        {/* <Button onClick={this.handleItemChecked} type='check'variant="outlined">Check Items Into Kitchen</Button> */}
       </div>
 
     );
