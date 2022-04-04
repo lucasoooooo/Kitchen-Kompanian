@@ -24,11 +24,11 @@ var data = [
   { id: 1, item: 'Eggs', quantity: '12', location: 'Refrigerator', expiration:"", allergies: ["Eggs"], owner:[]},
   { id: 2, item: 'Milk', quantity: '1 Gallon', location: "Refrigerator", expiration:"Apr 01 2022", allergies: ["Dairy"], owner:[]},
   { id: 3, item: 'Chicken Breasts', quantity: '4', location:"Refrigerator", expiration:"", allergies:[], owner:[]},
-  { id: 4, item: 'Ice Cream', quantity: '4',location: "Fridge", expiration:"",allergies:["Dairy"], owner:[]},
-  { id: 5, item: 'Peas', quantity: '4' ,location: "Fridge", expiration:"",allergies:[], owner:[]},
-  { id: 6, item: 'Canned Beans', quantity: '4',location: "Pantry", expiration:"",allergies:[], owner:[]},
-  { id: 7, item: 'Jasmine Rice', quantity: '4',location: "Pantry", expiration:"",allergies:[], owner:[]},
-  { id: 8, item: 'Cookie', quantity: '4' ,location: "Pantry", expiration:"Apr 10 2022",allergies:["Dairy","Nut"], owner:[]},
+  { id: 4, item: 'Ice Cream', quantity: '1',location: "Fridge", expiration:"",allergies:["Dairy"], owner:[]},
+  { id: 5, item: 'Peas', quantity: '3' ,location: "Fridge", expiration:"",allergies:[], owner:[]},
+  { id: 6, item: 'Canned Beans', quantity: '6',location: "Pantry", expiration:"",allergies:[], owner:[]},
+  { id: 7, item: 'Jasmine Rice', quantity: '5',location: "Pantry", expiration:"",allergies:[], owner:[]},
+  { id: 8, item: 'Cookie', quantity: '9' ,location: "Pantry", expiration:"Apr 10 2022",allergies:["Dairy","Nut"], owner:[]},
 ];
 
 class KitchenStock extends Component {
@@ -40,7 +40,7 @@ class KitchenStock extends Component {
       data: [],
       addView: false,
       editView: false,
-      currentEditId: data.length,
+      currentEditId: 0,
       numItems: 0,
       item: '',
       quantity: ''
@@ -49,7 +49,9 @@ class KitchenStock extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleBack = this.handleBack.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     // this.handleEditView = this.handleEditView(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
   }
   
   componentDidMount() {
@@ -57,7 +59,7 @@ class KitchenStock extends Component {
       data: [...data],
       addView: false,
       editView: false,
-      currentEditId: data.length-1,
+      currentEditId: 0,
       numItems: data.length+1,
       item: '',
       quantity: '',
@@ -69,13 +71,22 @@ class KitchenStock extends Component {
   }
 
   handleDelete(id){
-
-    let temp = this.state.data.filter(item => item.id !== id);
+    console.log(`Deleting item of id: ${id}`)
+    let temp = this.state.data.filter(
+      item => item.id !== parseInt(id));
     this.setState({
       data: temp,
-      currentEditId: data[0].id
+      currentEditId: data[0].id,
+      addView: false,
+      editView: false,
+      item: '',
+      quantity: '',
+      location:'',
+      expiration:'',
+      allergies:'',
+      owner:''
     });
-    console.log(this.state.data)
+    // console.log(this.state.data)
   }
   handleAddView(){
     this.setState({
@@ -85,6 +96,17 @@ class KitchenStock extends Component {
   }
  
   handleEditView(id){
+    const foodItem = this.state.data.filter(item =>{
+      return item.id === id
+    })[0]
+    this.setState({
+      item: foodItem.item,
+      quantity: foodItem.quantity,
+      location: foodItem.location,
+      expiration: foodItem.expiration,
+      allergies: String(foodItem.allergies),
+      owner: String(foodItem.owner)
+    });
     this.setState({
       addView: false,
       editView: true,
@@ -95,11 +117,7 @@ class KitchenStock extends Component {
   handleBack(){
     this.setState({
       addView: false,
-      editView:   false
-    });
-    this.setState({
-      data: this.state.data,
-      numItems: this.state.numItems,
+      editView: false,
       item: '',
       quantity: '',
       location:'',
@@ -112,13 +130,44 @@ class KitchenStock extends Component {
   handleChange(event) {
     const name = event.target.name;
     this.setState({[name]: event.target.value});
-    console.log(this.state)
+    // console.log(this.state)
+  }
+  handleSubmitEdit(event){
+    let temp = this.state.data.filter(
+      item => item.id !== parseInt(this.state.currentEditId));
+      temp.push({ id: this.state.numItems, 
+        item: this.state.item, 
+        quantity: this.state.quantity,
+        location: this.state.location,
+        expiration: this.state.expiration,
+        allergies: this.state.allergies,
+        owner: this.state.owner});
+      this.setState({
+        data: temp,
+        numItems: this.state.numItems+1,
+        addView: false,
+        editView: false,
+        item: '',
+        quantity: '',
+        location:'',
+        expiration:'',
+        allergies:'',
+        owner:''
+      });
+    
+    
+    // this.handleSubmit(event)
+
+    // console.log(this.state.data)
+   
+    // this.handleDelete(this.state.currentEditId)
+    // console.log(this.state.data)
   }
 
   handleSubmit(event) {
-    console.log(this.state)
     this.setState({
-      addView: false
+      addView: false,
+      editView: false
     });
     event.preventDefault();
     let temp = [
@@ -127,9 +176,9 @@ class KitchenStock extends Component {
     temp.push({ id: this.state.numItems, 
                 item: this.state.item, 
                 quantity: this.state.quantity,
-                location:this.state.location,
-                expiration:this.state.expiration,
-                allergies:this.state.allergies,
+                location: this.state.location,
+                expiration: this.state.expiration,
+                allergies: this.state.allergies,
                 owner: this.state.owner});
     this.setState({
       data: temp,
@@ -141,6 +190,7 @@ class KitchenStock extends Component {
       allergies:'',
       owner:''
     });
+    console.log(this.state)
   }
 
   render() {
@@ -193,7 +243,7 @@ class KitchenStock extends Component {
                   variant='text'
                   color='primary'
                   style={{ border: 'none', outline: 'none' , marginRight:"100px"}}
-                  startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
+                  startIcon={<SaveIcon>Save Food</SaveIcon>}
                   type="submit"
                   onClick={this.handleSubmit}
                 >
@@ -294,14 +344,15 @@ class KitchenStock extends Component {
                 </Button>
               </Grid>
               <Grid item>
-                <Button
+              <Button
                   variant='text'
                   color='primary'
-                  style={{ border: 'none', outline: 'none' }}
-                  startIcon={<EditIcon>Edit Recipe</EditIcon>}
-                  onClick={this.handleBack}
+                  style={{ border: 'none', outline: 'none' , marginRight:"100px"}}
+                  startIcon={<SaveIcon>Save Food</SaveIcon>}
+                  type="submit"
+                  onClick={this.handleSubmitEdit}
                 >
-                  Edit Recipe
+                  Save Food Item
                 </Button>
               </Grid>
               <Grid item>
@@ -310,7 +361,7 @@ class KitchenStock extends Component {
                   color='primary'
                   style={{ border: 'none', outline: 'none' }}
                   startIcon={<DeleteIcon>Delete Recipe</DeleteIcon>}
-                  onClick={this.handleBack}
+                  onClick={() => this.handleDelete(this.state.currentEditId)}
                 >
                   Delete Recipe
                 </Button>
@@ -318,7 +369,68 @@ class KitchenStock extends Component {
               </Grid>
           </Grid>
           <h2>View Food Item</h2>
-          <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
+          <form onSubmit={this.handleSubmitEdit}>
+          <span className='textField'>
+            <TextField
+              type="text" 
+              label="Grocery Item"
+              name="item" 
+              value={this.state.item} 
+              onChange={this.handleChange}
+            />
+          </span>
+          <span className ='textField'>
+            <TextField 
+              type="text" 
+              label="Quantity"
+              name="quantity" 
+              value={this.state.quantity} 
+              onChange={this.handleChange}
+            />
+          </span>
+          <span className='textField'>
+            <TextField
+              type="text" 
+              label="Storage Location"
+              name="location" 
+              value={this.state.location} 
+              onChange={this.handleChange}
+            />
+          </span>
+          {/* Add padding to the top of the bottom 3 insert cells
+           */}
+          <span style={{paddingTop: '200px'}}>
+          <span className='textField'>
+            <TextField
+              type="text" 
+              label="Expiration Date"
+              name="expiration" 
+              value={this.state.expiration} 
+              onChange={this.handleChange}
+            />
+          </span>
+          <span className='textField'>
+            <TextField
+              type="text" 
+              label="Allergies"
+              name="allergies" 
+              value={this.state.allergies} 
+              onChange={this.handleChange}
+            />
+          </span>
+          <span className='textField'>
+            <TextField
+              type="text" 
+              label="Owner"
+              name="owner" 
+              value={this.state.owner} 
+              onChange={this.handleChange}
+            />
+          </span>
+          </span>
+        </form>
+
+          {/* <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
             {`Food Item: ${String(this.state.data[this.state.currentEditId-1].item)}`}</h3>
           <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
             {`Quantity: ${String(this.state.data[this.state.currentEditId-1].quantity)}`}</h3>
@@ -329,7 +441,7 @@ class KitchenStock extends Component {
           <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
             {`Allergies: ${String(this.state.data[this.state.currentEditId-1].allergies)}`}</h3>
           <h3 style={{textAlign: 'Left', paddingLeft:'200px'}}>
-            {`Owners: ${String(this.state.data[this.state.currentEditId-1].owner)}`}</h3>
+            {`Owners: ${String(this.state.data[this.state.currentEditId-1].owner)}`}</h3> */}
         </div>
         }
         { !this.state.addView && !this.state.editView && 
