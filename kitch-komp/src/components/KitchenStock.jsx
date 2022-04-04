@@ -571,7 +571,7 @@ class KitchenStock extends Component {
               this.handleEditView(params.id)
             }}
             // {...data}
-            rows={this.state.data}
+            rows={this.props.items}
             columns={[
               { field: 'item', headerName: 'Food Item', width: 200},
               { field: 'quantity', headerName: 'Quantity', width: 100},
