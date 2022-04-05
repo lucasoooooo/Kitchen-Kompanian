@@ -6,9 +6,9 @@ import TextField from '@mui/material/TextField';
 
 
 var data = [
-  { id: 1, item: 'Eggs', quantity: '12'},
-  { id: 2, item: 'Milk', quantity: '1 Gallon'},
-  { id: 3, item: 'Chicken Breasts', quantity: '4'},
+  { id: 20, item: 'Bread', quantity: '1 Loaf'},
+  { id: 21, item: 'Orange Juice', quantity: '1 Gallon'},
+  { id: 22, item: 'Sirloin Steaks', quantity: '4'},
 ];
 
 class GroceryList extends Component {
@@ -32,7 +32,7 @@ class GroceryList extends Component {
   componentDidMount() {
     this.setState({
       data: [...data],
-      numItems: 4,
+      numItems: 23,
       item: '',
       quantity: ''
     });
@@ -44,7 +44,7 @@ class GroceryList extends Component {
     this.setState({
       data: temp
     });
-    console.log(this.state.data)
+    // console.log(this.state.data)
   }
   
 
@@ -72,15 +72,19 @@ class GroceryList extends Component {
   }
 
   handleSelectionModelChange(newSelectionModel) {
-    // console.log(newSelectionModel)
-    let temp = this.state.data
-    for (const id in newSelectionModel){
-      // console.log(id)
-      // console.log(this.state.data)
-      temp = temp.filter(item => item.id === newSelectionModel[id])
-    }
-    for (const element in temp){
-      this.props.onItemSelected(temp[element])
+    
+    if(newSelectionModel.length !== 0){
+      let temp = this.state.data
+      for (const id in newSelectionModel){
+        // console.log(id)
+        // console.log(this.state.data)
+        temp = temp.filter(item => item.id === newSelectionModel[id])
+      }
+      for (const element in temp){
+        this.props.onItemSelected(temp[element])
+        // console.log(temp[element])
+      }
+      this.handleDelete(newSelectionModel[0])
     }
   }
 
@@ -90,7 +94,7 @@ class GroceryList extends Component {
         <h1 textalign='center' style={{color: "white", background: "#343a40",
         paddingTop: '20px', paddingBottom: '20px'}}>Grocery List</h1>
         <span className="horizontal-line" />
-        <div className="centerDiv" style={{ height: 650, width: '100%' }}>
+        <div className="centerDiv" style={{ height: 675, width: '100%' }}>
           <DataGrid
             rows={this.state.data}
             columns={[
