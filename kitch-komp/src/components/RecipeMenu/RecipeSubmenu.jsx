@@ -110,7 +110,7 @@ function ViewRecipe (props) {
         {/* List all of the ingredients for the recipe */}
         {props.recipe.ingredients.map(currIngredient => {
           return (
-            <Grid item>
+            <Grid item key={currIngredient.id}>
               {currIngredient.name} - {currIngredient.quantity}
             </Grid>
           )
@@ -168,6 +168,24 @@ function ManipulateRecipe (props) {
       headerClassName: 'super-app-theme--header',
       flex: 1,
       editable: true
+    },
+    {
+      field: 'delete',
+      headerName: '',
+      width: 80,
+      sortable: false,
+      headerClassName: 'delete-item-column',
+      hideSortIcons: true,
+      renderCell: (params) => {
+        return (
+          <Button
+            className="delete-btn"            
+            onClick={() => setOpenDeleteDialog(true)}>
+            <DeleteIcon className="delete" color="inherit" />
+          </Button>
+        );
+      },
+      editable: false
     }
   ]
 
@@ -195,6 +213,7 @@ function ManipulateRecipe (props) {
   }
 
   const handleIngredientChange = (value, event) => {
+    console.log(value, event)
     let temp = rows.map(curr => {
       if (curr.id === value.id) {
         return { ...curr, [value.field]: value.value }
@@ -207,15 +226,17 @@ function ManipulateRecipe (props) {
   }
 
   const handleDeleteIngredient = () => {
-    let ingredientName = currIngredient.name
+    let name = ""
 
     const tempArray = rows.filter(curr => {
       if (curr.id !== currIngredient.id) {
         return curr
+      } else {
+        name = curr.name
       }
     })
 
-    openCustomSnackBar(`${ingredientName} has been deleted`)
+    openCustomSnackBar(`${name} has been deleted`)
     setRows(tempArray)
     setOpenDeleteDialog(false)
     setCurrIngredient({})
@@ -419,35 +440,23 @@ function ManipulateRecipe (props) {
                 <Divider sx={{ width: 500 }} />
               </Grid>
 
-              <Grid item>
-                <Typography>
-                  Select a row to delete, or double tap on a cell to edit it
-                </Typography>
-              </Grid>
-              <Grid item container justifyContent='flex-end'>
+              <Grid
+                item
+                container
+                direction='column'
+                alignContent='center'
+                justifyContent='center'
+                alignItems='center'
+                spacing={2}
+              >
                 <Grid item>
-                  <Button
-                    variant='text'
-                    color='primary'
-                    style={{ border: 'none', outline: 'none' }}
-                    startIcon={<DeleteIcon>Delete Ingredient</DeleteIcon>}
-                    onClick={() => setOpenDeleteDialog(true)}
-                  >
-                    Delete Ingredient
-                  </Button>
+                  <Typography>
+                    Double tap on a cell in the table below to edit it
+                  </Typography>
                 </Grid>
 
                 <Grid item>
-                  <Paper
-                    sx={{
-                      height: 500,
-                      width: 700,
-
-                      '& .super-app-theme--header': {
-                        backgroundColor: '#6A994E'
-                      }
-                    }}
-                  >
+                <div className='recipeTableDiv' style={{ height: 400, width: 768 }}>
                     <DataGrid
                       experimentalFeatures={{ newEditingApi: true }}
                       rows={rows} // Display the rows
@@ -463,10 +472,9 @@ function ManipulateRecipe (props) {
                           handleIngredientSelected(selectedRowData[0])
                         }
                       }}
-                      onCellEditCommit={(v, e) => handleIngredientChange(v, e)}
-                      selectionModel={[currIngredient]}
+                      onCellEditCommit={(v, e) => console.log(v,e)}
                     />
-                  </Paper>
+                  </div>
                 </Grid>
               </Grid>
 
@@ -564,7 +572,7 @@ export default function RecipeSubmenu (props) {
 
   return (
     <>
-      <Paper>
+      <div className="RecipeSubmenu">
         <Grid
           container
           direction='column'
@@ -660,7 +668,7 @@ export default function RecipeSubmenu (props) {
             )}
           </Grid>
         </Grid>
-      </Paper>
+      </div>
 
       {openDeleteDialog ? (
         <Dialog

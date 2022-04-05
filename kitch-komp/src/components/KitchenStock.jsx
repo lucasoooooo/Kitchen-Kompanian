@@ -25,16 +25,6 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
-var data = [
-  { id: 1, item: 'Eggs', quantity: '12', location: 'Refrigerator', expiration:"", allergies: ["Eggs"], owner:[]},
-  { id: 2, item: 'Milk', quantity: '1 Gallon', location: "Refrigerator", expiration:"Apr 01 2022", allergies: ["Dairy"], owner:[]},
-  { id: 3, item: 'Chicken Breasts', quantity: '4', location:"Refrigerator", expiration:"", allergies:[], owner:[]},
-  { id: 4, item: 'Ice Cream', quantity: '1',location: "Fridge", expiration:"",allergies:["Dairy"], owner:[]},
-  { id: 5, item: 'Peas', quantity: '3' ,location: "Fridge", expiration:"",allergies:[], owner:[]},
-  { id: 6, item: 'Canned Beans', quantity: '6',location: "Pantry", expiration:"",allergies:[], owner:[]},
-  { id: 7, item: 'Jasmine Rice', quantity: '5',location: "Pantry", expiration:"",allergies:[], owner:[]},
-  { id: 8, item: 'Cookie', quantity: '9' ,location: "Pantry", expiration:"Apr 10 2022",allergies:["Dairy","Nut"], owner:[]},
-];
 
 class KitchenStock extends Component {
 
@@ -64,13 +54,14 @@ class KitchenStock extends Component {
   }
   
   componentDidMount() {
+    console.log()
     this.setState({
-      data: [...data],
+      data: [...this.props.items],
       addView: false,
       editView: false,
       openDeleteDialog: false,
       currentEditId: 0,
-      numItems: data.length+1,
+      numItems: this.props.items.length+1,
       item: '',
       quantity: '',
       location:'',
@@ -86,7 +77,7 @@ class KitchenStock extends Component {
       item => item.id !== parseInt(this.state.currentEditId));
     this.setState({
       data: temp,
-      currentEditId: data[0].id,
+      currentEditId: this.props.items[0].id,
       addView: false,
       editView: false,
       openDeleteDialog: false,
@@ -269,24 +260,6 @@ class KitchenStock extends Component {
   render() {
     return (
       <div>
-
-
-
-
-         <Grid item sm>
-              <Button
-                variant='text'
-                color='primary'
-                style={{ border: 'none', outline: 'none'}}
-                startIcon={<ArrowBackIcon>Back To List</ArrowBackIcon>}
-                onClick={this.checkExpiration}>
-                  TEST
-                </Button>
-              </Grid>
-
-
-
-
       <div style={{ textAlign: "center" }}>
         <h1 textalign='center' style={{color: "white", background: "#343a40",
         paddingTop: '20px', paddingBottom: '20px'}}>Kitchen Stock</h1>
@@ -571,7 +544,7 @@ class KitchenStock extends Component {
               this.handleEditView(params.id)
             }}
             // {...data}
-            rows={this.props.items}
+            rows={this.state.data}
             columns={[
               { field: 'item', headerName: 'Food Item', width: 200},
               { field: 'quantity', headerName: 'Quantity', width: 100},

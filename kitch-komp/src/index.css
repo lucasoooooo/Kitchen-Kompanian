@@ -52,6 +52,9 @@ a:hover {
   justify-self: end;
 }
 
+.MuiDataGrid-row:hover {
+  cursor: pointer
+}
 
 
 .MuiDataGrid-row:nth-child(even){
