@@ -88,11 +88,19 @@ class App extends Component {
           directions: 'Stuff the loaf of bread full of corn',
           tags: 'Side Dish'
         }
-      ]
+      ],
+      groceryList: [
+        { id: 20, item: 'Bread', quantity: '1 Loaf'},
+        { id: 21, item: 'Orange Juice', quantity: '1 Gallon'},
+        { id: 22, item: 'Sirloin Steaks', quantity: '4'},
+      ],
+      numGroceryItems: 23,
     }
 
     this.handleTransfer = this.handleTransfer.bind(this);
     this.handleChangeRecipe = this.handleChangeRecipe.bind(this)
+    this.handleGroceryAdd = this.handleGroceryAdd.bind(this)
+    this.handleGroceryDelete = this.handleGroceryDelete.bind(this)
   }
 
   componentDidMount() {}
@@ -115,14 +123,29 @@ class App extends Component {
     }))
   }
 
+  handleGroceryAdd(itemToAdd) {
+    this.setState(prevState => ({
+      groceryList: [...prevState.groceryList, itemToAdd],
+      numGroceryItems: this.state.numGroceryItems+1
+    }))
+  }
+
+  handleGroceryDelete(temp) {
+    // let temp = this.state.groceryList.filter(item => item.id !== id);
+    this.setState({
+      groceryList: temp
+    });
+  }
+
   render() {
     return (
       <Router>
         <Routes>
-          <Route path="/" element={<GroceryList onItemSelected={this.handleTransfer} />} />
+          <Route path="/" element={<GroceryList onGroceryAdd={this.handleGroceryAdd} onGroceryDelete={this.handleGroceryDelete}
+           onItemSelected={this.handleTransfer} groceryItems={this.state.groceryList} numItems={this.state.numGroceryItems} />} />
           <Route path="/kitchenStock" element={<KitchenStock items={this.state.kitchenStockList}/>} />
           <Route path="/recipies" element={<Recipies recipes={this.state.recipes} handleChangeRecipe={this.handleChangeRecipe}/>} />
-          <Route path="/myKitchens" element={<MyKitchens />} />
+          <Route path="/myKitchens" element={<MyKitchens/>} />
         </Routes>
         <Footer />
       </Router>

@@ -5,11 +5,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import TextField from '@mui/material/TextField';
 
 
-var data = [
-  { id: 20, item: 'Bread', quantity: '1 Loaf'},
-  { id: 21, item: 'Orange Juice', quantity: '1 Gallon'},
-  { id: 22, item: 'Sirloin Steaks', quantity: '4'},
-];
+// var data = [
+//   { id: 20, item: 'Bread', quantity: '1 Loaf'},
+//   { id: 21, item: 'Orange Juice', quantity: '1 Gallon'},
+//   { id: 22, item: 'Sirloin Steaks', quantity: '4'},
+// ];
 
 class GroceryList extends Component {
 
@@ -17,8 +17,6 @@ class GroceryList extends Component {
     super(props);
 
     this.state = {
-      data: [],
-      numItems: 0,
       item: '',
       quantity: ''
     };
@@ -31,8 +29,6 @@ class GroceryList extends Component {
 
   componentDidMount() {
     this.setState({
-      data: [...data],
-      numItems: 23,
       item: '',
       quantity: ''
     });
@@ -40,10 +36,9 @@ class GroceryList extends Component {
 
   handleDelete(id){
 
-    let temp = this.state.data.filter(item => item.id !== id);
-    this.setState({
-      data: temp
-    });
+    // this.props.onGroceryDelete(id)
+    let temp = this.props.groceryItems.filter(item => item.id !== id);
+    this.props.onGroceryDelete(temp)
     // console.log(this.state.data)
   }
   
@@ -56,16 +51,11 @@ class GroceryList extends Component {
 
   handleSubmit(event) {
 
-    console.log(this.state)
+    // console.log(this.state)
 
     event.preventDefault();
-    let temp = [
-      ...this.state.data
-    ];
-    temp.push({ id: this.state.numItems, item: this.state.item, quantity: this.state.quantity});
+    this.props.onGroceryAdd({ id: this.props.numItems, item: this.state.item, quantity: this.state.quantity})
     this.setState({
-      data: temp,
-      numItems: this.state.numItems+1,
       item: '',
       quantity: ''
     });
@@ -74,7 +64,7 @@ class GroceryList extends Component {
   handleSelectionModelChange(newSelectionModel) {
     
     if(newSelectionModel.length !== 0){
-      let temp = this.state.data
+      let temp = this.props.groceryItems
       for (const id in newSelectionModel){
         // console.log(id)
         // console.log(this.state.data)
@@ -96,7 +86,7 @@ class GroceryList extends Component {
         <span className="horizontal-line" />
         <div className="centerDiv" style={{ height: 675, width: '100%' }}>
           <DataGrid
-            rows={this.state.data}
+            rows={this.props.groceryItems}
             columns={[
               { field: 'item', headerName: 'Grocery Item', width: 420},
               { field: 'quantity', headerName: 'Quantity', width: 200},
