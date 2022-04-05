@@ -27,8 +27,8 @@ function MyKitchens() {
   ])
 
   const [add, setAdd] = useState(false);
-
   const [id, setID] = useState(5);
+  const [currMember, setCurrMember] = useState('');
 
   const handleDelete = (id) => {
     const newMembers = members.filter(member => member.id !== id);
@@ -36,6 +36,7 @@ function MyKitchens() {
   }
 
   const handleAdd = () => {
+    setCurrMember('');
     setAdd(true);
   }
 
@@ -48,10 +49,32 @@ function MyKitchens() {
     setMembers(members.concat(member));
   }
 
+  const handleEdit = (member) => {
+    setCurrMember(member);
+    setAdd(true);
+  }
+
   if(add) {
-    return <AddMember addMember={addMember} handleBack={handleBack}  id={id}/>
+    return <AddMember addMember={addMember} handleBack={handleBack}  id={id} currMember={currMember}
+    setCurrMember={setCurrMember}/>
   } else {
     return (
+<>
+      <div style={{ textAlign: 'center' }}>
+        <h1
+          textalign='center'
+          style={{
+            color: 'white',
+            background: '#343a40',
+            paddingTop: '20px',
+            paddingBottom: '20px'
+          }}
+        >
+          Kitchen Members
+        </h1>
+        <span className='horizontal-line' />
+      </div>
+
           <Grid
           container
           direction='column'
@@ -60,20 +83,18 @@ function MyKitchens() {
           alignItems='center'
           spacing={5}
           > 
-            <Grid item>
-              <Typography compontent='center' variant='h3'>
-                 Kitchen Members
-              </Typography>
-             </Grid>
+            
 
              <Grid item>
              <TableComponent
               members={members}
               handleAddButtonClicked={handleAdd}
+              handleMemberSelected={handleEdit}
             />
              </Grid>
 
           </Grid>
+          </>
     )
   }
 

@@ -47,14 +47,6 @@ a:hover {
   outline: none !important;
 }
 
-
-.kitchen-member-header{
-  margin:0;
-  display: grid;
-  grid-template: auto auto / repeat(2,1fr);
-  background-color: #355E3B;
-}
-
 .add-sign{
   cursor: pointer;
   justify-self: end;

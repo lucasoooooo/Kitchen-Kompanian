@@ -140,7 +140,7 @@ export default function QuickFilteringGrid (props) {
           width: 768,
 
           '& .super-app-theme--header': {
-            backgroundColor: '#6A994E'
+            backgroundColor: 'white'
           }
         }}
       >
@@ -164,7 +164,7 @@ export default function QuickFilteringGrid (props) {
                 return row
               }
             })
-            props.handleRecipeSelected(selectedRowData[0])
+            props.handleMemberSelected(selectedRowData[0])
           }}
         />
       </Paper>

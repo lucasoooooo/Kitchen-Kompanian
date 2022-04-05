@@ -40,16 +40,35 @@ import SaveIcon from '@mui/icons-material/Save'
 import { useEffect } from 'react'
 
 
-const AddMember = ({addMember, handleBack, id}) => {
+const AddMember = ({addMember, handleBack, id, currMember, setCurrMember}) => {
 
-    const [username, setUserName] = useState('');
+    const [username, setUserName] = useState(currMember.username);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [ID, setID] = useState(0);
+
+
+    useEffect(() => {
+        console.log(ID);
+    }, [ID])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const member = {username, firstName, lastName, id};
-        addMember(member);
+        console.log(id);
+        console.log(currMember.id);
+        
+        setID(currMember ? (3) : (id));
+        // currMember ? (setID(currMember.id)) : (setID(id));
+        console.log(ID);
+
+
+        const member = {username, firstName, lastName, ID};
+        currMember ? (
+            setCurrMember(member)
+        ) : (
+            addMember(member)
+        );
+        console.log(member);
         setUserName('');
         setFirstName('');
         setLastName('');
@@ -100,7 +119,18 @@ const AddMember = ({addMember, handleBack, id}) => {
             >
               
                 <Grid item>
+                    {currMember ? (
                   <Button
+                    variant='text'
+                    color='primary'
+                    style={{ border: 'none', outline: 'none' }}
+                    startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
+                    onClick={handleSubmit}
+                  >
+                    Edit Member
+                  </Button>
+                    ) : (
+                        <Button
                     variant='text'
                     color='primary'
                     style={{ border: 'none', outline: 'none' }}
@@ -109,6 +139,7 @@ const AddMember = ({addMember, handleBack, id}) => {
                   >
                     Add Member
                   </Button>
+                    ) }
                 </Grid>
               
             </Grid>
@@ -122,6 +153,9 @@ const AddMember = ({addMember, handleBack, id}) => {
             alignItems='center'
           >
               <EditMember  
+              firstName = {currMember.firstName}
+              lastName = {currMember.lastName}
+              username = {currMember.username}
               setUserName = {setUserName}
               setFirstName = {setFirstName}
               setLastName = {setLastName} />
@@ -162,9 +196,7 @@ function EditMember(props) {
             <Grid item>
               <TextField
                 label='First Name'
-                // value={firstName}
-                 //onChange={(e) => (handleFirstChange(e))}
-               // defaultValue={firstName}
+                 defaultValue={props.firstName}
                  onChange={(e) => props.setFirstName(e.target.value)}
               />
             </Grid>
@@ -172,7 +204,7 @@ function EditMember(props) {
             <Grid item>
               <TextField
                 label='Last Name'
-               // defaultValue={props.recipe.prepTime ? props.recipe.prepTime : ''}
+                defaultValue={props.lastName}
                 onChange={(e) => props.setLastName(e.target.value)}
               />
 
@@ -187,7 +219,7 @@ function EditMember(props) {
             <Grid item>
               <TextField
                 label='Username'
-                // defaultValue={props.recipe.cookTime ? props.recipe.cookTime : ''}
+                 defaultValue={props.username}
                  onChange={(e) => props.setUserName(e.target.value)}
               />
             </Grid>
