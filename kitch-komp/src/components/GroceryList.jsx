@@ -238,7 +238,7 @@ function QuickSearchToolbar (props) {
           variant='text'
           color='primary'
           style={{ border: 'none', outline: 'none'}}
-          startIcon={<AddIcon>Import Saved List</AddIcon>}
+          startIcon={<AddIcon>Import Starter List</AddIcon>}
           onClick={props.handleDefaultList}
         >
           Import Starter List
