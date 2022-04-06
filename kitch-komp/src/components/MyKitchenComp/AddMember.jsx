@@ -40,11 +40,11 @@ import SaveIcon from '@mui/icons-material/Save'
 import { useEffect } from 'react'
 
 
-const AddMember = ({addMember, handleBack, id, currMember, setCurrMember}) => {
+const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, handleDelete}) => {
 
     const [username, setUserName] = useState(currMember.username);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [firstName, setFirstName] = useState(currMember.firstName);
+    const [lastName, setLastName] = useState(currMember.lastName);
     const [ID, setID] = useState(0);
 
 
@@ -54,24 +54,23 @@ const AddMember = ({addMember, handleBack, id, currMember, setCurrMember}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(id);
-        console.log(currMember.id);
         
-        setID(currMember ? (3) : (id));
-        // currMember ? (setID(currMember.id)) : (setID(id));
-        console.log(ID);
+        let tempID = currMember ? currMember.id : id; 
 
-
-        const member = {username, firstName, lastName, ID};
+        const member = {username, firstName, lastName, id: tempID};
         currMember ? (
-            setCurrMember(member)
+            handleEditMember(member)
         ) : (
             addMember(member)
         );
-        console.log(member);
         setUserName('');
         setFirstName('');
         setLastName('');
+        handleBack();
+    }
+
+    const handleDeleteClick = () => {
+        handleDelete(currMember.id);
         handleBack();
     }
 
@@ -141,6 +140,22 @@ const AddMember = ({addMember, handleBack, id, currMember, setCurrMember}) => {
                   </Button>
                     ) }
                 </Grid>
+            
+           { (currMember) && 
+
+                <Grid item>
+                    <Button
+                      variant='text'
+                      color='primary'
+                      style={{ border: 'none', outline: 'none' }}
+                      startIcon={<DeleteIcon>Delete Recipe</DeleteIcon>}
+                      onClick={handleDeleteClick}
+                    >
+                      Delete Member
+                    </Button>
+                  </Grid>
+             } 
+
               
             </Grid>
           </Grid>
