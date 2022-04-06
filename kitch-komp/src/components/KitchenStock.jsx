@@ -32,7 +32,7 @@ class KitchenStock extends Component {
     super(props);
 
     this.state = {
-      data: [],
+      props: [],
       addView: false,
       editView: false,
       openDeleteDialog: false,
@@ -56,7 +56,7 @@ class KitchenStock extends Component {
   componentDidMount() {
     console.log()
     this.setState({
-      data: [...this.props.items],
+      props: [...this.props.items],
       addView: false,
       editView: false,
       openDeleteDialog: false,
@@ -73,10 +73,10 @@ class KitchenStock extends Component {
 
   handleDelete(){
     console.log(`Deleting item of id: ${this.state.currentEditId}`)
-    let temp = this.state.data.filter(
+    let temp = this.props.items.filter(
       item => item.id !== parseInt(this.state.currentEditId));
+    this.props.onKitchenStockSubmit(temp)
     this.setState({
-      data: temp,
       currentEditId: this.props.items[0].id,
       addView: false,
       editView: false,
@@ -96,9 +96,9 @@ class KitchenStock extends Component {
       editView:false
     });
   }
- 
+
   handleEditView(id){
-    const foodItem = this.state.data.filter(item =>{
+    const foodItem = this.props.items.filter(item =>{
       return item.id === id
     })[0]
     this.setState({
@@ -145,7 +145,7 @@ class KitchenStock extends Component {
   }
   handleSubmitEdit(event){
     
-    let temp = this.state.data.filter(
+    let temp = this.props.items.filter(
       item => item.id !== parseInt(this.state.currentEditId));
     temp.push({ id: this.state.numItems, 
       item: this.state.item, 
@@ -173,9 +173,8 @@ class KitchenStock extends Component {
         return {...x,  item: x.item.replace("(Expired) ", "")}
       }
     })
-
+    this.props.onKitchenStockSubmit(tempE)
     this.setState({
-      data: tempE,
       numItems: this.state.numItems+1,
       addView: false,
       editView: false,
@@ -192,7 +191,7 @@ class KitchenStock extends Component {
   handleSubmit(event) { 
     event.preventDefault();
     let temp = [
-      ...this.state.data
+      ...this.props.items
     ];
     temp.push({ id: this.state.numItems, 
                 item: this.state.item, 
@@ -220,11 +219,10 @@ class KitchenStock extends Component {
       }
     })
 
-    
+    this.props.onKitchenStockSubmit(tempE)
     this.setState({
       addView: false,
       editView: false,
-      data: tempE,
       numItems: this.state.numItems+1,
       item: '',
       quantity: '',
@@ -240,7 +238,7 @@ class KitchenStock extends Component {
   checkExpiration(){
     var currentDate = new Date().getTime()
     // var otherDate = Date.parse("Apr 02 2022")
-    const temp = this.state.data.map(function(x){
+    const temp = this.props.items.map(function(x){
       if (x.expiration == ""){
         return x
       }
@@ -253,7 +251,7 @@ class KitchenStock extends Component {
     })
     console.log(temp)
     this.setState({
-      data: temp
+      props: temp
     });
   }
 
@@ -544,7 +542,7 @@ class KitchenStock extends Component {
               this.handleEditView(params.id)
             }}
             // {...data}
-            rows={this.state.data}
+            rows={this.props.items}
             columns={[
               { field: 'item', headerName: 'Food Item', width: 200},
               { field: 'quantity', headerName: 'Quantity', width: 100},
