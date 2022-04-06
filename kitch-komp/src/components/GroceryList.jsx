@@ -3,6 +3,12 @@ import { DataGrid, GridToolbar, GridCellParams } from '@mui/x-data-grid';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@mui/icons-material/Delete'
 import TextField from '@mui/material/TextField';
+import PropTypes from 'prop-types'
+import SearchIcon from '@mui/icons-material/Search'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import ClearIcon from '@mui/icons-material/Clear'
+import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 
 
 // var data = [
@@ -18,28 +24,38 @@ class GroceryList extends Component {
 
     this.state = {
       item: '',
-      quantity: ''
+      quantity: '',
+      selectionModel: []
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSelectionModelChange = this.handleSelectionModelChange.bind(this);
+    this.handleAddToKitchen = this.handleAddToKitchen.bind(this);
   }
 
 
   componentDidMount() {
     this.setState({
       item: '',
-      quantity: ''
+      quantity: '',
+      selectionModel: []
     });
   }
 
   handleDelete(id){
-
-    // this.props.onGroceryDelete(id)
-    let temp = this.props.groceryItems.filter(item => item.id !== id);
+    
+    // console.log(this.props.groceryItems)
+    let temp = this.props.groceryItems
+    id.forEach(idNum => {
+       temp = temp.filter(item => item.id != idNum)
+    })
+    // let temp = this.props.groceryItems.filter(item => item.id !== id);
     this.props.onGroceryDelete(temp)
-    // console.log(this.state.data)
+
+
+    // this.props.onGroceryDelete(whatToKeep)
+
   }
   
 
@@ -62,20 +78,38 @@ class GroceryList extends Component {
   }
 
   handleSelectionModelChange(newSelectionModel) {
+
+    this.setState({
+      selectionModel: newSelectionModel
+    })
     
-    if(newSelectionModel.length !== 0){
-      let temp = this.props.groceryItems
-      for (const id in newSelectionModel){
+  }
+
+  handleAddToKitchen(){
+    let listOfItems = []
+    if(this.state.selectionModel.length !== 0){
+      // console.log(this.state.selectionModel)
+      let temp = []
+      console.log(temp)
+      for (const id in this.state.selectionModel){
         // console.log(id)
-        // console.log(this.state.data)
-        temp = temp.filter(item => item.id === newSelectionModel[id])
+        temp = this.props.groceryItems.filter(item => item.id === this.state.selectionModel[id])
+        temp.forEach(element => listOfItems.push(element));
       }
-      for (const element in temp){
-        this.props.onItemSelected(temp[element])
-        // console.log(temp[element])
+      // console.log(listOfItems)
+      for (const element in listOfItems){
+        this.props.onItemSelected(listOfItems[element])
       }
-      this.handleDelete(newSelectionModel[0])
+      // this.handleDelete(this.state.selectionModel[0])
+      // this.state.selectionModel.forEach(id => {
+        // console.log(id)
+      this.handleDelete(this.state.selectionModel)
+      // })
     }
+    // // console.log(this.state.selectionModel)
+    this.setState({
+      selectionModel: []
+    })
   }
 
   render() {
@@ -86,6 +120,13 @@ class GroceryList extends Component {
         <span className="horizontal-line" />
         <div className="centerDiv" style={{ height: 675, width: '100%' }}>
           <DataGrid
+            components={{ Toolbar: QuickSearchToolbar }}
+            componentsProps={{
+              // Interaction between Search Bar and Table
+              toolbar: {
+                handleAddToKitchen: () => this.handleAddToKitchen()
+              }
+            }}
             rows={this.props.groceryItems}
             columns={[
               { field: 'item', headerName: 'Grocery Item', width: 420},
@@ -101,7 +142,7 @@ class GroceryList extends Component {
                   return (
                     <Button
                       className="delete-btn"            
-                      onClick={() => this.handleDelete(params.id)}>
+                      onClick={() => this.handleDelete([params.id])}>
                       <DeleteIcon className="delete" color="inherit" />
                     </Button>
                   );
@@ -112,6 +153,7 @@ class GroceryList extends Component {
             pageSize={25}
             checkboxSelection
             onRowSelected={this.handleRowSelected}
+            selectionModel={this.state.selectionModel}
             onSelectionModelChange={(newSelectionModel) =>  {
               this.handleSelectionModelChange(newSelectionModel);
             }}
@@ -149,3 +191,58 @@ class GroceryList extends Component {
 }
 
 export default GroceryList;
+
+function QuickSearchToolbar (props) {
+  return (
+    <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
+      <Grid item sm style={{marginRight:"250px"}}>
+      <TextField
+          variant='standard'
+          placeholder='Search…'
+          InputProps={{
+            startAdornment: <SearchIcon fontSize='small' />,
+            endAdornment: (
+              <IconButton
+                title='Clear'
+                aria-label='Clear'
+                size='small'
+                style={{ visibility: props.value ? 'visible' : 'hidden' }}
+              >
+                <ClearIcon fontSize='small' />
+              </IconButton>
+            )
+          }}
+          sx={{
+            width: {
+              xs: 1,
+              sm: 'auto'
+            },
+            m: theme => theme.spacing(1, 0.5, 1.5),
+            '& .MuiSvgIcon-root': {
+              mr: 0.5
+            },
+            '& .MuiInput-underline:before': {
+              borderBottom: 1,
+              borderColor: 'divider'
+            }
+          }}
+        />
+      </Grid>
+      <Grid item>
+        <Button
+          variant='text'
+          color='primary'
+          style={{ border: 'none', outline: 'none'}}
+          startIcon={<AddIcon>Add Selected Items to Kitchen</AddIcon>}
+          onClick={props.handleAddToKitchen}
+        >
+          Add Selected Items to Kitchen
+        </Button>
+      </Grid>
+    </Grid>
+  )
+}
+
+QuickSearchToolbar.propTypes = {
+  handleAddToKitchen: PropTypes.func.isRequired
+}
