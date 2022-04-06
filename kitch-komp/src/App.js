@@ -101,6 +101,7 @@ class App extends Component {
     this.handleChangeRecipe = this.handleChangeRecipe.bind(this)
     this.handleGroceryAdd = this.handleGroceryAdd.bind(this)
     this.handleGroceryDelete = this.handleGroceryDelete.bind(this)
+    this.handleKitchenStockSubmit = this.handleKitchenStockSubmit.bind(this)
   }
 
   componentDidMount() {}
@@ -136,14 +137,19 @@ class App extends Component {
       groceryList: temp
     });
   }
-
+  handleKitchenStockSubmit(item){
+    this.setState({
+      kitchenStockList: item
+    });
+  }
   render() {
     return (
       <Router>
         <Routes>
           <Route path="/" element={<GroceryList onGroceryAdd={this.handleGroceryAdd} onGroceryDelete={this.handleGroceryDelete}
            onItemSelected={this.handleTransfer} groceryItems={this.state.groceryList} numItems={this.state.numGroceryItems} />} />
-          <Route path="/kitchenStock" element={<KitchenStock items={this.state.kitchenStockList}/>} />
+          <Route path="/kitchenStock" element={<KitchenStock items={this.state.kitchenStockList}
+           onKitchenStockSubmit={this.handleKitchenStockSubmit}/>} />
           <Route path="/recipies" element={<Recipies recipes={this.state.recipes} handleChangeRecipe={this.handleChangeRecipe}/>} />
           <Route path="/myKitchens" element={<MyKitchens/>} />
         </Routes>
