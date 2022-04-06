@@ -11,10 +11,10 @@ import Grid from '@mui/material/Grid'
 
 // MUI Icon Imports
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-// import ClearIcon from '@mui/icons-material/Clear'
-// import IconButton from '@mui/material/IconButton'
+import ClearIcon from '@mui/icons-material/Clear'
+import IconButton from '@mui/material/IconButton'
 // import MenuIcon from '@mui/icons-material/MoreVert'
-// import SearchIcon from '@mui/icons-material/Search'
+import SearchIcon from '@mui/icons-material/Search'
 // import { Paper } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 // import EditIcon from '@mui/icons-material/Edit'
@@ -50,7 +50,6 @@ class KitchenStock extends Component {
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleClosed = this.handleClosed.bind(this);
     this.handleOpened = this.handleOpened.bind(this);
-    this.checkExpiration = this.checkExpiration.bind(this);
   }
   
   componentDidMount() {
@@ -235,25 +234,6 @@ class KitchenStock extends Component {
     // this.checkExpiration()
   }
 
-  checkExpiration(){
-    var currentDate = new Date().getTime()
-    // var otherDate = Date.parse("Apr 02 2022")
-    const temp = this.props.items.map(function(x){
-      if (x.expiration == ""){
-        return x
-      }
-      if (Date.parse(x.expiration) <= currentDate && !x.item.includes("Expired") ){
-        return {...x,  item:("(Expired) " + x.item)}
-      }
-      else{
-        return x
-      }
-    })
-    console.log(temp)
-    this.setState({
-      props: temp
-    });
-  }
 
   render() {
     return (
@@ -585,11 +565,48 @@ export default KitchenStock;
 function QuickSearchToolbar (props) {
   return (
     <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
+      <Grid item sm style={{marginRight:"455px"}}>
+      <TextField
+          variant='standard'
+          value={props.value}
+
+          onChange={props.onChange}
+          placeholder='Search…'
+          InputProps={{
+            startAdornment: <SearchIcon fontSize='small' />,
+            endAdornment: (
+              <IconButton
+                title='Clear'
+                aria-label='Clear'
+                size='small'
+                style={{ visibility: props.value ? 'visible' : 'hidden' }}
+                onClick={props.clearSearch}
+              >
+                <ClearIcon fontSize='small' />
+              </IconButton>
+            )
+          }}
+          sx={{
+            width: {
+              xs: 1,
+              sm: 'auto'
+            },
+            m: theme => theme.spacing(1, 0.5, 1.5),
+            '& .MuiSvgIcon-root': {
+              mr: 0.5
+            },
+            '& .MuiInput-underline:before': {
+              borderBottom: 1,
+              borderColor: 'divider'
+            }
+          }}
+        />
+      </Grid>
       <Grid item>
         <Button
           variant='text'
           color='primary'
-          style={{ border: 'none', outline: 'none' }}
+          style={{ border: 'none', outline: 'none'}}
           startIcon={<AddIcon>Add Food Item</AddIcon>}
           onClick={props.handleAddView}
         >
