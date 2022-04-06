@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from '@mui/icons-material/Delete'
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types'
-
+import {Typography} from '@mui/material'
 // MUI Component Imports
 // import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -245,7 +245,7 @@ class KitchenStock extends Component {
         <div className="centerDiv" style={{ height: 675, width: '100%' }}>
 
         {this.state.addView && !this.state.editView &&
-        (<div>
+        (<div style={{paddingTop:"20px"}}>
           <Grid
             container
             direction='column'
@@ -262,7 +262,7 @@ class KitchenStock extends Component {
               justifyContent='center'
               alignItems='center'
             >
-            <Grid item sm>
+            <Grid item sm style={{marginRight:"440px"}}>
               <Button
                 variant='text'
                 color='primary'
@@ -284,7 +284,7 @@ class KitchenStock extends Component {
                 <Button
                   variant='text'
                   color='primary'
-                  style={{ border: 'none', outline: 'none' , marginRight:"100px"}}
+                  style={{ border: 'none', outline: 'none' }}
                   startIcon={<SaveIcon>Save Food</SaveIcon>}
                   type="submit"
                   onClick={this.handleSubmit}
@@ -294,8 +294,12 @@ class KitchenStock extends Component {
               </Grid>
               </Grid>
           </Grid>
-          <h2>Add New Food Item</h2>
+          <Grid item>
+            <Typography>Enter food item information below</Typography>
+          </Grid>
+          
           <form onSubmit={this.handleSubmit}>
+          <Grid style={{paddingTop:"40px"}}>
           <span className='textField'>
             <TextField
               type="text" 
@@ -314,6 +318,8 @@ class KitchenStock extends Component {
               onChange={this.handleChange}
             />
           </span>
+          </Grid>
+          <Grid style={{paddingTop:"40px"}}>
           <span className='textField'>
             <TextField
               type="text" 
@@ -325,7 +331,6 @@ class KitchenStock extends Component {
           </span>
           {/* Add padding to the top of the bottom 3 insert cells
            */}
-          <span style={{paddingTop: '200px'}}>
           <span className='textField'>
             <TextField
               type="text" 
@@ -335,6 +340,8 @@ class KitchenStock extends Component {
               onChange={this.handleChange}
             />
           </span>
+          </Grid>
+          <Grid style={{paddingTop:"40px"}}>
           <span className='textField'>
             <TextField
               type="text" 
@@ -353,12 +360,12 @@ class KitchenStock extends Component {
               onChange={this.handleChange}
             />
           </span>
-          </span>
+          </Grid>
         </form>
         </div>)
         }
         {!this.state.addView && this.state.editView &&
-        <div>
+        <div style={{paddingTop:"13px"}}>
            <Grid
             container
             direction='column'
@@ -366,7 +373,7 @@ class KitchenStock extends Component {
             justifyContent='center'
             alignItems='center'
             width={768}
-            spacing={2}
+            spacing={3}
             >
             <Grid
               item
@@ -375,11 +382,11 @@ class KitchenStock extends Component {
               justifyContent='center'
               alignItems='center'
             >
-            <Grid item sm>
+            <Grid item sm >
               <Button
                 variant='text'
                 color='primary'
-                style={{ border: 'none', outline: 'none'}}
+                style={{ border: 'none', outline: 'none',marginRight:"120px"}}
                 startIcon={<ArrowBackIcon>Back To List</ArrowBackIcon>}
                 onClick={this.handleBack}>
                   Back To List
@@ -410,66 +417,70 @@ class KitchenStock extends Component {
               </Grid>
               </Grid>
           </Grid>
-          <h2>View Food Item</h2>
+          <Grid item>
+            <Typography>Enter food item information below</Typography>
+          </Grid>
           <form onSubmit={this.handleSubmitEdit}>
-          <span className='textField'>
-            <TextField
-              type="text" 
-              label="Grocery Item"
-              name="item" 
-              value={this.state.item} 
-              onChange={this.handleChange}
-            />
-          </span>
-          <span className ='textField'>
-            <TextField 
-              type="text" 
-              label="Quantity"
-              name="quantity" 
-              value={this.state.quantity} 
-              onChange={this.handleChange}
-            />
-          </span>
-          <span className='textField'>
-            <TextField
-              type="text" 
-              label="Storage Location"
-              name="location" 
-              value={this.state.location} 
-              onChange={this.handleChange}
-            />
-          </span>
-          {/* Add padding to the top of the bottom 3 insert cells
-           */}
-          <span style={{paddingTop: '200px'}}>
-          <span className='textField'>
-            <TextField
-              type="text" 
-              label="Expiration Date"
-              name="expiration" 
-              value={this.state.expiration} 
-              onChange={this.handleChange}
-            />
-          </span>
-          <span className='textField'>
-            <TextField
-              type="text" 
-              label="Allergies"
-              name="allergies" 
-              value={this.state.allergies} 
-              onChange={this.handleChange}
-            />
-          </span>
-          <span className='textField'>
-            <TextField
-              type="text" 
-              label="Owner"
-              name="owner" 
-              value={this.state.owner} 
-              onChange={this.handleChange}
-            />
-          </span>
-          </span>
+          <Grid style={{paddingTop:"40px"}}>
+            <span className='textField'>
+              <TextField
+                type="text" 
+                label="Grocery Item"
+                name="item" 
+                value={this.state.item} 
+                onChange={this.handleChange}
+              />
+            </span>
+            <span className ='textField'>
+              <TextField 
+                type="text" 
+                label="Quantity"
+                name="quantity" 
+                value={this.state.quantity} 
+                onChange={this.handleChange}
+              />
+             </span>
+            </Grid>
+            <Grid style={{paddingTop:"40px"}}>
+            <span className='textField'>
+              <TextField
+                type="text" 
+                label="Storage Location"
+                name="location" 
+                value={this.state.location} 
+                onChange={this.handleChange}
+              />
+            </span>
+            <span className='textField'>
+              <TextField
+                type="text" 
+                label="Expiration Date"
+                name="expiration" 
+                value={this.state.expiration} 
+                onChange={this.handleChange}
+              />
+            </span>
+            </Grid>
+            <Grid style={{paddingTop:"40px"}}>
+            <span className='textField'>
+              <TextField
+                type="text" 
+                label="Allergies"
+                name="allergies" 
+                value={this.state.allergies} 
+                onChange={this.handleChange}
+              />
+            </span>
+            <span className='textField'>
+              <TextField
+                type="text" 
+                label="Owner"
+                name="owner" 
+                value={this.state.owner} 
+                onChange={this.handleChange}
+              />
+            </span>
+          </Grid>
         </form>
         </div>
         }
@@ -565,11 +576,11 @@ export default KitchenStock;
 function QuickSearchToolbar (props) {
   return (
     <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
-      <Grid item sm style={{marginRight:"455px"}}>
+      <Grid item sm style={{marginRight:"365px"}}>
       <TextField
           variant='standard'
           value={props.value}
-
+          style={{ paddingRight: 15 }}
           onChange={props.onChange}
           placeholder='Search…'
           InputProps={{
