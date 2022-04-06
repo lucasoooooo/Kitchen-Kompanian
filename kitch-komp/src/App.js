@@ -90,7 +90,7 @@ class App extends Component {
         }
       ],
       groceryList: [],
-      numGroceryItems: 23,
+      numGroceryItems: 1,
     }
 
     this.handleTransfer = this.handleTransfer.bind(this);
@@ -154,7 +154,8 @@ class App extends Component {
   }
   handleDefaultList(){
     this.setState({
-      groceryList: this.presetList
+      groceryList: this.presetList,
+      numGroceryItems: 29
     })
   }
   render() {
