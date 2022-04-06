@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import Button from '@mui/material/Button'
 import { DataGrid } from '@mui/x-data-grid'
 import Grid from '@mui/material/Grid'
-import { Paper } from '@mui/material'
 import TextField from '@mui/material/TextField'
 
 // MUI Icon Imports
@@ -75,6 +74,7 @@ function QuickSearchToolbar (props) {
   )
 }
 
+// The props that the QuickSearchToolbar expects
 QuickSearchToolbar.propTypes = {
   clearSearch: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -131,18 +131,19 @@ export default function QuickFilteringGrid (props) {
     setRows(filteredRows)
   }
 
+  // Updates the DataGrid's rows when changed
   React.useEffect(() => {
     setRows(rows)
   }, [rows])
 
   return (
     <>
-      <div className='recipeTableDiv' style={{ height: 650, width: '100%' }}>
+      <div className='recipeTableDiv' style={{ height: 675, width: '100%' }}>
         <DataGrid
           components={{ Toolbar: QuickSearchToolbar }} // Add the Search Bar
           rows={rows} // Display the rows
           columns={columns} // Display the columns
-          rowsPerPageOptions={[]} // Get rid of rows per page option
+          pageSize={25}
           componentsProps={{
             // Interaction between Search Bar and Table
             toolbar: {

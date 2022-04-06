@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCustomSnackbar } from './useCustomSnackbar'
 
 import {
@@ -18,6 +18,7 @@ import {
   TableBody
 } from '@mui/material'
 
+import { DataGrid } from '@mui/x-data-grid'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -25,20 +26,17 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
-
-import { DataGrid } from '@mui/x-data-grid'
-
 import Tab from '@mui/material/Tab'
 import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 
+// MUI Icon Imports
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
-import { useEffect } from 'react'
 
 const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
@@ -46,6 +44,20 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 
 // Used to display recipes
 function ViewRecipe (props) {
+  const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
+
+  const handleAddIngredient = ingredient => {
+    const id = new Date().getTime()
+    const ingredientToAdd = {
+      id: id,
+      item: ingredient.name,
+      quantity: ingredient.quantity
+    }
+
+    console.log(ingredientToAdd)
+    openCustomSnackBar(`${ingredient.name} has been added to the grocery list`)
+  }
+
   return (
     <>
       <Grid
@@ -58,11 +70,7 @@ function ViewRecipe (props) {
         spacing={2}
       >
         <Grid item>
-          <Typography variant='h4'>
-            <i>
-              <u>{props.recipe.name}</u>
-            </i>
-          </Typography>
+          <Typography variant='h4'>{props.recipe.name}</Typography>
         </Grid>
 
         <Grid item>
@@ -70,7 +78,9 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Typography>Recipe Information</Typography>
+          <Typography>
+            <b>Recipe Information</b>
+          </Typography>
         </Grid>
         <Grid item>
           <TableContainer component={Paper}>
@@ -104,38 +114,76 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Typography>Recipe Ingredients</Typography>
+          <Typography>
+            <b>Recipe Ingredients</b>
+          </Typography>
         </Grid>
 
-        {/* List all of the ingredients for the recipe */}
-        {props.recipe.ingredients.map(currIngredient => {
-          return (
-            <Grid item key={currIngredient.id}>
-              {currIngredient.name} - {currIngredient.quantity}
-            </Grid>
-          )
-        })}
+        <Grid item>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+              <TableHead>
+                <TableRow>
+                  <TableCell align='center'>Ingredient Name</TableCell>
+                  <TableCell align='center'>Ingredient Quantity</TableCell>
+                  <TableCell align='center'></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {props.recipe.ingredients.map(currIngredient => {
+                  return (
+                    <TableRow key={currIngredient.id}>
+                      <TableCell align='center'>
+                        {currIngredient.name}
+                      </TableCell>
+                      <TableCell align='center'>
+                        {currIngredient.quantity}
+                      </TableCell>
+                      <TableCell align='center'>
+                        <Button
+                          startIcon={<AddIcon />}
+                          style={{ border: 'none', outline: 'none' }}
+                          onClick={() => handleAddIngredient(currIngredient)}
+                        >
+                          Add to Grocery List
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
 
         <Grid item>
           <Divider style={{ width: 760 }} />
         </Grid>
 
         <Grid item>
-          <Typography>Directions</Typography>
+          <Typography>
+            <b>Directions</b>
+          </Typography>
         </Grid>
 
         <Grid item>
-          <Typography
-            style={{
-              wordWrap: 'break-word',
-              display: 'inline-block',
-              whiteSpace: 'pre-line'
-            }}
-          >
-            {props.recipe.directions}
-          </Typography>
+          <Paper style={{ width: 650, height: 400 }}>
+            <Typography
+              style={{
+                wordWrap: 'break-word',
+                display: 'inline-block',
+                whiteSpace: 'pre-line'
+              }}
+            >
+              {props.recipe.directions}
+            </Typography>
+          </Paper>
         </Grid>
       </Grid>
+
+      <Snackbar open={isActive} message={message}>
+        <Alert sx={{ width: '100%' }}>{message}</Alert>
+      </Snackbar>
     </>
   )
 }
@@ -176,14 +224,15 @@ function ManipulateRecipe (props) {
       sortable: false,
       headerClassName: 'delete-item-column',
       hideSortIcons: true,
-      renderCell: (params) => {
+      renderCell: params => {
         return (
           <Button
-            className="delete-btn"            
-            onClick={() => setOpenDeleteDialog(true)}>
-            <DeleteIcon className="delete" color="inherit" />
+            className='delete-btn'
+            onClick={() => setOpenDeleteDialog(true)}
+          >
+            <DeleteIcon className='delete' color='inherit' />
           </Button>
-        );
+        )
       },
       editable: false
     }
@@ -226,7 +275,7 @@ function ManipulateRecipe (props) {
   }
 
   const handleDeleteIngredient = () => {
-    let name = ""
+    let name = ''
 
     const tempArray = rows.filter(curr => {
       if (curr.id !== currIngredient.id) {
@@ -456,7 +505,10 @@ function ManipulateRecipe (props) {
                 </Grid>
 
                 <Grid item>
-                <div className='recipeTableDiv' style={{ height: 400, width: 768 }}>
+                  <div
+                    className='recipeTableDiv'
+                    style={{ height: 400, width: 768 }}
+                  >
                     <DataGrid
                       experimentalFeatures={{ newEditingApi: true }}
                       rows={rows} // Display the rows
@@ -472,7 +524,7 @@ function ManipulateRecipe (props) {
                           handleIngredientSelected(selectedRowData[0])
                         }
                       }}
-                      onCellEditCommit={(v, e) => console.log(v,e)}
+                      onCellEditCommit={(v, e) => handleIngredientChange(v, e)}
                     />
                   </div>
                 </Grid>
@@ -572,7 +624,7 @@ export default function RecipeSubmenu (props) {
 
   return (
     <>
-      <div className="RecipeSubmenu">
+      <div className='RecipeSubmenu'>
         <Grid
           container
           direction='column'

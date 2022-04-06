@@ -44,6 +44,13 @@ function MyKitchens() {
     setAdd(false);
   }
 
+  const handleEditMember = (member1) => {
+    const newMembers = members.filter(member => member.id !== member1.id);
+    setMembers(newMembers);
+
+    setMembers(newMembers.concat(member1));
+  }
+
   const addMember = (member) => {
     setID(id+1);
     setMembers(members.concat(member));
@@ -56,7 +63,7 @@ function MyKitchens() {
 
   if(add) {
     return <AddMember addMember={addMember} handleBack={handleBack}  id={id} currMember={currMember}
-    setCurrMember={setCurrMember}/>
+    handleEditMember={handleEditMember} handleDelete={handleDelete}/>
   } else {
     return (
 <>
