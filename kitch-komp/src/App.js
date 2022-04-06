@@ -128,12 +128,6 @@ class App extends Component {
     }))
   }
 
-  handleAddRecipeIngredients(array) {
-    this.setState(prevState => ({
-
-    }))
-  }
-
   handleGroceryAdd(itemToAdd) {
     this.setState(prevState => ({
       groceryList: [...prevState.groceryList, itemToAdd],
@@ -166,7 +160,8 @@ class App extends Component {
            onDefaultList={this.handleDefaultList} />} />
           <Route path="/kitchenStock" element={<KitchenStock items={this.state.kitchenStockList}
            onKitchenStockSubmit={this.handleKitchenStockSubmit}/>} />
-          <Route path="/recipies" element={<Recipies recipes={this.state.recipes} handleChangeRecipe={this.handleChangeRecipe}/>} />
+          <Route path="/recipies" element={<Recipies recipes={this.state.recipes} kitchenStockList={this.state.kitchenStockList} 
+            handleChangeRecipe={this.handleChangeRecipe} handleGroceryAdd={this.handleGroceryAdd}/>} />
           <Route path="/myKitchens" element={<MyKitchens/>} />
         </Routes>
         <Footer />
