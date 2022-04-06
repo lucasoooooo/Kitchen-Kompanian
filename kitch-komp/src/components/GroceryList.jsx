@@ -112,6 +112,10 @@ class GroceryList extends Component {
     })
   }
 
+  handleDefaultList(){
+    this.props.onDefaultList()
+  }
+
   render() {
     return (
       <div style={{ textAlign: "center" }}>
@@ -124,7 +128,8 @@ class GroceryList extends Component {
             componentsProps={{
               // Interaction between Search Bar and Table
               toolbar: {
-                handleAddToKitchen: () => this.handleAddToKitchen()
+                handleAddToKitchen: () => this.handleAddToKitchen(),
+                handleDefaultList: () => this.handleDefaultList()
               }
             }}
             rows={this.props.groceryItems}
@@ -195,7 +200,7 @@ export default GroceryList;
 function QuickSearchToolbar (props) {
   return (
     <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
-      <Grid item sm style={{marginRight:"250px"}}>
+      <Grid item sm style={{marginRight:"50px"}}>
       <TextField
           variant='standard'
           placeholder='Search…'
@@ -227,6 +232,17 @@ function QuickSearchToolbar (props) {
             }
           }}
         />
+      </Grid>
+      <Grid item>
+        <Button
+          variant='text'
+          color='primary'
+          style={{ border: 'none', outline: 'none'}}
+          startIcon={<AddIcon>Import Saved List</AddIcon>}
+          onClick={props.handleDefaultList}
+        >
+          Import Starter List
+        </Button>
       </Grid>
       <Grid item>
         <Button

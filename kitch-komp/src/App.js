@@ -89,11 +89,7 @@ class App extends Component {
           tags: 'Side Dish'
         }
       ],
-      groceryList: [
-        { id: 20, item: 'Bread', quantity: '1 Loaf'},
-        { id: 21, item: 'Orange Juice', quantity: '1 Gallon'},
-        { id: 22, item: 'Sirloin Steaks', quantity: '4'},
-      ],
+      groceryList: [],
       numGroceryItems: 23,
     }
 
@@ -102,7 +98,21 @@ class App extends Component {
     this.handleGroceryAdd = this.handleGroceryAdd.bind(this)
     this.handleGroceryDelete = this.handleGroceryDelete.bind(this)
     this.handleKitchenStockSubmit = this.handleKitchenStockSubmit.bind(this)
+    this.handleDefaultList = this.handleDefaultList.bind(this)
   }
+
+  presetList = [
+    { id: 20, item: 'Bread', quantity: '1 loaf'},
+    { id: 21, item: 'Orange Juice', quantity: '1 gallon'},
+    { id: 22, item: 'Ground Beef', quantity: '1 lb'},
+    { id: 23, item: 'Chicken Breasts', quantity: '4'},
+    { id: 24, item: 'Napkins', quantity: '100'},
+    { id: 25, item: 'Tomatoes', quantity: '4'},
+    { id: 26, item: 'Lettuce', quantity: '1 head'},
+    { id: 27, item: 'Pasta', quantity: '1 lb'},
+    { id: 28, item: 'Pasta Sauce', quantity: '1 jar'},
+
+  ]
 
   componentDidMount() {}
 
@@ -142,12 +152,18 @@ class App extends Component {
       kitchenStockList: item
     });
   }
+  handleDefaultList(){
+    this.setState({
+      groceryList: this.presetList
+    })
+  }
   render() {
     return (
       <Router>
         <Routes>
           <Route path="/" element={<GroceryList onGroceryAdd={this.handleGroceryAdd} onGroceryDelete={this.handleGroceryDelete}
-           onItemSelected={this.handleTransfer} groceryItems={this.state.groceryList} numItems={this.state.numGroceryItems} />} />
+           onItemSelected={this.handleTransfer} groceryItems={this.state.groceryList} numItems={this.state.numGroceryItems}
+           onDefaultList={this.handleDefaultList} />} />
           <Route path="/kitchenStock" element={<KitchenStock items={this.state.kitchenStockList}
            onKitchenStockSubmit={this.handleKitchenStockSubmit}/>} />
           <Route path="/recipies" element={<Recipies recipes={this.state.recipes} handleChangeRecipe={this.handleChangeRecipe}/>} />
