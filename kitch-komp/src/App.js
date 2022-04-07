@@ -90,7 +90,7 @@ class App extends Component {
         }
       ],
       groceryList: [],
-      numGroceryItems: 1,
+      numGroceryItems: 21,
     }
 
     this.handleTransfer = this.handleTransfer.bind(this);
