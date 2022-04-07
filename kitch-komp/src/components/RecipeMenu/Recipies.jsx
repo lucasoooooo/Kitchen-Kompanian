@@ -37,8 +37,8 @@ function Recipies (props) {
 
   // User has clicked the back to list button
   const handleReturnToRecipeMenuButtonClicked = () => {
-    setViewSubmenu(false)
     setCurrRecipe({})
+    setViewSubmenu(false)
   }
 
   // User has selected a recipe from the table
