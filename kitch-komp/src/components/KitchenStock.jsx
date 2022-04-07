@@ -8,6 +8,7 @@ import {Typography} from '@mui/material'
 // MUI Component Imports
 // import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 
 // MUI Icon Imports
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
@@ -37,6 +38,8 @@ class KitchenStock extends Component {
       editView: false,
       openDeleteDialog: false,
       currentEditId: 0,
+      helpBox: false,
+      deleteItem:'',
       numItems: 0,
       item: '',
       quantity: ''
@@ -50,6 +53,7 @@ class KitchenStock extends Component {
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleClosed = this.handleClosed.bind(this);
     this.handleOpened = this.handleOpened.bind(this);
+    this.handleHelp = this.handleHelp.bind(this);
   }
   
   componentDidMount() {
@@ -61,6 +65,8 @@ class KitchenStock extends Component {
       openDeleteDialog: false,
       currentEditId: 0,
       numItems: this.props.items.length+1,
+      helpBox: false,
+      deleteItem:'',
       item: '',
       quantity: '',
       location:'',
@@ -132,6 +138,12 @@ class KitchenStock extends Component {
     this.setState({[name]: event.target.value});
     // console.log(this.state)
   }
+  handleHelp(){
+    console.log("Closed/Opened Help Box")
+    this.setState({
+      helpBox: !this.state.helpBox
+    })
+  }
   handleClosed(){
     this.setState({
       openDeleteDialog: false
@@ -157,7 +169,6 @@ class KitchenStock extends Component {
       //Expiration Checker
     var currentDate = new Date().getTime()
     const tempE = temp.map(function(x){
-    //str.replace('one', '')
       if (x.expiration == ""){
         return {...x,  item: x.item.replace("(Expired) ", "")}
       }
@@ -167,6 +178,9 @@ class KitchenStock extends Component {
       }
       if (d <= currentDate && !x.item.includes("Expired") ){
         return {...x,  item:("(Expired) " + x.item)}
+      }
+      if (d <= currentDate && x.item.includes("Expired") ){
+        return {...x}
       }
       else{
         return {...x,  item: x.item.replace("(Expired) ", "")}
@@ -213,6 +227,9 @@ class KitchenStock extends Component {
       if (d <= currentDate && !x.item.includes("Expired") ){
         return {...x,  item:("(Expired) " + x.item)}
       }
+      if (d <= currentDate && x.item.includes("Expired") ){
+        return {...x}
+      }
       else{
         return {...x,  item: x.item.replace("(Expired) ", "")}
       }
@@ -234,13 +251,32 @@ class KitchenStock extends Component {
     // this.checkExpiration()
   }
 
-
   render() {
     return (
       <div>
       <div style={{ textAlign: "center"}}>
-        <h1 textalign='center' style={{color: "white", background: "#343a40",
-        paddingTop: '20px', paddingBottom: '20px'}}>Kitchen Stock</h1>
+        <Grid
+          alignItems="center"
+          container
+          style={{
+            color: 'white',
+            background: '#343a40',
+            paddingTop: '20px',
+            paddingBottom: '20px'
+          }}>
+        <Grid item sm/>
+          <Grid item sm={8}>
+            <h1 textalign='center'>Kitchen Stock</h1>
+          </Grid>
+          <Grid item sm>
+            <Button startIcon={<QuestionMarkIcon />} style={{color: "white"}} 
+            onClick={this.handleHelp}>
+              Page info
+            </Button>
+          </Grid>
+        </Grid>
+        
+        
         <span className="horizontal-line" />
         <div className="centerDiv" style={{ height: '1102px', width: '100%' }}>
 
@@ -410,7 +446,7 @@ class KitchenStock extends Component {
                   color='primary'
                   style={{ border: 'none', outline: 'none' }}
                   startIcon={<DeleteIcon>Delete Food Item</DeleteIcon>}
-                  onClick={() => this.handleOpened}
+                  onClick={() => this.handleOpened()}
                 >
                   Delete Food Item
                 </Button>
@@ -484,10 +520,50 @@ class KitchenStock extends Component {
         </form>
         </div>
         }
+        {this.state.helpBox && (
+          <Dialog
+          open={this.state.helpBox}
+          onClose={this.handleHelp}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-help-title'>
+            {'Page Info'}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              This is the Kitchen Stock page.<br/> 
+               Here you will find all your
+               ingredients that are currently in your home. <br/> 
+               To sort the
+                food items by alphabetically, quantity or location, 
+                tap the label you want to sort.<br/> 
+                 To add a new food item, 
+                tap the "Add Food Item" button at the top right. <br/> 
+               To edit or view more about a food item, tap the row 
+               you want to see to go into edit mode. <br/> 
+               In edit mode, you can edit/save your 
+               food item, or delete it.<br/> 
+                You can also delete your food item from the regular view by 
+                clicking the trash can icon on the left of every row.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={this.handleHelp}
+              autoFocus
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+        )}
         {this.state.openDeleteDialog && (
                 <Dialog
                   open={this.state.openDeleteDialog}
-                  onClose={this.state.handleClosed}
+                  onClose={this.handleClosed}
                   aria-labelledby='alert-dialog-title'
                   aria-describedby='alert-dialog-description'
                 >
@@ -537,7 +613,8 @@ class KitchenStock extends Component {
                 this.handleEditView(params.id)
               }else{
                   this.setState({
-                    currentEditId: params.id
+                    currentEditId: params.id,
+                    item: params.row.item
                   })
                   this.handleOpened()
               }
