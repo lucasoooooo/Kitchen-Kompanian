@@ -9,9 +9,9 @@ import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import ClearIcon from '@mui/icons-material/Clear'
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-import { useCustomSnackbar } from './RecipeMenu/useCustomSnackbar'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert';
+import QuestionMarkIcon from '@mui/icons-material/Help';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -124,6 +124,10 @@ class GroceryList extends Component {
     this.handleOpenTransfer()
   }
 
+  handleInfoClicked(){
+    console.log("handle info clicked")
+  }
+
   handleDefaultList(){
     this.props.onDefaultList()
   }
@@ -159,9 +163,33 @@ class GroceryList extends Component {
   render() {
     return (
       <div style={{ textAlign: "center" }}>
-        <h1 textalign='center' style={{color: "white", background: "#343a40",
-        paddingTop: '20px', paddingBottom: '20px'}}>Grocery List</h1>
-        <span className="horizontal-line" />
+        <div style={{ textAlign: 'center' }}>
+          <Grid
+            alignItems="center"
+            container
+            style={{
+              color: 'white',
+              background: '#343a40',
+              paddingTop: '20px',
+              paddingBottom: '20px'
+            }}
+          >
+
+            <Grid item sm>
+
+            </Grid>
+            <Grid item sm={8}>
+              <h1 textalign='center'>Recipe List</h1>
+            </Grid>
+            <Grid item sm>
+              <Button startIcon={<QuestionMarkIcon />} style={{color: "white"}} onClick={this.handleInfoClicked}>
+                Page info
+              </Button>
+            </Grid>
+          </Grid>
+
+          <span className='horizontal-line' />
+        </div>
         <div className="centerDiv" style={{ height: 675, width: '100%' }}>
           <DataGrid
             components={{ Toolbar: QuickSearchToolbar }}
