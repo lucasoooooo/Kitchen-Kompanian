@@ -46,6 +46,7 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
     const [firstName, setFirstName] = useState(currMember.firstName);
     const [lastName, setLastName] = useState(currMember.lastName);
     const [ID, setID] = useState(0);
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
 
     useEffect(() => {
@@ -74,6 +75,10 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
         handleBack();
     }
 
+    const handleClosed = () => {
+        setConfirmDelete(false)
+      }
+    
     
     return (  
         <>
@@ -149,7 +154,7 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
                       color='primary'
                       style={{ border: 'none', outline: 'none' }}
                       startIcon={<DeleteIcon>Delete Recipe</DeleteIcon>}
-                      onClick={handleDeleteClick}
+                      onClick={() => setConfirmDelete(true)}
                     >
                       Delete Member
                     </Button>
@@ -175,6 +180,41 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
               setFirstName = {setFirstName}
               setLastName = {setLastName} />
           </Grid>
+
+          {confirmDelete ? (
+        <Dialog
+          open={confirmDelete}
+          onClose={handleClosed}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>{'Delete Member'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              Are you sure that you want to delete {currMember.firstName}? You
+              cannot reverse this action.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleClosed}
+              autoFocus
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+              onClick={() => handleDeleteClick()}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : null}
+
         </Grid>
       </Grid>
 

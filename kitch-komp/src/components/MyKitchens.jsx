@@ -17,15 +17,12 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-function MyKitchens() {
+function MyKitchens(props) {
 
-  const [members, setMembers] = useState([
-    {id: 1 , firstName: 'Mark', lastName: 'McGraw', username: 'mmcgraw', },
-    {id: 2 , firstName: 'Brenton', lastName: 'Haliw', username: 'bhaliw', },
-    {id: 3,  firstName: 'Lucas', lastName: 'Balangero', username: 'lbalang',  },
-    {id: 4, firstName: 'Will', lastName: 'Reid', username: 'wreid',  }
-  ])
+ //  this.handleAdd = this.handleMemberAdd.bind(this);
+  
 
+  const [members, setMembers] = useState(props.members);
   const [add, setAdd] = useState(false);
   const [id, setID] = useState(5);
   const [currMember, setCurrMember] = useState('');
@@ -53,6 +50,7 @@ function MyKitchens() {
 
   const addMember = (member) => {
     setID(id+1);
+    //props.handleMemberAdd(member).bind(this);
     setMembers(members.concat(member));
   }
 
