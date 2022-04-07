@@ -89,6 +89,12 @@ class App extends Component {
           tags: 'Side Dish'
         }
       ],
+      members: [
+        {id: 1 , firstName: 'Mark', lastName: 'McGraw', username: 'mmcgraw', },
+        {id: 2 , firstName: 'Brenton', lastName: 'Haliw', username: 'bhaliw', },
+        {id: 3,  firstName: 'Lucas', lastName: 'Balangero', username: 'lbalang',  },
+        {id: 4, firstName: 'Will', lastName: 'Reid', username: 'wreid',  }
+      ],
       groceryList: [],
       numGroceryItems: 21,
     }
@@ -152,6 +158,12 @@ class App extends Component {
       numGroceryItems: 29
     })
   }
+
+  handleMemberAdd(member) {
+    this.setState(prevState => ({
+      members: [...prevState.members, member]
+    }));
+  }
   render() {
     return (
       <Router>
@@ -163,7 +175,7 @@ class App extends Component {
            onKitchenStockSubmit={this.handleKitchenStockSubmit}/>} />
           <Route path="/recipies" element={<Recipies recipes={this.state.recipes} kitchenStockList={this.state.kitchenStockList} 
             handleChangeRecipe={this.handleChangeRecipe} handleGroceryAdd={this.handleGroceryAdd}/>} />
-          <Route path="/myKitchens" element={<MyKitchens/>} />
+          <Route path="/myKitchens" element={<MyKitchens members={this.state.members} handleMemberAdd={this.handleMemberAdd}/>} />
         </Routes>
         <Footer />
       </Router>

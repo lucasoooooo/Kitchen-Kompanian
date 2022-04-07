@@ -110,7 +110,7 @@ export default function QuickFilteringGrid (props) {
     {
       field: 'username',
       headerName: 'Username',
-      width: 375,
+      width: 360,
       headerClassName: 'super-app-theme--header'
     },
   ]
@@ -136,7 +136,7 @@ export default function QuickFilteringGrid (props) {
     <>
       <Paper
         sx={{
-          height: 700,
+          height: 1110,
           width: 768,
 
           '& .super-app-theme--header': {
@@ -148,7 +148,7 @@ export default function QuickFilteringGrid (props) {
           components={{ Toolbar: QuickSearchToolbar }} // Add the Search Bar
           rows={rows} // Display the rows
           columns={columns} // Display the columns
-          rowsPerPageOptions={[]} // Get rid of rows per page option
+          pageSize={25}
           componentsProps={{
             // Interaction between Search Bar and Table
             toolbar: {
