@@ -17,6 +17,8 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import { minWidth } from "@mui/system";
+import { minHeight } from "@mui/system";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -198,7 +200,7 @@ class GroceryList extends Component {
 
           <span className='horizontal-line' />
         </div>
-        <div className="centerDiv" style={{ height: 675, width: '100%' }}>
+        <div className="centerDiv" style={{ height: 660, width: '100%' }}>
           <DataGrid
             components={{ Toolbar: QuickSearchToolbar }}
             componentsProps={{
@@ -231,7 +233,6 @@ class GroceryList extends Component {
               }
             
             ]}
-            pageSize={25}
             checkboxSelection
             onRowSelected={this.handleRowSelected}
             selectionModel={this.state.selectionModel}
@@ -262,7 +263,8 @@ class GroceryList extends Component {
           </span>
           <br/>
           <br/>
-          <Button onClick={this.handleSubmit} type="submit" variant="outlined">Add item</Button>
+          <Button style={{ fontSize: '18px', minWidth: '130px', minHeight: '50px' }}
+          onClick={this.handleSubmit} type="submit" variant="outlined">Add item</Button>
         </form>
         {this.state.viewInfo ? (
         <Dialog
