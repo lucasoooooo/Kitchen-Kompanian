@@ -47,6 +47,11 @@ a:hover {
   outline: none !important;
 }
 
+select {
+  outline: none !important;
+  margin-right: 10px;
+}
+
 .add-sign{
   cursor: pointer;
   justify-self: end;

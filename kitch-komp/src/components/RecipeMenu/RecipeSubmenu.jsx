@@ -692,7 +692,6 @@ export default function RecipeSubmenu (props) {
                 <Grid item>
                   <Button
                     variant='text'
-                    
                     style={{ border: 'none', outline: 'none', color: "green" }}
                     startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
                     onClick={handleSaveRecipe}

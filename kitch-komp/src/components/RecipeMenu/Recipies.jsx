@@ -10,7 +10,13 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
-import QuestionMarkIcon from '@mui/icons-material/Help';
+import QuestionMarkIcon from '@mui/icons-material/Help'
+
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
@@ -21,6 +27,7 @@ function Recipies (props) {
   const [currRecipe, setCurrRecipe] = useState({})
   const [lastRecipe, setLastRecipe] = useState({})
   const [idCounter, setIdCounter] = useState(4)
+  const [viewInfo, setViewInfo] = useState(false)
   const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
   // User has clicked the add recipe button
@@ -90,7 +97,7 @@ function Recipies (props) {
     <>
       <div style={{ textAlign: 'center' }}>
         <Grid
-          alignItems="center"
+          alignItems='center'
           container
           style={{
             color: 'white',
@@ -99,15 +106,16 @@ function Recipies (props) {
             paddingBottom: '20px'
           }}
         >
-
-          <Grid item sm>
-
-          </Grid>
+          <Grid item sm></Grid>
           <Grid item sm={8}>
             <h1 textalign='center'>Recipe List</h1>
           </Grid>
           <Grid item sm>
-            <Button startIcon={<QuestionMarkIcon />} style={{color: "white"}}>
+            <Button
+              startIcon={<QuestionMarkIcon />}
+              style={{ border: 'none', outline: 'none', color: 'white' }}
+              onClick={() => setViewInfo(true)}
+            >
               Page info
             </Button>
           </Grid>
@@ -145,6 +153,40 @@ function Recipies (props) {
           )}
         </Grid>
       </Grid>
+
+      {viewInfo ? (
+        <Dialog
+          open={viewInfo}
+          onClose={() => setViewInfo(false)}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>Recipe List</DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              id='alert-dialog-description'
+              style={{
+                wordWrap: 'break-word',
+                display: 'inline-block',
+                whiteSpace: 'pre-line'
+              }}
+            >
+              {'This is the Recipe List page.\n\nTo add a new recipe, click the "Add Recipe" button.\n\nTo view a recipe, click on a recipe in the table.\n\n' +
+                'To delete a recipe, click on a recipe and then select the "Delete Recipe" button.'}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setViewInfo(false)}
+              autoFocus
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : null}
 
       <Snackbar open={isActive} message={message}>
         <Alert sx={{ width: '100%' }}>{message}</Alert>
