@@ -110,19 +110,21 @@ export default function QuickFilteringGrid (props) {
       field: 'name',
       headerName: 'Name',
       width: 150,
-      headerClassName: 'super-app-theme--header'
+      headerClassName: 'super-app-theme--header',
+      flex: 1
     },
     {
       field: 'totalTime',
       headerName: 'Total Time',
       width: 150,
-      headerClassName: 'super-app-theme--header'
+      headerClassName: 'super-app-theme--header',
+      flex: 1
     },
     {
       field: 'servingSize',
       headerName: 'Serving Size',
-      width: 150,
-      headerClassName: 'super-app-theme--header'
+      width: 125,
+      headerClassName: 'super-app-theme--header',
     },
     {
       field: 'tags',
@@ -147,11 +149,11 @@ export default function QuickFilteringGrid (props) {
       if (searchType === 'contains' && value === true) {
         return row
 
-      // If we don't want the row to contain the search value
+        // If we don't want the row to contain the search value
       } else if (searchType === 'doesNotContain' && value === false) {
         return row
 
-      // If the search value is blank return all rows
+        // If the search value is blank return all rows
       } else if (searchValue === '') {
         return row
       }

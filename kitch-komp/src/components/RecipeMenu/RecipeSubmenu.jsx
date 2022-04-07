@@ -208,7 +208,8 @@ function ManipulateRecipe (props) {
       width: 150,
       headerClassName: 'super-app-theme--header',
       flex: 1,
-      editable: true
+      editable: true,
+
     },
     {
       field: 'quantity',
@@ -216,7 +217,8 @@ function ManipulateRecipe (props) {
       width: 150,
       headerClassName: 'super-app-theme--header',
       flex: 1,
-      editable: true
+      editable: true,
+     
     },
     {
       field: 'delete',

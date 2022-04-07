@@ -42,6 +42,14 @@ a:hover {
   grid-template: auto auto / repeat(2,1fr);
 }
 
+.MuiDataGrid-columnHeaders {
+  font-size: 16px
+}
+
+.MuiDataGrid-cell {
+  font-size: 16px
+}
+
 .MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
 .MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: none !important;
