@@ -90,10 +90,10 @@ class App extends Component {
         }
       ],
       members: [
-        {id: 1 , firstName: 'Mark', lastName: 'McGraw', username: 'mmcgraw', },
-        {id: 2 , firstName: 'Brenton', lastName: 'Haliw', username: 'bhaliw', },
-        {id: 3,  firstName: 'Lucas', lastName: 'Balangero', username: 'lbalang',  },
-        {id: 4, firstName: 'Will', lastName: 'Reid', username: 'wreid',  }
+        {id: 1 , firstName: 'Evan', lastName: 'Golub', username: 'egolub', },
+        {id: 2 , firstName: 'Clyde', lastName: 'Kruskal', username: 'ckrusk', },
+        {id: 3,  firstName: 'William', lastName: 'Gasarch', username: 'wgasar',  },
+        {id: 4, firstName: 'Larry', lastName: 'Herman', username: 'lherm',  }
       ],
       groceryList: [],
       numGroceryItems: 21,
