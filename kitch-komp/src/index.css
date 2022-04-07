@@ -74,6 +74,11 @@ h1 {
   padding-bottom: '20px';
 }
 
+.navbar-expand .navbar-nav .nav-link {
+  padding-right: 1.4rem;
+  padding-left: 0.5rem;
+}
+
 .nav-item{
   font-size: x-large;
 }

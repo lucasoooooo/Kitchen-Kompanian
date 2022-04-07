@@ -54,7 +54,8 @@ function ViewRecipe (props) {
       quantity: ingredient.quantity
     }
 
-    console.log(ingredientToAdd)
+    props.handleGroceryAdd(ingredientToAdd)
+
     openCustomSnackBar(`${ingredient.name} has been added to the grocery list`)
   }
 
@@ -230,7 +231,7 @@ function ManipulateRecipe (props) {
             className='delete-btn'
             onClick={() => setOpenDeleteDialog(true)}
           >
-            <DeleteIcon className='delete' color='inherit' />
+            <DeleteIcon className='delete' style={{color: "black"}} />
           </Button>
         )
       },
@@ -507,7 +508,7 @@ function ManipulateRecipe (props) {
                 <Grid item>
                   <div
                     className='recipeTableDiv'
-                    style={{ height: 400, width: 768 }}
+                    style={{ height: 785, width: 768 }}
                   >
                     <DataGrid
                       experimentalFeatures={{ newEditingApi: true }}
@@ -691,8 +692,8 @@ export default function RecipeSubmenu (props) {
                 <Grid item>
                   <Button
                     variant='text'
-                    color='primary'
-                    style={{ border: 'none', outline: 'none' }}
+                    
+                    style={{ border: 'none', outline: 'none', color: "green" }}
                     startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
                     onClick={handleSaveRecipe}
                   >
@@ -711,7 +712,7 @@ export default function RecipeSubmenu (props) {
             alignItems='center'
           >
             {Object.keys(props.recipe).length !== 0 && editRecipe !== true ? (
-              <ViewRecipe recipe={currRecipe} />
+              <ViewRecipe recipe={currRecipe} handleGroceryAdd={props.handleGroceryAdd} />
             ) : (
               <ManipulateRecipe
                 recipe={currRecipe}
