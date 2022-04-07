@@ -179,7 +179,7 @@ class GroceryList extends Component {
 
             </Grid>
             <Grid item sm={8}>
-              <h1 textalign='center'>Recipe List</h1>
+              <h1 textalign='center'>Grocery List</h1>
             </Grid>
             <Grid item sm>
               <Button startIcon={<QuestionMarkIcon />} style={{color: "white"}} onClick={this.handleInfoClicked}>
