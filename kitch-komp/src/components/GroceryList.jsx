@@ -12,6 +12,11 @@ import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert';
 import QuestionMarkIcon from '@mui/icons-material/Help';
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -28,7 +33,8 @@ class GroceryList extends Component {
       selectionModel: [],
       openAdd: false,
       openDelete: false,
-      openTransfer: false
+      openTransfer: false,
+      viewInfo: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -37,6 +43,7 @@ class GroceryList extends Component {
     this.handleAddToKitchen = this.handleAddToKitchen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleOpenAdd = this.handleOpenAdd.bind(this);
+    this.handleInfoClicked = this.handleInfoClicked.bind(this);
 
   }
 
@@ -48,7 +55,8 @@ class GroceryList extends Component {
       selectionModel: [],
       openAdd: false,
       openDelete: false,
-      openTransfer: false
+      openTransfer: false,
+      viewInfo: false
     });
   }
 
@@ -125,7 +133,7 @@ class GroceryList extends Component {
   }
 
   handleInfoClicked(){
-    console.log("handle info clicked")
+    this.setState({viewInfo: true})
   }
 
   handleDefaultList(){
@@ -256,6 +264,45 @@ class GroceryList extends Component {
           <br/>
           <Button onClick={this.handleSubmit} type="submit" variant="outlined">Add item</Button>
         </form>
+        {this.state.viewInfo ? (
+        <Dialog
+          open={this.state.viewInfo}
+          onClose={() => this.setState({viewInfo: false})}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>Grocery List</DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              id='alert-dialog-description'
+              style={{
+                wordWrap: 'break-word',
+                display: 'inline-block',
+                whiteSpace: 'pre-line'
+              }}
+            >
+              {'This is the Grocery List page.\n\n To add a new grocery item, fill out the needed information at the\n' +
+              'bottom of the page and press the "Add Item" buttom or press the Enter Key. \n\n' + 
+              'To import your previously saved starter shopping list, press the \n "Import Starter List" button so the top of the List\n\n' +
+              'To delete an item from the list, press the Trash Can Icon on the row \n you would like to delete.\n\n' + 
+              'As you shop, check items off the list using the check boxes at the far left. \n' +
+              'When you complete your shopping trip, you can add the items to your kitchen.' +
+              ' To do so, press the "Move Checked Items to Kitchen. Those checked items will then be moved to your Kitchen Stock List.'
+              }
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => this.setState({viewInfo: false})}
+              autoFocus
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : null}
         <Snackbar open={this.state.openAdd} autoHideDuration={3000} onClose={this.handleClose}>
           <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
             Item Added to Grocery List
