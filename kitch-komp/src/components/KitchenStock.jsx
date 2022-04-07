@@ -238,11 +238,11 @@ class KitchenStock extends Component {
   render() {
     return (
       <div>
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center"}}>
         <h1 textalign='center' style={{color: "white", background: "#343a40",
         paddingTop: '20px', paddingBottom: '20px'}}>Kitchen Stock</h1>
         <span className="horizontal-line" />
-        <div className="centerDiv" style={{ height: 675, width: '100%' }}>
+        <div className="centerDiv" style={{ height: '1102px', width: '100%' }}>
 
         {this.state.addView && !this.state.editView &&
         (<div style={{paddingTop:"20px"}}>
@@ -410,7 +410,7 @@ class KitchenStock extends Component {
                   color='primary'
                   style={{ border: 'none', outline: 'none' }}
                   startIcon={<DeleteIcon>Delete Food Item</DeleteIcon>}
-                  onClick={() => this.handleOpened()}
+                  onClick={() => this.handleOpened}
                 >
                   Delete Food Item
                 </Button>
@@ -521,44 +521,53 @@ class KitchenStock extends Component {
               )}
         { !this.state.addView && !this.state.editView && 
         (<DataGrid
+            height={"100px"}  
             components={{ Toolbar: QuickSearchToolbar }}
             componentsProps={{
               // Interaction between Search Bar and Table
               toolbar: {
                 handleAddView: () => this.handleAddView()
               }
+              
             }}
             onCellClick={(params, event) => {
-              console.log(params.id)
-              this.handleEditView(params.id)
+              console.log(params)
+
+              if (params.field !== 'delete'){
+                this.handleEditView(params.id)
+              }else{
+                  this.setState({
+                    currentEditId: params.id
+                  })
+                  this.handleOpened()
+              }
             }}
             // {...data}
             rows={this.props.items}
             columns={[
-              { field: 'item', headerName: 'Food Item', width: 200},
-              { field: 'quantity', headerName: 'Quantity', width: 100},
-              // {
-              //   field: 'delete',
-              //   headerName: '',
-              //   width: 80,
-              //   sortable: false,
-              //   headerClassName: 'delete-item-column',
-              //   hideSortIcons: true,
-              //   renderCell: (params) => {
-              //     return (
-              //       <Button
-              //         className="delete-btn"            
-              //         onClick={() => this.handleDelete(params.id)}>
-              //         <DeleteIcon className="delete" color="inherit" />
-              //       </Button>
-              //     );
-              //   },
-              // }
+              { field: 'item', headerName: 'Food Item', width: 300},
+              { field: 'quantity', headerName: 'Quantity', width: 150},
+              { field: 'location', headerName: 'Location', width: 220},
+              {
+                field: 'delete',
+                headerName: '',
+                width: 80,
+                sortable: false,
+                headerClassName: 'delete-item-column',
+                hideSortIcons: true,
+                renderCell: (params) => {
+                  return (
+                    <Button className="delete-btn" >
+                      <DeleteIcon className="delete" color="inherit" />
+                    </Button>
+                  );
+                },
+              }
             
             ]}
             pageSize={25}
-            // checkboxSelection
-            // onRowSelected={this.handleRowSelection}
+            onRowSelected={this.handleRowSelected}
+            selectionModel={this.state.selectionModel}
           />)}
         </div>
         <br/>
@@ -575,7 +584,7 @@ export default KitchenStock;
 // Creates the search bar for the DataGrid
 function QuickSearchToolbar (props) {
   return (
-    <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
+    <Grid container sx={{ p: .5 }} alignItems='center' alignContent='center'>
       <Grid item sm style={{marginRight:"365px"}}>
       <TextField
           variant='standard'

@@ -96,8 +96,7 @@ class App extends Component {
         {id: 4, firstName: 'Will', lastName: 'Reid', username: 'wreid',  }
       ],
       groceryList: [],
-      numGroceryItems: 23,
-
+      numGroceryItems: 21,
     }
 
     this.handleTransfer = this.handleTransfer.bind(this);
@@ -155,7 +154,8 @@ class App extends Component {
   }
   handleDefaultList(){
     this.setState({
-      groceryList: this.presetList
+      groceryList: this.presetList,
+      numGroceryItems: 29
     })
   }
 

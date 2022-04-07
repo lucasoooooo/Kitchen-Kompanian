@@ -138,7 +138,7 @@ export default function QuickFilteringGrid (props) {
 
   return (
     <>
-      <div className='recipeTableDiv' style={{ height: 675, width: '100%' }}>
+      <div className='recipeTableDiv' style={{ height: 1102, width: '100%' }}>
         <DataGrid
           components={{ Toolbar: QuickSearchToolbar }} // Add the Search Bar
           rows={rows} // Display the rows

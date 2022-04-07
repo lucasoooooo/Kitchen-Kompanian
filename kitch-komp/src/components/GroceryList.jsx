@@ -9,13 +9,13 @@ import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import ClearIcon from '@mui/icons-material/Clear'
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
+import { useCustomSnackbar } from './RecipeMenu/useCustomSnackbar'
+import Snackbar from '@mui/material/Snackbar'
+import MuiAlert from '@mui/material/Alert';
 
-
-// var data = [
-//   { id: 20, item: 'Bread', quantity: '1 Loaf'},
-//   { id: 21, item: 'Orange Juice', quantity: '1 Gallon'},
-//   { id: 22, item: 'Sirloin Steaks', quantity: '4'},
-// ];
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 class GroceryList extends Component {
 
@@ -25,13 +25,19 @@ class GroceryList extends Component {
     this.state = {
       item: '',
       quantity: '',
-      selectionModel: []
+      selectionModel: [],
+      openAdd: false,
+      openDelete: false,
+      openTransfer: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSelectionModelChange = this.handleSelectionModelChange.bind(this);
     this.handleAddToKitchen = this.handleAddToKitchen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleOpenAdd = this.handleOpenAdd.bind(this);
+
   }
 
 
@@ -39,7 +45,10 @@ class GroceryList extends Component {
     this.setState({
       item: '',
       quantity: '',
-      selectionModel: []
+      selectionModel: [],
+      openAdd: false,
+      openDelete: false,
+      openTransfer: false
     });
   }
 
@@ -53,6 +62,7 @@ class GroceryList extends Component {
     // let temp = this.props.groceryItems.filter(item => item.id !== id);
     this.props.onGroceryDelete(temp)
 
+    this.handleOpenDelete()
 
     // this.props.onGroceryDelete(whatToKeep)
 
@@ -75,6 +85,7 @@ class GroceryList extends Component {
       item: '',
       quantity: ''
     });
+    this.handleOpenAdd()
   }
 
   handleSelectionModelChange(newSelectionModel) {
@@ -110,10 +121,39 @@ class GroceryList extends Component {
     this.setState({
       selectionModel: []
     })
+    this.handleOpenTransfer()
   }
 
   handleDefaultList(){
     this.props.onDefaultList()
+  }
+
+  handleOpenAdd(){
+    this.setState({
+      openAdd: true
+    })
+  }
+
+  handleOpenDelete(){
+    this.setState({
+      openDelete: true
+    })
+  }
+  handleOpenTransfer(){
+    this.setState({
+      openTransfer: true
+    })
+  }
+
+  handleClose(event, reason){
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({
+      openAdd: false,
+      openDelete: false,
+      openTransfer: false
+    })
   }
 
   render() {
@@ -188,7 +228,21 @@ class GroceryList extends Component {
           <br/>
           <Button onClick={this.handleSubmit} type="submit" variant="outlined">Add item</Button>
         </form>
-        {/* <Button onClick={this.handleItemChecked} type='check'variant="outlined">Check Items Into Kitchen</Button> */}
+        <Snackbar open={this.state.openAdd} autoHideDuration={3000} onClose={this.handleClose}>
+          <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
+            Item Added to Grocery List
+          </Alert>
+        </Snackbar>
+        <Snackbar open={this.state.openDelete} autoHideDuration={3000} onClose={this.handleClose}>
+          <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
+            Item Deleted from Grocery List
+          </Alert>
+        </Snackbar>
+        <Snackbar open={this.state.openTransfer} autoHideDuration={3000} onClose={this.handleClose}>
+          <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
+            Item(s) Moved to Kitchen Stock List
+          </Alert>
+        </Snackbar>
       </div>
 
     );

@@ -6,9 +6,11 @@ import RecipeSubmenu from './RecipeSubmenu'
 import { useCustomSnackbar } from './useCustomSnackbar'
 
 // MUI Component Imports
+import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
+import QuestionMarkIcon from '@mui/icons-material/Help';
 
 const Alert = React.forwardRef(function Alert (props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
@@ -87,8 +89,9 @@ function Recipies (props) {
   return (
     <>
       <div style={{ textAlign: 'center' }}>
-        <h1
-          textalign='center'
+        <Grid
+          alignItems="center"
+          container
           style={{
             color: 'white',
             background: '#343a40',
@@ -96,8 +99,20 @@ function Recipies (props) {
             paddingBottom: '20px'
           }}
         >
-          Recipe List
-        </h1>
+
+          <Grid item sm>
+
+          </Grid>
+          <Grid item sm={8}>
+            <h1 textalign='center'>Recipe List</h1>
+          </Grid>
+          <Grid item sm>
+            <Button startIcon={<QuestionMarkIcon />} style={{color: "white"}}>
+              Page info
+            </Button>
+          </Grid>
+        </Grid>
+
         <span className='horizontal-line' />
       </div>
 
@@ -109,7 +124,7 @@ function Recipies (props) {
         alignItems='center'
         spacing={5}
       >
-        <Grid item width="100%">
+        <Grid item width='100%'>
           {viewSubmenu ? (
             <RecipeSubmenu
               recipe={currRecipe}
@@ -119,6 +134,7 @@ function Recipies (props) {
               }
               handleDeleteRecipe={handleDeleteRecipe}
               handleAddRecipe={handleAddRecipe}
+              handleGroceryAdd={props.handleGroceryAdd}
             />
           ) : (
             <TableComponent
