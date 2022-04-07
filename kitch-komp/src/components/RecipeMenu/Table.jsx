@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 // MUI Component Imports
-import Autocomplete from '@mui/material/Autocomplete'
 import Button from '@mui/material/Button'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'

@@ -42,7 +42,7 @@ class App extends Component {
           ],
           directions:
             'Combine the banana and the pudding together. Eat with a large spoon',
-          tags: 'Dessert'
+          tags: 'Dessert, Dairy'
         },
     
         {
@@ -58,7 +58,7 @@ class App extends Component {
           ],
           directions:
             'Turn on oven to 350F\n\nCombine the Beef and the Wellington together\n\nBake for 45 minutes.',
-          tags: 'Dinner'
+          tags: 'Dinner, Meat'
         },
     
         {
@@ -71,7 +71,7 @@ class App extends Component {
           ingredients: [{ id: 1, name: 'Salmon', quantity: '2' }],
           directions:
             'Turn on oven to 350F\n\nPut salmon on baking sheet and cover with aluminum foil\n\nBake for 10 minutes.',
-          tags: 'Dinner, Pescetarian'
+          tags: 'Dinner, Seafood'
         },
     
         {
@@ -86,7 +86,24 @@ class App extends Component {
             { id: 2, name: 'Bread', quantity: '1 Loaf' }
           ],
           directions: 'Stuff the loaf of bread full of corn',
-          tags: 'Side Dish'
+          tags: 'Side Dish, Gluten'
+        },
+        {
+          id: 5,
+          name: 'Red Hot Chili',
+          prepTime: '20 Minutes',
+          cookTime: '1 Hour',
+          totalTime: '1 Hour 20 Minutes',
+          servingSize: '2',
+          ingredients: [
+            { id: 1, name: 'Chilis', quantity: '3 whole' },
+            { id: 2, name: 'Ground Beef', quantity: '1 lb' },
+            { id: 3, name: 'Olive Oil', quantity: '1 Tablespoon' },
+            { id: 4, name: 'Yellow Onion (medium)', quantity: '1' },
+            { id: 5, name: 'Tomato Sauce (8 oz can)', quantity: '1' }
+          ],
+          directions: 'Stuff the loaf of bread full of corn',
+          tags: 'Side Dish, Spicy'
         }
       ],
       members: [

@@ -43,11 +43,15 @@ a:hover {
 }
 
 .MuiDataGrid-columnHeaders {
-  font-size: 18px
+  font-size: 16px
 }
 
 .MuiDataGrid-cell {
   font-size: 16px
+}
+
+.MuiTable-root .MuiTableCell-root {
+  font-size: 18px
 }
 
 .MuiDataGrid-root .MuiDataGrid-columnHeader:focus,

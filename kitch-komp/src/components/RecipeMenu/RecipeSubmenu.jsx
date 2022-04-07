@@ -18,7 +18,6 @@ import {
   TableBody
 } from '@mui/material'
 
-import { DataGrid } from '@mui/x-data-grid'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -44,8 +43,10 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 
 // Used to display recipes
 function ViewRecipe (props) {
+  // Creates a snackbar which allows for a custom message
   const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
+  // Add the ingredient to the grocery list
   const handleAddIngredient = ingredient => {
     const id = new Date().getTime()
     const ingredientToAdd = {
@@ -79,7 +80,7 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Typography>
+          <Typography sx={{ fontSize: 18 }}>
             <b>Recipe Information</b>
           </Typography>
         </Grid>
@@ -115,14 +116,27 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Typography>
+          <Typography
+            component='center'
+            style={{
+              wordWrap: 'break-word',
+              display: 'inline-block',
+              whiteSpace: 'pre-line'
+            }}
+            sx={{ fontSize: 18 }}
+          >
             <b>Recipe Ingredients</b>
+            {'\nNote: Table may be scrollable'}
           </Typography>
         </Grid>
 
         <Grid item>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+          <TableContainer component={Paper} style={{ maxHeight: 250 }}>
+            <Table
+              sx={{ minWidth: 650 }}
+              aria-label='simple table'
+              stickyHeader
+            >
               <TableHead>
                 <TableRow>
                   <TableCell align='center'>Ingredient Name</TableCell>
@@ -162,19 +176,36 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Typography>
+          <Typography
+            component='center'
+            style={{
+              wordWrap: 'break-word',
+              display: 'inline-block',
+              whiteSpace: 'pre-line'
+            }}
+            sx={{ fontSize: 18 }}
+          >
             <b>Directions</b>
+            {'\nNote: May be scrollable'}
           </Typography>
         </Grid>
 
         <Grid item>
-          <Paper style={{ width: 650, height: 400 }}>
+          <Paper
+            style={{
+              width: 650,
+              height: 350,
+
+              overflow: 'auto'
+            }}
+          >
             <Typography
               style={{
                 wordWrap: 'break-word',
                 display: 'inline-block',
                 whiteSpace: 'pre-line'
               }}
+              sx={{ fontSize: 18 }}
             >
               {props.recipe.directions}
             </Typography>
@@ -208,8 +239,7 @@ function ManipulateRecipe (props) {
       width: 150,
       headerClassName: 'super-app-theme--header',
       flex: 1,
-      editable: true,
-
+      editable: true
     },
     {
       field: 'quantity',
@@ -217,8 +247,7 @@ function ManipulateRecipe (props) {
       width: 150,
       headerClassName: 'super-app-theme--header',
       flex: 1,
-      editable: true,
-     
+      editable: true
     },
     {
       field: 'delete',
@@ -233,7 +262,7 @@ function ManipulateRecipe (props) {
             className='delete-btn'
             onClick={() => setOpenDeleteDialog(true)}
           >
-            <DeleteIcon className='delete' style={{color: "black"}} />
+            <DeleteIcon className='delete' style={{ color: 'black' }} />
           </Button>
         )
       },
@@ -241,6 +270,7 @@ function ManipulateRecipe (props) {
     }
   ]
 
+  // Add an ingredient to the recipe
   const handleAddIngredient = () => {
     const id = new Date().getTime()
 
@@ -258,17 +288,13 @@ function ManipulateRecipe (props) {
     setIngredientQuantity('')
   }
 
-  const handleIngredientSelected = ingredient => {
-    if (ingredient) {
-      setCurrIngredient(ingredient)
-    }
-  }
+  // If the user edits an ingredient in the recipe
+  const handleIngredientChange = (event, ingredient, type) => {
+    console.log(event.target.value)
 
-  const handleIngredientChange = (value, event) => {
-    console.log(value, event)
     let temp = rows.map(curr => {
-      if (curr.id === value.id) {
-        return { ...curr, [value.field]: value.value }
+      if (curr.id === ingredient.id) {
+        return { ...curr, [type]: event.target.value }
       } else {
         return { ...curr }
       }
@@ -277,42 +303,42 @@ function ManipulateRecipe (props) {
     setRows(temp)
   }
 
+  // If the user delete an ingredient in the recipe
   const handleDeleteIngredient = () => {
-    let name = ''
-
     const tempArray = rows.filter(curr => {
       if (curr.id !== currIngredient.id) {
         return curr
-      } else {
-        name = curr.name
       }
     })
 
-    openCustomSnackBar(`${name} has been deleted`)
+    openCustomSnackBar(`${currIngredient.name} has been deleted`)
     setRows(tempArray)
     setOpenDeleteDialog(false)
-    setCurrIngredient({})
+    setCurrIngredient(false)
   }
 
   const handleClosed = () => {
     setOpenDeleteDialog(false)
   }
 
+  // Value of the tabs
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
 
+  // Editing the recipe itself
   const handleRecipeChange = (event, keyName) => {
     props.setCurrRecipe({ ...props.recipe, [keyName]: event.target.value })
   }
 
+  // Updating the current ingredients for the recipe
   useEffect(() => {
     props.setCurrRecipe({ ...props.recipe, ingredients: rows })
   }, [rows])
 
   return (
     <>
-      <Box sx={{ width: '100%', typography: 'body1' }}>
+      <Box sx={{ width: '100%', typography: 'body1', fontSize: 18 }}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList
@@ -349,7 +375,9 @@ function ManipulateRecipe (props) {
               spacing={5}
             >
               <Grid item>
-                <Typography>Enter recipe information below</Typography>
+                <Typography sx={{ fontSize: 18 }}>
+                  Enter recipe information below
+                </Typography>
               </Grid>
               <Grid
                 item
@@ -447,7 +475,7 @@ function ManipulateRecipe (props) {
               spacing={3}
             >
               <Grid item>
-                <Typography>
+                <Typography sx={{ fontSize: 18 }}>
                   Enter ingredient name and quantity, and then press add
                 </Typography>
               </Grid>
@@ -502,8 +530,18 @@ function ManipulateRecipe (props) {
                 spacing={2}
               >
                 <Grid item>
-                  <Typography>
-                    Double tap on a cell in the table below to edit it
+                  <Typography
+                    style={{
+                      wordWrap: 'break-word',
+                      display: 'inline-block',
+                      whiteSpace: 'pre-line'
+                    }}
+                    component='center'
+                    sx={{ fontSize: 18 }}
+                  >
+                    Edit the text fields below to change specific ingredient
+                    information
+                    {'\nNote: Table may be scrollable'}
                   </Typography>
                 </Grid>
 
@@ -512,23 +550,76 @@ function ManipulateRecipe (props) {
                     className='recipeTableDiv'
                     style={{ height: 785, width: 768 }}
                   >
-                    <DataGrid
-                      experimentalFeatures={{ newEditingApi: true }}
-                      rows={rows} // Display the rows
-                      columns={columns} // Display the columns
-                      rowsPerPageOptions={[]} // Get rid of rows per page option
-                      onSelectionModelChange={ids => {
-                        if (rows) {
-                          const selectedRowData = rows.filter(row => {
-                            if (row.id == ids) {
-                              return row
-                            }
-                          })
-                          handleIngredientSelected(selectedRowData[0])
-                        }
-                      }}
-                      onCellEditCommit={(v, e) => handleIngredientChange(v, e)}
-                    />
+                    <TableContainer
+                      component={Paper}
+                      style={{ maxHeight: 750 }}
+                    >
+                      <Table
+                        sx={{ minWidth: 650 }}
+                        aria-label='simple table'
+                        stickyHeader
+                      >
+                        <TableHead>
+                          <TableRow>
+                            <TableCell align='center'>
+                              Ingredient Name
+                            </TableCell>
+                            <TableCell align='center'>
+                              Ingredient Quantity
+                            </TableCell>
+                            <TableCell align='center'></TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {rows.map(currIngredient => {
+                            return (
+                              <TableRow key={currIngredient.id}>
+                                <TableCell align='center'>
+                                  <TextField
+                                    label='Edit Name'
+                                    defaultValue={currIngredient.name}
+                                    onChange={e =>
+                                      handleIngredientChange(
+                                        e,
+                                        currIngredient,
+                                        'name'
+                                      )
+                                    }
+                                  ></TextField>
+                                </TableCell>
+                                <TableCell align='center'>
+                                  <TextField
+                                    label='Edit Quantity'
+                                    defaultValue={currIngredient.quantity}
+                                    onChange={e =>
+                                      handleIngredientChange(
+                                        e,
+                                        currIngredient,
+                                        'quantity'
+                                      )
+                                    }
+                                  ></TextField>
+                                </TableCell>
+                                <TableCell align='center'>
+                                  <Button
+                                    startIcon={<DeleteIcon />}
+                                    style={{
+                                      border: 'none',
+                                      outline: 'none',
+                                      color: 'black'
+                                    }}
+                                    onClick={() => {
+                                      setCurrIngredient(currIngredient)
+                                      setOpenDeleteDialog(true)
+                                    }}
+                                  />
+                                </TableCell>
+                              </TableRow>
+                            )
+                          })}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                   </div>
                 </Grid>
               </Grid>
@@ -582,7 +673,18 @@ function ManipulateRecipe (props) {
               spacing={5}
             >
               <Grid item>
-                <Typography>Enter recipe directions below</Typography>
+                <Typography
+                  component='center'
+                  style={{
+                    wordWrap: 'break-word',
+                    display: 'inline-block',
+                    whiteSpace: 'pre-line'
+                  }}
+                  sx={{ fontSize: 18 }}
+                >
+                  Enter recipe directions below
+                  {'\nNote: May be scrollable'}
+                </Typography>
               </Grid>
               <Grid item>
                 <TextareaAutosize
@@ -694,7 +796,7 @@ export default function RecipeSubmenu (props) {
                 <Grid item>
                   <Button
                     variant='text'
-                    style={{ border: 'none', outline: 'none', color: "green" }}
+                    style={{ border: 'none', outline: 'none', color: 'green' }}
                     startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
                     onClick={handleSaveRecipe}
                   >
@@ -713,7 +815,10 @@ export default function RecipeSubmenu (props) {
             alignItems='center'
           >
             {Object.keys(props.recipe).length !== 0 && editRecipe !== true ? (
-              <ViewRecipe recipe={currRecipe} handleGroceryAdd={props.handleGroceryAdd} />
+              <ViewRecipe
+                recipe={currRecipe}
+                handleGroceryAdd={props.handleGroceryAdd}
+              />
             ) : (
               <ManipulateRecipe
                 recipe={currRecipe}
