@@ -285,7 +285,7 @@ class GroceryList extends Component {
             >
               {'This is the Grocery List page.\n\n To add a new grocery item, fill out the needed information at the\n' +
               'bottom of the page and press the "Add Item" buttom or press the Enter Key. \n\n' + 
-              'To import your previously saved starter shopping list, press the \n "Import Starter List" button so the top of the List\n\n' +
+              'To import your previously saved starter shopping list, press the \n "Import Starter List" button so the top of the list.\n\n' +
               'To delete an item from the list, press the Trash Can Icon on the row \n you would like to delete.\n\n' + 
               'As you shop, check items off the list using the check boxes at the far left. \n' +
               'When you complete your shopping trip, you can add the items to your kitchen.' +
