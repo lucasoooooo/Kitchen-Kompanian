@@ -66,7 +66,7 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
     }
 
     const handleDeleteClick = () => {
-        handleDelete(currMember.id);
+        handleDelete(currMember);
         handleBack();
     }
 

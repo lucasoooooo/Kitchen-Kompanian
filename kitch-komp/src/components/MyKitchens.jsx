@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddMember from "./MyKitchenComp/AddMember";
 import MemberList from "./MyKitchenComp/MemberList";
 import TableComponent from './MyKitchenComp/Table'
+import { useCustomSnackbar } from './RecipeMenu/useCustomSnackbar'
 
 
 import { DataGrid } from '@mui/x-data-grid';
@@ -22,11 +23,17 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import { colors } from "@material-ui/core";
 
 
 function MyKitchens(props) {
 
  //  this.handleAdd = this.handleMemberAdd.bind(this);
+
+ const Alert = React.forwardRef(function Alert (props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+})
+
   
 
   const [members, setMembers] = useState(props.members);
@@ -34,10 +41,13 @@ function MyKitchens(props) {
   const [id, setID] = useState(5);
   const [currMember, setCurrMember] = useState('');
   const [viewInfo, setViewInfo] = useState(false)
+  const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
-  const handleDelete = (id) => {
-    const newMembers = members.filter(member => member.id !== id);
+  const handleDelete = (memberD) => {
+    const newMembers = members.filter(member => member.id !== memberD.id);
     setMembers(newMembers);
+
+    openCustomSnackBar(`${memberD.username} has been deleted`)
   }
 
   const handleAdd = () => {
@@ -54,12 +64,16 @@ function MyKitchens(props) {
     setMembers(newMembers);
 
     setMembers(newMembers.concat(member1));
+
+    openCustomSnackBar(`${member1.username} has been edited`)
   }
 
   const addMember = (member) => {
     setID(id+1);
     //props.handleMemberAdd(member).bind(this);
     setMembers(members.concat(member));
+
+    openCustomSnackBar(`${member.username} has been added`)
   }
 
   const handleEdit = (member) => {
@@ -156,6 +170,9 @@ function MyKitchens(props) {
         </Dialog>
       ) : null}
 
+      <Snackbar open={isActive} message={message}>
+        <Alert sx={{ width: '100%' }}>{message}</Alert>
+      </Snackbar>
 
 
 
