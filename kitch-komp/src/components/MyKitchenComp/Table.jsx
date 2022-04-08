@@ -136,7 +136,7 @@ export default function QuickFilteringGrid (props) {
     <>
       <Paper
         sx={{
-          height: 1110,
+          height: 1102,
           width: 768,
 
           '& .super-app-theme--header': {
