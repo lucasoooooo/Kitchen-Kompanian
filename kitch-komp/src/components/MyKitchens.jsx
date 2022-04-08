@@ -15,6 +15,13 @@ import Box from "@mui/material/Box"
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import QuestionMarkIcon from '@mui/icons-material/Help'
+
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 
 function MyKitchens(props) {
@@ -26,6 +33,7 @@ function MyKitchens(props) {
   const [add, setAdd] = useState(false);
   const [id, setID] = useState(5);
   const [currMember, setCurrMember] = useState('');
+  const [viewInfo, setViewInfo] = useState(false)
 
   const handleDelete = (id) => {
     const newMembers = members.filter(member => member.id !== id);
@@ -65,9 +73,10 @@ function MyKitchens(props) {
   } else {
     return (
 <>
-      <div style={{ textAlign: 'center' }}>
-        <h1
-          textalign='center'
+<div style={{ textAlign: 'center' }}>
+        <Grid
+          alignItems='center'
+          container
           style={{
             color: 'white',
             background: '#343a40',
@@ -75,10 +84,24 @@ function MyKitchens(props) {
             paddingBottom: '20px'
           }}
         >
-          Kitchen Members
-        </h1>
+          <Grid item sm></Grid>
+          <Grid item sm={8}>
+            <h1 textalign='center'>Kitchen Members</h1>
+          </Grid>
+          <Grid item sm>
+            <Button
+              startIcon={<QuestionMarkIcon />}
+              style={{ border: 'none', outline: 'none', color: 'white' }}
+              onClick={() => setViewInfo(true)}
+            >
+              Page info
+            </Button>
+          </Grid>
+        </Grid>
+
         <span className='horizontal-line' />
       </div>
+
 
           <Grid
           container
@@ -99,7 +122,46 @@ function MyKitchens(props) {
              </Grid>
 
           </Grid>
+          {viewInfo ? (
+        <Dialog
+          open={viewInfo}
+          onClose={() => setViewInfo(false)}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>Recipe List</DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              id='alert-dialog-description'
+              style={{
+                wordWrap: 'break-word',
+                display: 'inline-block',
+                whiteSpace: 'pre-line'
+              }}
+            >
+              {'This is the Kitchen Member page.\n\nTo add a new member, click the "Add Member" button.\n\nTo edit a member, click on a member in the table.\n\n' +
+                'To delete a member, click on a member and then select the "Delete Member" button.'}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setViewInfo(false)}
+              autoFocus
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : null}
+
+
+
+
           </>
+
+          
     )
   }
 
