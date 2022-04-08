@@ -120,7 +120,7 @@ export default function QuickFilteringGrid (props) {
     setSearchText(searchValue)
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
 
-    const filteredRows = props.recipes.filter(row => {
+    const filteredRows = props.members.filter(row => {
       return Object.keys(row).some(field => {
         return searchRegex.test(row[field].toString())
       })
@@ -167,6 +167,8 @@ export default function QuickFilteringGrid (props) {
             props.handleMemberSelected(selectedRowData[0])
           }}
         />
+
+        {}
       </Paper>
     </>
   )

@@ -48,11 +48,6 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
     const [ID, setID] = useState(0);
     const [confirmDelete, setConfirmDelete] = useState(false);
 
-
-    useEffect(() => {
-        console.log(ID);
-    }, [ID])
-
     const handleSubmit = (e) => {
         e.preventDefault();
         
@@ -246,8 +241,9 @@ function EditMember(props) {
             alignContent='center'
             justifyContent='center'
             alignItems='center'
-            spacing={5}
+            spacing={3}
           >
+
             <Grid item>
               <TextField
                 label='First Name'
@@ -262,15 +258,8 @@ function EditMember(props) {
                 defaultValue={props.lastName}
                 onChange={(e) => props.setLastName(e.target.value)}
               />
+              </Grid>
 
-            <Grid
-            item
-            container
-            alignContent='center'
-            justifyContent='center'
-            alignItems='center'
-            spacing={5}
-             >
             <Grid item>
               <TextField
                 label='Username'
@@ -278,9 +267,7 @@ function EditMember(props) {
                  onChange={(e) => props.setUserName(e.target.value)}
               />
             </Grid>
-            </Grid>
 
-            </Grid>
           </Grid>
         </Grid>
     </Grid>
