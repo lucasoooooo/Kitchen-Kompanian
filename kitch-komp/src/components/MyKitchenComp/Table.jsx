@@ -110,7 +110,13 @@ export default function QuickFilteringGrid (props) {
     {
       field: 'username',
       headerName: 'Username',
-      width: 360,
+      width: 200,
+      headerClassName: 'super-app-theme--header'
+    }, 
+    {
+      field: 'allergy',
+      headerName: 'Allergies',
+      width: 200,
       headerClassName: 'super-app-theme--header'
     },
   ]

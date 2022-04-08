@@ -47,13 +47,14 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
     const [lastName, setLastName] = useState(currMember.lastName);
     const [ID, setID] = useState(0);
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const [allergy, setAllergy] = useState(currMember.allergy);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
         let tempID = currMember ? currMember.id : id; 
 
-        const member = {username, firstName, lastName, id: tempID};
+        const member = {username, firstName, lastName, id: tempID, allergy};
         currMember ? (
             handleEditMember(member)
         ) : (
@@ -171,9 +172,11 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
               firstName = {currMember.firstName}
               lastName = {currMember.lastName}
               username = {currMember.username}
+              allergy = {currMember.allergy}
               setUserName = {setUserName}
               setFirstName = {setFirstName}
-              setLastName = {setLastName} />
+              setLastName = {setLastName}
+              setAllergy = {setAllergy} />
           </Grid>
 
           {confirmDelete ? (
@@ -269,6 +272,25 @@ function EditMember(props) {
             </Grid>
 
           </Grid>
+
+          <Grid
+            item
+            container
+            alignContent='center'
+            justifyContent='center'
+            alignItems='center'
+            spacing={3}
+          >
+             <Grid item>
+              <TextField
+                label='Allergies'
+                 defaultValue={props.allergies}
+                 onChange={(e) => props.setAllergy(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+
+          
         </Grid>
     </Grid>
         

@@ -107,10 +107,10 @@ class App extends Component {
         }
       ],
       members: [
-        {id: 1 , firstName: 'Evan', lastName: 'Golub', username: 'egolub', },
-        {id: 2 , firstName: 'Clyde', lastName: 'Kruskal', username: 'ckrusk', },
-        {id: 3,  firstName: 'William', lastName: 'Gasarch', username: 'wgasar',  },
-        {id: 4, firstName: 'Larry', lastName: 'Herman', username: 'lherm',  }
+        {id: 1 , firstName: 'Evan', lastName: 'Golub', username: 'egolub', allergy: '', },
+        {id: 2 , firstName: 'Clyde', lastName: 'Kruskal', username: 'ckrusk', allergy: '', },
+        {id: 3,  firstName: 'William', lastName: 'Gasarch', username: 'wgasar', allergy: '', },
+        {id: 4, firstName: 'Larry', lastName: 'Herman', username: 'lherm', allergy: '', }
       ],
       groceryList: [],
       numGroceryItems: 21,
