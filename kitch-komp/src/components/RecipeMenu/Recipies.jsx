@@ -26,7 +26,6 @@ function Recipies (props) {
   const [viewSubmenu, setViewSubmenu] = useState(false)
   const [currRecipe, setCurrRecipe] = useState({})
   const [lastRecipe, setLastRecipe] = useState({})
-  const [idCounter, setIdCounter] = useState(4)
   const [viewInfo, setViewInfo] = useState(false)
   const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
@@ -62,11 +61,9 @@ function Recipies (props) {
 
       // Create a brand new recipe and increment the ID counter
     } else {
-      recipe.id = idCounter + 1
+      recipe.id = new Date().getTime()
 
       tempArray.push(recipe)
-
-      setIdCounter(idCounter + 1)
       openCustomSnackBar(`${recipe.name} has been added`)
     }
 
@@ -171,8 +168,10 @@ function Recipies (props) {
                 whiteSpace: 'pre-line'
               }}
             >
-              {'This is the Recipe List page.\n\nTo add a new recipe, click the "Add Recipe" button.\n\nTo view a recipe, click on a recipe in the table.\n\n' +
-                'To delete a recipe, click on a recipe and then select the "Delete Recipe" button.'}
+              {'To add a new recipe, click the "Add Recipe" button.\n\nTo view a recipe, click on a recipe in the table.\n\n' +
+                'To delete a recipe, click on a recipe and then select the "Delete Recipe" button.\n\nTo edit a recipe, click on a recipe and select the "Edit Recipe" button.' +
+                "\n\nYou can also search the table based on whether a field contains or doesn't contain a certain keyword. For example, if you don't want to see recipes that are spicy," +
+                ' select "Does not contain" from the selection box and type spicy into the search bar.\n\n(Note: as of right now, you can only search for a specific word or specific sequence of words)'}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
