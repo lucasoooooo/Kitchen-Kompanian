@@ -20,13 +20,13 @@ class App extends Component {
     this.state = {
       kitchenStockList: [
         { id: 1, item: 'Eggs', quantity: '12', location: 'Refrigerator', expiration:"", allergies: ["Eggs"], owner:[]},
-        { id: 2, item: 'Milk', quantity: '1 Gallon', location: "Refrigerator", expiration:"Apr 01 2022", allergies: ["Dairy"], owner:[]},
+        { id: 2, item: '(Expired) Milk', quantity: '1 Gallon', location: "Refrigerator", expiration:"Apr 1 2022", allergies: ["Dairy"], owner:[]},
         { id: 3, item: 'Chicken Breasts', quantity: '4', location:"Refrigerator", expiration:"", allergies:[], owner:[]},
         { id: 4, item: 'Ice Cream', quantity: '1',location: "Fridge", expiration:"",allergies:["Dairy"], owner:[]},
         { id: 5, item: 'Peas', quantity: '3' ,location: "Fridge", expiration:"",allergies:[], owner:[]},
         { id: 6, item: 'Canned Beans', quantity: '6',location: "Pantry", expiration:"",allergies:[], owner:[]},
         { id: 7, item: 'Jasmine Rice', quantity: '5',location: "Pantry", expiration:"",allergies:[], owner:[]},
-        { id: 8, item: 'Cookie', quantity: '9' ,location: "Pantry", expiration:"Apr 10 2022",allergies:["Dairy","Nut"], owner:[]},
+        { id: 8, item: 'Cookie', quantity: '9' ,location: "Pantry", expiration:"Apr 25 2022",allergies:["Dairy","Nut"], owner:[]},
       ],
       recipes: [
         {
