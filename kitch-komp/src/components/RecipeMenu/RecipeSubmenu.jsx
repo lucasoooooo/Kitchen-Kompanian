@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useCustomSnackbar } from './useCustomSnackbar'
 
 import {
   Box,
@@ -44,20 +43,20 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 // Used to display recipes
 function ViewRecipe (props) {
   // Creates a snackbar which allows for a custom message
-  const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
+  const [currIngredient, setCurrIngredient] = useState({})
+  const [ingredientAdded, setIngredientAdded] = useState(false)
 
   // Add the ingredient to the grocery list
   const handleAddIngredient = ingredient => {
+    setCurrIngredient(ingredient)
     const id = new Date().getTime()
     const ingredientToAdd = {
       id: id,
       item: ingredient.name,
       quantity: ingredient.quantity
     }
-
     props.handleGroceryAdd(ingredientToAdd)
-
-    openCustomSnackBar(`${ingredient.name} has been added to the grocery list`)
+    setIngredientAdded(true)
   }
 
   return (
@@ -213,8 +212,19 @@ function ViewRecipe (props) {
         </Grid>
       </Grid>
 
-      <Snackbar open={isActive} message={message}>
-        <Alert sx={{ width: '100%' }}>{message}</Alert>
+      <Snackbar
+        open={ingredientAdded}
+        autoHideDuration={3000}
+        onClose={() => setIngredientAdded(false)}
+        sx={{ pb: 8 }}
+      >
+        <Alert
+          onClose={() => setIngredientAdded(false)}
+          severity='success'
+          sx={{ width: '100%' }}
+        >
+          {currIngredient.name} added to grocery list
+        </Alert>
       </Snackbar>
     </>
   )
@@ -230,45 +240,9 @@ function ManipulateRecipe (props) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [ingredientName, setIngredientName] = useState('')
   const [ingredientQuantity, setIngredientQuantity] = useState('')
-  const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
-  const columns = [
-    {
-      field: 'name',
-      headerName: 'Name',
-      width: 150,
-      headerClassName: 'super-app-theme--header',
-      flex: 1,
-      editable: true
-    },
-    {
-      field: 'quantity',
-      headerName: 'Quantity',
-      width: 150,
-      headerClassName: 'super-app-theme--header',
-      flex: 1,
-      editable: true
-    },
-    {
-      field: 'delete',
-      headerName: '',
-      width: 80,
-      sortable: false,
-      headerClassName: 'delete-item-column',
-      hideSortIcons: true,
-      renderCell: params => {
-        return (
-          <Button
-            className='delete-btn'
-            onClick={() => setOpenDeleteDialog(true)}
-          >
-            <DeleteIcon className='delete' style={{ color: 'black' }} />
-          </Button>
-        )
-      },
-      editable: false
-    }
-  ]
+  const [ingredientAdded, setIngredientAdded] = useState(false)
+  const [ingredientDeleted, setIngredientDeleted] = useState(false)
 
   // Add an ingredient to the recipe
   const handleAddIngredient = () => {
@@ -283,15 +257,16 @@ function ManipulateRecipe (props) {
     let tempArray = [...rows]
     tempArray.push(newIngredient)
 
+    setCurrIngredient(newIngredient)
+
     setRows(tempArray)
+    setIngredientAdded(true)
     setIngredientName('')
     setIngredientQuantity('')
   }
 
   // If the user edits an ingredient in the recipe
   const handleIngredientChange = (event, ingredient, type) => {
-    console.log(event.target.value)
-
     let temp = rows.map(curr => {
       if (curr.id === ingredient.id) {
         return { ...curr, [type]: event.target.value }
@@ -311,10 +286,9 @@ function ManipulateRecipe (props) {
       }
     })
 
-    openCustomSnackBar(`${currIngredient.name} has been deleted`)
     setRows(tempArray)
     setOpenDeleteDialog(false)
-    setCurrIngredient(false)
+    setIngredientDeleted(true)
   }
 
   const handleClosed = () => {
@@ -699,8 +673,35 @@ function ManipulateRecipe (props) {
           </TabPanel>
         </TabContext>
       </Box>
-      <Snackbar open={isActive} message={message}>
-        <Alert sx={{ width: '100%' }}>{message}</Alert>
+
+      <Snackbar
+        open={ingredientAdded}
+        autoHideDuration={3000}
+        onClose={() => setIngredientAdded(false)}
+        sx={{ pb: 8 }}
+      >
+        <Alert
+          onClose={() => setIngredientAdded(false)}
+          severity='success'
+          sx={{ width: '100%' }}
+        >
+          {currIngredient.name} has been added
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={ingredientDeleted}
+        autoHideDuration={3000}
+        onClose={() => setIngredientDeleted(false)}
+        sx={{ pb: 8 }}
+      >
+        <Alert
+          onClose={() => setIngredientDeleted(false)}
+          severity='success'
+          sx={{ width: '100%' }}
+        >
+          {currIngredient.name} has been deleted
+        </Alert>
       </Snackbar>
     </>
   )

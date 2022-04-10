@@ -102,8 +102,23 @@ class App extends Component {
             { id: 4, name: 'Yellow Onion (medium)', quantity: '1' },
             { id: 5, name: 'Tomato Sauce (8 oz can)', quantity: '1' }
           ],
-          directions: 'Stuff the loaf of bread full of corn',
+          directions: 'Create the chili.\n\nMake it SUPER spicy',
           tags: 'Side Dish, Spicy'
+        },
+        {id: 6,
+          name: 'Vegetable Soup',
+          prepTime: '10 Minutes',
+          cookTime: '10 minutes',
+          totalTime: '20 Minutes',
+          servingSize: '3',
+          ingredients: [
+            { id: 1, name: 'Carrots', quantity: '2' },
+            { id: 2, name: 'Onion', quantity: '1' },
+            { id: 3, name: 'Peas', quantity: '1/2 lb' },
+                     ],
+          directions: '1) Cut up all vegetables into bite sized chunks\n\n2) Bring a pot full of water up to a boil\n\n'
+           + "3) Add vegetables to boiling water and boil for 10 minutes\n\n4) Serve in a bowl and eat while hot",
+          tags: "Vegetarian, Vegan"
         }
       ],
       members: [

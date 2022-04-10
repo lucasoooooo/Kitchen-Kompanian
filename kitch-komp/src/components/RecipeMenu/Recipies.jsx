@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 // Local imports
 import TableComponent from './Table'
 import RecipeSubmenu from './RecipeSubmenu'
-import { useCustomSnackbar } from './useCustomSnackbar'
 
 // MUI Component Imports
 import Button from '@mui/material/Button'
@@ -24,10 +23,13 @@ const Alert = React.forwardRef(function Alert (props, ref) {
 
 function Recipies (props) {
   const [viewSubmenu, setViewSubmenu] = useState(false)
+  const [recipeName, setRecipeName] = useState('')
   const [currRecipe, setCurrRecipe] = useState({})
   const [lastRecipe, setLastRecipe] = useState({})
   const [viewInfo, setViewInfo] = useState(false)
-  const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
+  const [recipeAdded, setRecipeAdded] = useState(false)
+  const [recipeEdited, setRecipeEdited] = useState(false)
+  const [recipeDeleted, setRecipeDelete] = useState(false)
 
   // User has clicked the add recipe button
   const handleAddButtonClicked = () => {
@@ -48,6 +50,7 @@ function Recipies (props) {
 
   const handleAddRecipe = recipe => {
     let tempArray = [...props.recipes]
+    setRecipeName(recipe.name)
 
     // Check to see if this is an existing recipe
     if (recipe.id) {
@@ -57,14 +60,17 @@ function Recipies (props) {
         }
       }
 
-      openCustomSnackBar(`${recipe.name} has been edited`)
+      // Show the snackbar
+      setRecipeEdited(true)
 
       // Create a brand new recipe and increment the ID counter
     } else {
       recipe.id = new Date().getTime()
 
       tempArray.push(recipe)
-      openCustomSnackBar(`${recipe.name} has been added`)
+
+      // Show the snackbar
+      setRecipeAdded(true)
     }
 
     props.handleChangeRecipe(tempArray)
@@ -77,17 +83,18 @@ function Recipies (props) {
    * and returns the user back to the main table screen.
    */
   const handleDeleteRecipe = name => {
+    setRecipeName(name)
     const temp = props.recipes.filter(curr => {
       if (curr.id !== currRecipe.id) {
         return curr
       }
     })
 
+    setRecipeDelete(true)
     props.handleChangeRecipe(temp)
     setViewSubmenu(false)
     setLastRecipe({ ...currRecipe })
     setCurrRecipe({})
-    openCustomSnackBar(`${name} has been deleted`)
   }
 
   return (
@@ -168,8 +175,8 @@ function Recipies (props) {
                 whiteSpace: 'pre-line'
               }}
             >
-              {'To add a new recipe, click the "Add Recipe" button.\n\nTo view a recipe, click on a recipe in the table.\n\n' +
-                'To delete a recipe, click on a recipe and then select the "Delete Recipe" button.\n\nTo edit a recipe, click on a recipe and select the "Edit Recipe" button.' +
+              {'This is the Recipe List page.\n\nTo view a recipe, simply click on a recipe in the table.\n\nTo add a new recipe, click the "Add Recipe" button and then follow the tabs to enter your recipe information in.\n\n' +
+                'To delete a recipe, click on a recipe and then select the "Delete Recipe" button.\n\nTo edit a recipe, click on a recipe and select the "Edit Recipe" button. Then, edit any fields you desire.' +
                 "\n\nYou can also search the table based on whether a field contains or doesn't contain a certain keyword. For example, if you don't want to see recipes that are spicy," +
                 ' select "Does not contain" from the selection box and type spicy into the search bar.\n\n(Note: as of right now, you can only search for a specific word or specific sequence of words)'}
             </DialogContentText>
@@ -187,8 +194,49 @@ function Recipies (props) {
         </Dialog>
       ) : null}
 
-      <Snackbar open={isActive} message={message}>
-        <Alert sx={{ width: '100%' }}>{message}</Alert>
+      <Snackbar
+        open={recipeAdded}
+        autoHideDuration={3000}
+        onClose={() => setRecipeAdded(false)}
+        sx={{ pb: 8 }}
+      >
+        <Alert
+          onClose={() => setRecipeAdded(false)}
+          severity='success'
+          sx={{ width: '100%' }}
+        >
+          {recipeName} has been added
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={recipeEdited}
+        autoHideDuration={3000}
+        onClose={() => setRecipeEdited(false)}
+        sx={{ pb: 8 }}
+      >
+        <Alert
+          onClose={() => setRecipeEdited(false)}
+          severity='success'
+          sx={{ width: '100%' }}
+        >
+          {recipeName} has been edited
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={recipeDeleted}
+        autoHideDuration={3000}
+        onClose={() => setRecipeDelete(false)}
+        sx={{ pb: 8 }}
+      >
+        <Alert
+          onClose={() => setRecipeDelete(false)}
+          severity='success'
+          sx={{ width: '100%' }}
+        >
+          {recipeName} has been deleted
+        </Alert>
       </Snackbar>
     </>
   )
