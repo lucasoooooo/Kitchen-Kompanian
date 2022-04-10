@@ -122,6 +122,7 @@ class App extends Component {
     this.handleGroceryDelete = this.handleGroceryDelete.bind(this)
     this.handleKitchenStockSubmit = this.handleKitchenStockSubmit.bind(this)
     this.handleDefaultList = this.handleDefaultList.bind(this)
+    this.handleChangeMember = this.handleChangeMember.bind(this)
   }
 
   presetList = [
@@ -176,9 +177,9 @@ class App extends Component {
     })
   }
 
-  handleMemberAdd(member) {
+  handleChangeMember(newMembers) {
     this.setState(prevState => ({
-      members: [...prevState.members, member]
+      members: [...newMembers]
     }));
   }
   render() {
@@ -192,7 +193,7 @@ class App extends Component {
            onKitchenStockSubmit={this.handleKitchenStockSubmit}/>} />
           <Route path="/recipies" element={<Recipies recipes={this.state.recipes} kitchenStockList={this.state.kitchenStockList} 
             handleChangeRecipe={this.handleChangeRecipe} handleGroceryAdd={this.handleGroceryAdd}/>} />
-          <Route path="/myKitchens" element={<MyKitchens members={this.state.members} handleMemberAdd={this.handleMemberAdd}/>} />
+          <Route path="/myKitchens" element={<MyKitchens members={this.state.members} handleChangeMember={this.handleChangeMember}/>} />
         </Routes>
         <Footer />
       </Router>

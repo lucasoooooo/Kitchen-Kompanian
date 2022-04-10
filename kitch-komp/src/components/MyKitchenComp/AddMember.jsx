@@ -60,9 +60,7 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
         ) : (
             addMember(member)
         );
-        setUserName('');
-        setFirstName('');
-        setLastName('');
+        
         handleBack();
     }
 

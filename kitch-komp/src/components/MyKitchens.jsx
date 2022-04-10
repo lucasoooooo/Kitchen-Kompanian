@@ -44,7 +44,8 @@ function MyKitchens(props) {
   const { isActive, message, openCustomSnackBar } = useCustomSnackbar()
 
   const handleDelete = (memberD) => {
-    const newMembers = members.filter(member => member.id !== memberD.id);
+    let newMembers = members.filter(member => member.id !== memberD.id);
+    props.handleChangeMember(newMembers);
     setMembers(newMembers);
 
     openCustomSnackBar(`${memberD.username} has been deleted`)
@@ -60,18 +61,20 @@ function MyKitchens(props) {
   }
 
   const handleEditMember = (member1) => {
-    const newMembers = members.filter(member => member.id !== member1.id);
+    let newMembers = members.filter(member => member.id !== member1.id);
+    newMembers.push(member1);
+    props.handleChangeMember(newMembers);
     setMembers(newMembers);
-
-    setMembers(newMembers.concat(member1));
 
     openCustomSnackBar(`${member1.username} has been edited`)
   }
 
   const addMember = (member) => {
+    let tempMembers = [...members]
     setID(id+1);
-    //props.handleMemberAdd(member).bind(this);
-    setMembers(members.concat(member));
+    tempMembers.push(member);
+    props.handleChangeMember(tempMembers);
+    setMembers(tempMembers);
 
     openCustomSnackBar(`${member.username} has been added`)
   }
