@@ -5,26 +5,24 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types'
 import {Typography} from '@mui/material'
-// MUI Component Imports
-// import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-
-// MUI Icon Imports
+import QuestionMarkIcon from '@mui/icons-material/Help';
+import Snackbar from '@mui/material/Snackbar'
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import ClearIcon from '@mui/icons-material/Clear'
 import IconButton from '@mui/material/IconButton'
-// import MenuIcon from '@mui/icons-material/MoreVert'
 import SearchIcon from '@mui/icons-material/Search'
-// import { Paper } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-// import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import MuiAlert from '@mui/material/Alert';
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 
 class KitchenStock extends Component {
@@ -39,6 +37,10 @@ class KitchenStock extends Component {
       openDeleteDialog: false,
       currentEditId: 0,
       helpBox: false,
+      openAdd: false,
+      openDelete: false,
+      openEdit: false,
+      openSearch: false,
       deleteItem:'',
       numItems: 0,
       item: '',
@@ -54,6 +56,8 @@ class KitchenStock extends Component {
     this.handleClosed = this.handleClosed.bind(this);
     this.handleOpened = this.handleOpened.bind(this);
     this.handleHelp = this.handleHelp.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
   
   componentDidMount() {
@@ -66,6 +70,10 @@ class KitchenStock extends Component {
       currentEditId: 0,
       numItems: this.props.items.length+1,
       helpBox: false,
+      openAdd: false,
+      openDelete: false,
+      openEdit: false,
+      openSearch: false,
       deleteItem:'',
       item: '',
       quantity: '',
@@ -91,7 +99,8 @@ class KitchenStock extends Component {
       location:'',
       expiration:'',
       allergies:'',
-      owner:''
+      owner:'',
+      openDelete: true
     });
     // console.log(this.state.data)
   }
@@ -100,6 +109,17 @@ class KitchenStock extends Component {
       addView: true,
       editView:false
     });
+  }
+  handleClose(event, reason){
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({
+      openAdd: false,
+      openDelete: false,
+      openEdit: false,
+      openSearch: false
+    })
   }
 
   handleEditView(id){
@@ -196,9 +216,9 @@ class KitchenStock extends Component {
       location:'',
       expiration:'',
       allergies:'',
-      owner:''
-    });
-    
+      owner:'',
+      openEdit: true
+    }); 
   }
 
   handleSubmit(event) { 
@@ -245,11 +265,32 @@ class KitchenStock extends Component {
       location:'',
       expiration:'',
       allergies:'',
-      owner:''
+      owner:'',
+      openAdd: true
     });
     console.log(this.state)
     // this.checkExpiration()
   }
+
+  // Filter the recipes based on the requested search
+  handleSearch() {
+    console.log("Searching...")
+    this.setState({
+      openSearch: true
+    })
+  }
+  
+  // searchValue => {
+  //   setSearchText(searchValue)
+  //   const searchRegex = new RegExp(escapeRegExp(searchValue), 'i')
+
+  //   const filteredRows = props.members.filter(row => {
+  //     return Object.keys(row).some(field => {
+  //       return searchRegex.test(row[field].toString())
+  //     })
+  //   })
+  //   setRows(filteredRows)
+  // }
 
   render() {
     return (
@@ -269,7 +310,7 @@ class KitchenStock extends Component {
             <h1 textalign='center'>Kitchen Stock</h1>
           </Grid>
           <Grid item sm>
-            <Button startIcon={<QuestionMarkIcon />} style={{color: "white"}} 
+            <Button startIcon={<QuestionMarkIcon />} style={{border: 'none', outline: 'none', color: 'white'}} 
             onClick={this.handleHelp}>
               Page info
             </Button>
@@ -331,7 +372,7 @@ class KitchenStock extends Component {
               </Grid>
           </Grid>
           <Grid item>
-            <Typography>Enter food item information below</Typography>
+            <Typography >Enter food item information below</Typography>
           </Grid>
           
           <form onSubmit={this.handleSubmit}>
@@ -444,7 +485,7 @@ class KitchenStock extends Component {
                 <Button
                   variant='text'
                   color='primary'
-                  style={{ border: 'none', outline: 'none' }}
+                  style={{ border: 'none', outline: 'none'}}
                   startIcon={<DeleteIcon>Delete Food Item</DeleteIcon>}
                   onClick={() => this.handleOpened()}
                 >
@@ -532,18 +573,18 @@ class KitchenStock extends Component {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id='alert-dialog-description'>
-              This is the Kitchen Stock page.<br/> 
+              This is the Kitchen Stock page.<br/> <br/>
                Here you will find all your
-               ingredients that are currently in your home. <br/> 
+               ingredients that are currently in your home. <br/> <br/>
                To sort the
                 food items by alphabetically, quantity or location, 
-                tap the label you want to sort.<br/> 
+                tap the label you want to sort.<br/> <br/>
                  To add a new food item, 
-                tap the "Add Food Item" button at the top right. <br/> 
+                tap the "Add Food Item" button at the top right. <br/> <br/>
                To edit or view more about a food item, tap the row 
-               you want to see to go into edit mode. <br/> 
+               you want to see to go into edit mode. <br/> <br/>
                In edit mode, you can edit/save your 
-               food item, or delete it.<br/> 
+               food item, or delete it.<br/><br/> 
                 You can also delete your food item from the regular view by 
                 clicking the trash can icon on the left of every row.
             </DialogContentText>
@@ -602,7 +643,10 @@ class KitchenStock extends Component {
             componentsProps={{
               // Interaction between Search Bar and Table
               toolbar: {
-                handleAddView: () => this.handleAddView()
+                handleAddView: () => this.handleAddView(),
+                handleSearch: () => this.handleSearch()
+                // onChange: event => requestSearch(event.target.value),
+                // clearSearch: () => requestSearch(''),
               }
               
             }}
@@ -650,6 +694,26 @@ class KitchenStock extends Component {
         <br/>
         
       </div>
+      <Snackbar open={this.state.openAdd} autoHideDuration={3000} onClose={this.handleClose}>
+          <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
+            Item Added to Kitchen Stock
+          </Alert>
+        </Snackbar>
+        <Snackbar open={this.state.openDelete} autoHideDuration={3000} onClose={this.handleClose}>
+          <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
+            Item Deleted from Kitchen Stock
+          </Alert>
+        </Snackbar>
+        <Snackbar open={this.state.openEdit} autoHideDuration={3000} onClose={this.handleClose}>
+          <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
+            Item Edited
+          </Alert>
+        </Snackbar>
+        <Snackbar open={this.state.openSearch} autoHideDuration={3000} onClose={this.handleClose}>
+          <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
+            Search Feature Currently not implemented
+          </Alert>
+        </Snackbar>
       </div>
 
     );
@@ -667,7 +731,7 @@ function QuickSearchToolbar (props) {
           variant='standard'
           value={props.value}
           style={{ paddingRight: 15 }}
-          onChange={props.onChange}
+          onChange={props.handleSearch}
           placeholder='Search…'
           InputProps={{
             startAdornment: <SearchIcon fontSize='small' />,
@@ -677,7 +741,7 @@ function QuickSearchToolbar (props) {
                 aria-label='Clear'
                 size='small'
                 style={{ visibility: props.value ? 'visible' : 'hidden' }}
-                onClick={props.clearSearch}
+                // onClick={this.addView}
               >
                 <ClearIcon fontSize='small' />
               </IconButton>
@@ -715,5 +779,7 @@ function QuickSearchToolbar (props) {
 }
 
 QuickSearchToolbar.propTypes = {
-  handleAddView: PropTypes.func.isRequired
+  handleAddView: PropTypes.func.isRequired,
+  // onChange: PropTypes.func.isRequired,
+  // value: PropTypes.string.isRequired,
 }
