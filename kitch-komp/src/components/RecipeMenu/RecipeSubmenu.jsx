@@ -32,6 +32,8 @@ import TabPanel from '@mui/lab/TabPanel'
 // MUI Icon Imports
 import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import CheckIcon from '@mui/icons-material/Check'
+import CloseIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import SaveIcon from '@mui/icons-material/Save'
@@ -74,8 +76,8 @@ function ViewRecipe (props) {
           <Typography variant='h4'>{props.recipe.name}</Typography>
         </Grid>
 
-        <Grid item>
-          <Divider style={{ width: 760 }} />
+        <Grid item >
+          <Divider style={{ width: 765, borderBottomWidth: 3 }} />
         </Grid>
 
         <Grid item>
@@ -111,7 +113,7 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Divider style={{ width: 760 }} />
+          <Divider style={{ width: 765, borderBottomWidth: 3 }}  />
         </Grid>
 
         <Grid item>
@@ -125,12 +127,17 @@ function ViewRecipe (props) {
             sx={{ fontSize: 18 }}
           >
             <b>Recipe Ingredients</b>
-            {'\nNote: Table may be scrollable'}
+            {"\n"}
+            <CheckIcon sx={{color: "green"}} />
+            {` - In Kitchen Stock, `}
+            <CloseIcon sx={{color: "red"}} />
+            {" - Not in Kitchen Stock"}
+
           </Typography>
         </Grid>
 
         <Grid item>
-          <TableContainer component={Paper} style={{ maxHeight: 250 }}>
+          <TableContainer component={Paper} >
             <Table
               sx={{ minWidth: 650 }}
               aria-label='simple table'
@@ -138,6 +145,7 @@ function ViewRecipe (props) {
             >
               <TableHead>
                 <TableRow>
+                  <TableCell align='center'>Owned</TableCell>
                   <TableCell align='center'>Ingredient Name</TableCell>
                   <TableCell align='center'>Ingredient Quantity</TableCell>
                   <TableCell align='center'></TableCell>
@@ -147,21 +155,66 @@ function ViewRecipe (props) {
                 {props.recipe.ingredients.map(currIngredient => {
                   return (
                     <TableRow key={currIngredient.id}>
-                      <TableCell align='center'>
-                        {currIngredient.name}
-                      </TableCell>
-                      <TableCell align='center'>
-                        {currIngredient.quantity}
-                      </TableCell>
-                      <TableCell align='center'>
-                        <Button
-                          startIcon={<AddIcon />}
-                          style={{ border: 'none', outline: 'none' }}
-                          onClick={() => handleAddIngredient(currIngredient)}
-                        >
-                          Add to Grocery List
-                        </Button>
-                      </TableCell>
+                      {props.kitchenStockList.some(
+                        curr => {
+                          return curr.item.toLowerCase() ===
+                          currIngredient.name.toLowerCase() &&
+                        curr.quantity !== undefined &&
+                        curr.quantity !== '0' && curr.quantity !== ""
+                        }    
+
+                      ) ? (
+                        <>
+                          <TableCell align='center' sx={{ color: 'green' }}>
+                            <CheckIcon />
+                          </TableCell>
+                          <TableCell align='center'>
+                            {currIngredient.name}
+                          </TableCell>
+                          <TableCell align='center'>
+                            {currIngredient.quantity}
+                          </TableCell>
+                          <TableCell align='center'>
+                            <Button
+                              startIcon={<AddIcon />}
+                              style={{ border: 'none', outline: 'none' }}
+                              onClick={() =>
+                                handleAddIngredient(currIngredient)
+                              }
+                            >
+                              Add to Grocery List
+                            </Button>
+                          </TableCell>
+                        </>
+                      ) : (
+                        <>
+                          {/* Not in kitchen stock list*/}
+                          <TableCell
+                            align='center'
+                            size='medium'
+                            sx={{ color: 'red' }}
+                          >
+                            <CloseIcon />
+                          </TableCell>
+                          <TableCell align='center' sx={{ color: 'red' }}>
+                            <i>*{currIngredient.name}</i>
+                          </TableCell>
+                          <TableCell align='center' sx={{ color: 'red' }}>
+                            {currIngredient.quantity}
+                          </TableCell>
+                          <TableCell align='center'>
+                            <Button
+                              startIcon={<AddIcon />}
+                              style={{ border: 'none', outline: 'none' }}
+                              onClick={() =>
+                                handleAddIngredient(currIngredient)
+                              }
+                            >
+                              Add to Grocery List
+                            </Button>
+                          </TableCell>
+                        </>
+                      )}
                     </TableRow>
                   )
                 })}
@@ -171,7 +224,7 @@ function ViewRecipe (props) {
         </Grid>
 
         <Grid item>
-          <Divider style={{ width: 760 }} />
+          <Divider style={{ width: 765, borderBottomWidth: 3 }}  />
         </Grid>
 
         <Grid item>
@@ -185,16 +238,15 @@ function ViewRecipe (props) {
             sx={{ fontSize: 18 }}
           >
             <b>Directions</b>
-            {'\nNote: May be scrollable'}
           </Typography>
         </Grid>
 
-        <Grid item>
+        <Grid item sx={{pb: 15}}>
           <Paper
             style={{
               width: 650,
-              height: 350,
-
+              minHeight: 200,
+              paddingBottom: 10,
               overflow: 'auto'
             }}
           >
@@ -216,7 +268,7 @@ function ViewRecipe (props) {
         open={ingredientAdded}
         autoHideDuration={3000}
         onClose={() => setIngredientAdded(false)}
-        sx={{ pb: 8 }}
+        sx={{ mb: 8 }}
       >
         <Alert
           onClose={() => setIngredientAdded(false)}
@@ -491,7 +543,7 @@ function ManipulateRecipe (props) {
               </Grid>
 
               <Grid item>
-                <Divider sx={{ width: 500 }} />
+                <Divider style={{ width: 765, borderBottomWidth: 3 }}  />
               </Grid>
 
               <Grid
@@ -678,7 +730,7 @@ function ManipulateRecipe (props) {
         open={ingredientAdded}
         autoHideDuration={3000}
         onClose={() => setIngredientAdded(false)}
-        sx={{ pb: 8 }}
+        sx={{ mb: 8 }}
       >
         <Alert
           onClose={() => setIngredientAdded(false)}
@@ -693,7 +745,7 @@ function ManipulateRecipe (props) {
         open={ingredientDeleted}
         autoHideDuration={3000}
         onClose={() => setIngredientDeleted(false)}
-        sx={{ pb: 8 }}
+        sx={{ mb: 8 }}
       >
         <Alert
           onClose={() => setIngredientDeleted(false)}
@@ -819,6 +871,7 @@ export default function RecipeSubmenu (props) {
               <ViewRecipe
                 recipe={currRecipe}
                 handleGroceryAdd={props.handleGroceryAdd}
+                kitchenStockList={props.kitchenStockList}
               />
             ) : (
               <ManipulateRecipe
