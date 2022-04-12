@@ -147,6 +147,7 @@ function Recipies (props) {
               handleDeleteRecipe={handleDeleteRecipe}
               handleAddRecipe={handleAddRecipe}
               handleGroceryAdd={props.handleGroceryAdd}
+              kitchenStockList={props.kitchenStockList}
             />
           ) : (
             <TableComponent
@@ -198,7 +199,7 @@ function Recipies (props) {
         open={recipeAdded}
         autoHideDuration={3000}
         onClose={() => setRecipeAdded(false)}
-        sx={{ pb: 8 }}
+        sx={{ mb: 8 }}
       >
         <Alert
           onClose={() => setRecipeAdded(false)}
@@ -213,7 +214,7 @@ function Recipies (props) {
         open={recipeEdited}
         autoHideDuration={3000}
         onClose={() => setRecipeEdited(false)}
-        sx={{ pb: 8 }}
+        sx={{ mb: 8 }}
       >
         <Alert
           onClose={() => setRecipeEdited(false)}
@@ -228,7 +229,7 @@ function Recipies (props) {
         open={recipeDeleted}
         autoHideDuration={3000}
         onClose={() => setRecipeDelete(false)}
-        sx={{ pb: 8 }}
+        sx={{ mb: 8 }}
       >
         <Alert
           onClose={() => setRecipeDelete(false)}
