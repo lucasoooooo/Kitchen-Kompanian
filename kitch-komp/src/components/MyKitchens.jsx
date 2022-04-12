@@ -174,7 +174,7 @@ function MyKitchens(props) {
       ) : null}
 
       <Snackbar open={isActive} message={message}>
-        <Alert sx={{ width: '100%' }}>{message}</Alert>
+        <Alert sx={{ mb: 8 }}>{message}</Alert>
       </Snackbar>
 
 
