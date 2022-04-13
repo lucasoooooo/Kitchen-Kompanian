@@ -202,12 +202,12 @@ class GroceryList extends Component {
         </div>
         <div className="centerDiv" style={{ height: 660, width: '100%' }}>
           <DataGrid
-            components={{ Toolbar: QuickSearchToolbar }}
+            hideFooter={true}
+            components={{ Toolbar: QuickSearchToolbar}}
             componentsProps={{
-              // Interaction between Search Bar and Table
               toolbar: {
                 handleAddToKitchen: () => this.handleAddToKitchen(),
-                handleDefaultList: () => this.handleDefaultList()
+                handleDefaultList: () => this.handleDefaultList(),
               }
             }}
             rows={this.props.groceryItems}
@@ -230,8 +230,7 @@ class GroceryList extends Component {
                     </Button>
                   );
                 },
-              }
-            
+              }       
             ]}
             checkboxSelection
             onRowSelected={this.handleRowSelected}
