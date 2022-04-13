@@ -36,6 +36,7 @@ import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import QuestionMarkIcon from '@mui/icons-material/Help'
 import SaveIcon from '@mui/icons-material/Save'
 import { useEffect } from 'react'
 
@@ -48,6 +49,8 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
     const [ID, setID] = useState(0);
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [allergy, setAllergy] = useState(currMember.allergy);
+    const [viewInfo, setViewInfo] = useState(false)
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -76,6 +79,35 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
     
     return (  
         <>
+  <div style={{ textAlign: 'center' }}>
+        <Grid
+          alignItems='center'
+          container
+          style={{
+            color: 'white',
+            background: '#343a40',
+            paddingTop: '20px',
+            paddingBottom: '20px'
+          }}
+        >
+        <Grid item sm></Grid>
+
+        <Grid item sm={8}>
+            <h1 textalign='center'>Kitchen Members</h1>
+          </Grid>
+
+          <Grid item sm>
+            <Button
+              startIcon={<QuestionMarkIcon />}
+              style={{ border: 'none', outline: 'none', color: 'white' }}
+              onClick={() => setViewInfo(true)}
+            >
+              Page info
+            </Button>
+            </Grid>
+          </Grid>
+          </div>
+
     <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
         <Grid
           container
@@ -211,9 +243,45 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
         </Dialog>
       ) : null}
 
+      {viewInfo ? (
+        <Dialog
+          open={viewInfo}
+          onClose={() => setViewInfo(false)}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>Recipe List</DialogTitle>
+          <DialogContent>
+            <DialogContentText
+              id='alert-dialog-description'
+              style={{
+                wordWrap: 'break-word',
+                display: 'inline-block',
+                whiteSpace: 'pre-line'
+              }}
+            >
+              {currMember ? 'This is the Edit Member page.\n\nPlease edit any information about the member as you wish and hit Edit Member to save.\n\nTo delete this member hit the Delete Member button.'
+              :'This is the Add Member page.\n\nPlease fill in any of the fields you wish and hit Add Member when done.'}
+             
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setViewInfo(false)}
+              autoFocus
+              color='primary'
+              style={{ border: 'none', outline: 'none' }}
+            >
+              Ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : null}
+
+      
+
         </Grid>
       </Grid>
-
 
         </>
         
@@ -287,6 +355,8 @@ function EditMember(props) {
               />
             </Grid>
           </Grid>
+
+          
 
           
         </Grid>
