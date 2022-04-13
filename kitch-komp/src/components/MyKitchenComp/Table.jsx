@@ -140,16 +140,7 @@ export default function QuickFilteringGrid (props) {
 
   return (
     <>
-      <Paper
-        sx={{
-          height: 1102,
-          width: 768,
-
-          '& .super-app-theme--header': {
-            backgroundColor: 'white'
-          }
-        }}
-      >
+      <div className='membersTableDiv' style={{ height: 1102, width: '100%' }}>
         <DataGrid
           components={{ Toolbar: QuickSearchToolbar }} // Add the Search Bar
           rows={rows} // Display the rows
@@ -175,7 +166,7 @@ export default function QuickFilteringGrid (props) {
         />
 
         {}
-      </Paper>
+      </div>
     </>
   )
 }

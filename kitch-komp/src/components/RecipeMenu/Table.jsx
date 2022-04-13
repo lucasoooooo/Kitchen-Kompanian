@@ -34,7 +34,7 @@ function QuickSearchToolbar (props) {
             InputProps={{
               startAdornment: (
                 <>
-                  <SearchIcon />
+                  <SearchIcon fontSize="small"/>
                   <select onChange={props.setSearchType}>
                     <option value='contains'>Contains</option>
                     <option value='doesNotContain'>Does not contain</option>
