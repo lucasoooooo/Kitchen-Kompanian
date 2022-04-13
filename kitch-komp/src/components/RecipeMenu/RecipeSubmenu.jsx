@@ -61,6 +61,14 @@ function ViewRecipe (props) {
     setIngredientAdded(true)
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setIngredientAdded(false)
+  }
+
   return (
     <>
       <Grid
@@ -267,11 +275,11 @@ function ViewRecipe (props) {
       <Snackbar
         open={ingredientAdded}
         autoHideDuration={3000}
-        onClose={() => setIngredientAdded(false)}
+        onClose={handleClose}
         sx={{ mb: 8 }}
       >
         <Alert
-          onClose={() => setIngredientAdded(false)}
+          onClose={handleClose}
           severity='success'
           sx={{ width: '100%' }}
         >
@@ -356,6 +364,16 @@ function ManipulateRecipe (props) {
   const handleRecipeChange = (event, keyName) => {
     props.setCurrRecipe({ ...props.recipe, [keyName]: event.target.value })
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setIngredientAdded(false)
+    setIngredientDeleted(false)
+  }
+
 
   // Updating the current ingredients for the recipe
   useEffect(() => {
@@ -653,7 +671,7 @@ function ManipulateRecipe (props) {
               {openDeleteDialog ? (
                 <Dialog
                   open={openDeleteDialog}
-                  onClose={handleClosed}
+                  onClose={handleClose}
                   aria-labelledby='alert-dialog-title'
                   aria-describedby='alert-dialog-description'
                 >
@@ -668,7 +686,7 @@ function ManipulateRecipe (props) {
                   </DialogContent>
                   <DialogActions>
                     <Button
-                      onClick={handleClosed}
+                      onClick={handleClose}
                       autoFocus
                       color='primary'
                       style={{ border: 'none', outline: 'none' }}
@@ -729,11 +747,11 @@ function ManipulateRecipe (props) {
       <Snackbar
         open={ingredientAdded}
         autoHideDuration={3000}
-        onClose={() => setIngredientAdded(false)}
+        onClose={handleClose}
         sx={{ mb: 8 }}
       >
         <Alert
-          onClose={() => setIngredientAdded(false)}
+          onClose={handleClose}
           severity='success'
           sx={{ width: '100%' }}
         >
@@ -744,11 +762,11 @@ function ManipulateRecipe (props) {
       <Snackbar
         open={ingredientDeleted}
         autoHideDuration={3000}
-        onClose={() => setIngredientDeleted(false)}
+        onClose={handleClose}
         sx={{ mb: 8 }}
       >
         <Alert
-          onClose={() => setIngredientDeleted(false)}
+          onClose={handleClose}
           severity='success'
           sx={{ width: '100%' }}
         >

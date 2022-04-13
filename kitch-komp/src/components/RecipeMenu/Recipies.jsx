@@ -97,6 +97,16 @@ function Recipies (props) {
     setCurrRecipe({})
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+  
+    setRecipeAdded(false)
+    setRecipeDelete(false)
+    setRecipeEdited(false)
+  }
+
   return (
     <>
       <div style={{ textAlign: 'center' }}>
@@ -198,11 +208,11 @@ function Recipies (props) {
       <Snackbar
         open={recipeAdded}
         autoHideDuration={3000}
-        onClose={() => setRecipeAdded(false)}
+        onClose={handleClose}
         sx={{ mb: 8 }}
       >
         <Alert
-          onClose={() => setRecipeAdded(false)}
+          onClose={handleClose}
           severity='success'
           sx={{ width: '100%' }}
         >
@@ -213,11 +223,11 @@ function Recipies (props) {
       <Snackbar
         open={recipeEdited}
         autoHideDuration={3000}
-        onClose={() => setRecipeEdited(false)}
+        onClose={handleClose}
         sx={{ mb: 8 }}
       >
         <Alert
-          onClose={() => setRecipeEdited(false)}
+          onClose={handleClose}
           severity='success'
           sx={{ width: '100%' }}
         >
@@ -228,11 +238,11 @@ function Recipies (props) {
       <Snackbar
         open={recipeDeleted}
         autoHideDuration={3000}
-        onClose={() => setRecipeDelete(false)}
+        onClose={handleClose}
         sx={{ mb: 8 }}
       >
         <Alert
-          onClose={() => setRecipeDelete(false)}
+          onClose={handleClose}
           severity='success'
           sx={{ width: '100%' }}
         >
