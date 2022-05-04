@@ -202,12 +202,12 @@ class GroceryList extends Component {
         </div>
         <div className="centerDiv" style={{ height: 660, width: '100%' }}>
           <DataGrid
-            components={{ Toolbar: QuickSearchToolbar }}
+            hideFooter={true}
+            components={{ Toolbar: QuickSearchToolbar}}
             componentsProps={{
-              // Interaction between Search Bar and Table
               toolbar: {
                 handleAddToKitchen: () => this.handleAddToKitchen(),
-                handleDefaultList: () => this.handleDefaultList()
+                handleDefaultList: () => this.handleDefaultList(),
               }
             }}
             rows={this.props.groceryItems}
@@ -230,8 +230,7 @@ class GroceryList extends Component {
                     </Button>
                   );
                 },
-              }
-            
+              }       
             ]}
             checkboxSelection
             onRowSelected={this.handleRowSelected}
@@ -305,17 +304,17 @@ class GroceryList extends Component {
           </DialogActions>
         </Dialog>
       ) : null}
-        <Snackbar open={this.state.openAdd} autoHideDuration={3000} onClose={this.handleClose} sx={{ pb: 8 }}>
+        <Snackbar open={this.state.openAdd} autoHideDuration={3000} onClose={this.handleClose} sx={{ mb: 8 }}>
           <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
             Item Added to Grocery List
           </Alert>
         </Snackbar>
-        <Snackbar open={this.state.openDelete} autoHideDuration={3000} onClose={this.handleClose} sx={{ pb: 8 }}>
+        <Snackbar open={this.state.openDelete} autoHideDuration={3000} onClose={this.handleClose} sx={{ mb: 8 }}>
           <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
             Item Deleted from Grocery List
           </Alert>
         </Snackbar>
-        <Snackbar open={this.state.openTransfer} autoHideDuration={3000} onClose={this.handleClose} sx={{ pb: 8 }}>
+        <Snackbar open={this.state.openTransfer} autoHideDuration={3000} onClose={this.handleClose} sx={{ mb: 8 }}>
           <Alert onClose={this.handleClose} severity="success" sx={{ width: '100%' }}>
             Item(s) Moved to Kitchen Stock List
           </Alert>

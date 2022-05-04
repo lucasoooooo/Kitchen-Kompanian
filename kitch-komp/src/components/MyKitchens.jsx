@@ -130,7 +130,7 @@ function MyKitchens(props) {
           > 
             
 
-             <Grid item>
+             <Grid item width='100%'>
              <TableComponent
               members={members}
               handleAddButtonClicked={handleAdd}
