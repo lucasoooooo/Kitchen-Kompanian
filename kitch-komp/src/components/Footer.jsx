@@ -30,7 +30,7 @@ function Footer() {
 							</li>
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/myKitchens">
-									<PeopleAltIcon/> My Kitchens
+									<PeopleAltIcon/> Kitchen Members
 								</NavLink>
 							</li>
 						</ul>

@@ -157,7 +157,7 @@ const AddMember = ({addMember, handleBack, id, currMember, handleEditMember, han
                     startIcon={<SaveIcon>Edit Recipe</SaveIcon>}
                     onClick={handleSubmit}
                   >
-                    Edit Member
+                    Save Member
                   </Button>
                     ) : (
                         <Button

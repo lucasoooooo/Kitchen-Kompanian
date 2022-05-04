@@ -146,7 +146,7 @@ function MyKitchens(props) {
           aria-labelledby='alert-dialog-title'
           aria-describedby='alert-dialog-description'
         >
-          <DialogTitle id='alert-dialog-title'>Recipe List</DialogTitle>
+          <DialogTitle id='alert-dialog-title'>Kitchen Members</DialogTitle>
           <DialogContent>
             <DialogContentText
               id='alert-dialog-description'
