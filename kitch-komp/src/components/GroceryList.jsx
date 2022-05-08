@@ -200,7 +200,7 @@ class GroceryList extends Component {
 
           <span className='horizontal-line' />
         </div>
-        <div className="centerDiv" style={{ height: 660, width: '100%' }}>
+        <div className="centerDiv" style={{ height: 920, width: '100%' }}>
           <DataGrid
             hideFooter={true}
             components={{ Toolbar: QuickSearchToolbar}}
