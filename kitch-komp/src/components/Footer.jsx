@@ -14,23 +14,23 @@ function Footer() {
 						<ul className="navbar-nav m-auto">
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/">
-									<LocalGroceryStoreIcon/> Grocery List
+									<LocalGroceryStoreIcon className='mui_icon'/>
 									<span className="sr-only">(current)</span>
 								</NavLink>
 							</li>
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/kitchenStock">
-								 <KitchenIcon/> Kitchen Stock
+								 <KitchenIcon className='mui_icon'/>
 								</NavLink>
 							</li>
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/recipies">
-								<LocalDiningIcon/> Recipes
+								<LocalDiningIcon className='mui_icon'/>
 								</NavLink>
 							</li>
 							<li className="nav-item">
 								<NavLink className="nav-link" to="/myKitchens">
-									<PeopleAltIcon/> Kitchen Members
+									<PeopleAltIcon className='mui_icon'/>
 								</NavLink>
 							</li>
 						</ul>
