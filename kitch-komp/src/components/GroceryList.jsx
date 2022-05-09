@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { DataGrid, GridToolbar, GridCellParams } from '@mui/x-data-grid';
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types'
 import SearchIcon from '@mui/icons-material/Search'
@@ -192,7 +193,8 @@ class GroceryList extends Component {
               <h1 textalign='center'>Grocery List</h1>
             </Grid>
             <Grid item sm>
-              <Button startIcon={<QuestionMarkIcon />} style={{color: "white"}} onClick={this.handleInfoClicked}>
+              <Button className='pageInfo' startIcon={<QuestionMarkIcon />} style={{color: "white"}}
+               onClick={this.handleInfoClicked}>
                 Page info
               </Button>
             </Grid>
@@ -215,11 +217,11 @@ class GroceryList extends Component {
               { field: 'item', headerName: 'Grocery Item', width: 420},
               { field: 'quantity', headerName: 'Quantity', width: 200},
               {
-                field: 'delete',
+                field: 'edit',
                 headerName: '',
                 width: 80,
                 sortable: false,
-                headerClassName: 'delete-item-column',
+                headerClassName: 'edit-item-column',
                 hideSortIcons: true,
                 renderCell: (params) => {
                   return (
@@ -230,7 +232,7 @@ class GroceryList extends Component {
                     </Button>
                   );
                 },
-              }       
+              }      
             ]}
             checkboxSelection
             onRowSelected={this.handleRowSelected}
@@ -272,14 +274,16 @@ class GroceryList extends Component {
           aria-labelledby='alert-dialog-title'
           aria-describedby='alert-dialog-description'
         >
-          <DialogTitle id='alert-dialog-title'>Grocery List</DialogTitle>
+          <DialogTitle style={{fontSize: 'x-large'}} id='alert-dialog-title'>Grocery List</DialogTitle>
           <DialogContent>
             <DialogContentText
+
               id='alert-dialog-description'
               style={{
                 wordWrap: 'break-word',
                 display: 'inline-block',
-                whiteSpace: 'pre-line'
+                whiteSpace: 'pre-line',
+                fontSize: 'x-large'
               }}
             >
               {'This is the Grocery List page.\n\n To add a new grocery item, fill out the needed information at the\n' +
@@ -297,7 +301,7 @@ class GroceryList extends Component {
               onClick={() => this.setState({viewInfo: false})}
               autoFocus
               color='primary'
-              style={{ border: 'none', outline: 'none' }}
+              style={{ fontSize: 'x-large', border: 'none', outline: 'none' }}
             >
               Ok
             </Button>
@@ -330,12 +334,13 @@ export default GroceryList;
 function QuickSearchToolbar (props) {
   return (
     <Grid container sx={{ p: 0.5 }} alignItems='center' alignContent='center'>
-      <Grid item sm style={{marginRight:"50px"}}>
+      <Grid item sm style={{marginRight:"25px"}}>
       <TextField
+          style={{fontSize: '20px'}}
           variant='standard'
           placeholder='Search…'
           InputProps={{
-            startAdornment: <SearchIcon fontSize='small' />,
+            startAdornment: <SearchIcon fontSize='large' />,
             endAdornment: (
               <IconButton
                 title='Clear'
@@ -367,7 +372,7 @@ function QuickSearchToolbar (props) {
         <Button
           variant='text'
           color='primary'
-          style={{ border: 'none', outline: 'none'}}
+          style={{ fontSize: '16px', border: 'none', outline: 'none'}}
           startIcon={<AddIcon>Import Starter List</AddIcon>}
           onClick={props.handleDefaultList}
         >
@@ -378,7 +383,7 @@ function QuickSearchToolbar (props) {
         <Button
           variant='text'
           color='primary'
-          style={{ border: 'none', outline: 'none'}}
+          style={{ fontSize: '16px', border: 'none', outline: 'none'}}
           startIcon={<AddIcon>Add Selected Items to Kitchen</AddIcon>}
           onClick={props.handleAddToKitchen}
         >

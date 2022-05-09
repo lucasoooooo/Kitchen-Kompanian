@@ -43,15 +43,15 @@ a:hover {
 }
 
 .MuiDataGrid-columnHeaders {
-  font-size: 16px
+  font-size: 24px
 }
 
 .MuiDataGrid-cell {
-  font-size: 16px
+  font-size: 20px
 }
 
 .MuiTable-root .MuiTableCell-root {
-  font-size: 18px
+  font-size: 24px
 }
 
 .MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
@@ -92,8 +92,8 @@ h1 {
 }
 
 .navbar-expand .navbar-nav .nav-link {
-  padding-right: 1.4rem;
-  padding-left: 0.5rem;
+  padding-right: 4.5rem;
+  padding-left: 4.5rem;
 }
 
 .nav-item{
@@ -102,4 +102,8 @@ h1 {
 
 .navbar {
   height: 80px;
+}
+
+.mui_icon {
+  transform: scale(1.8);
 }
