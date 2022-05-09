@@ -214,8 +214,25 @@ class GroceryList extends Component {
             }}
             rows={this.props.groceryItems}
             columns={[
-              { field: 'item', headerName: 'Grocery Item', width: 420},
-              { field: 'quantity', headerName: 'Quantity', width: 200},
+              { field: 'item', headerName: 'Grocery Item', width: 390},
+              { field: 'quantity', headerName: 'Quantity', width: 150},
+              {
+                field: 'delete',
+                headerName: '',
+                width: 80,
+                sortable: false,
+                headerClassName: 'delete-item-column',
+                hideSortIcons: true,
+                renderCell: (params) => {
+                  return (
+                    <Button
+                      className="delete-btn"            
+                      onClick={() => this.handleDelete([params.id])}>
+                      <EditIcon className="delete" color="inherit" />
+                    </Button>
+                  );
+                },
+              },
               {
                 field: 'edit',
                 headerName: '',
